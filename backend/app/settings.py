@@ -135,3 +135,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 DOMAIN = os.getenv("DOMAIN")
 API_PREF = os.getenv("API_PREF")
+
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
