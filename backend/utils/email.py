@@ -9,8 +9,6 @@ from backend.app.settings import DEFAULT_FROM_EMAIL
 
 # logging.basicConfig(level=logging.DEBUG)
 
-
-
 def send_email_with_template(
     subject: str, template_name: str, context: dict, recipient_email: str
 ):
