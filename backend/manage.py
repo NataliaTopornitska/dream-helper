@@ -2,10 +2,6 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-# from pathlib import Path
-#
-# # Добавляем корневую директорию проекта в sys.path
-# sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 
 def main():
