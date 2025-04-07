@@ -7,8 +7,6 @@ from django.contrib.auth.models import (
 from django.db import models
 from django.utils.translation import gettext as _
 
-from backend.dreams.models import City
-
 
 class UserManager(BaseUserManager):
     """Define a model manager for User model with no username field."""
@@ -68,11 +66,36 @@ class ActivationToken(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
+class Country(models.Model):
+    name = models.CharField(max_length=63, unique=True)
+
+    class Meta:
+        verbose_name_plural = "countries"
+        ordering = ["name"]
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class City(models.Model):
+    name = models.CharField(max_length=63)
+    country = models.ForeignKey(
+        Country, on_delete=models.CASCADE, related_name="cities"
+    )
+
+    class Meta:
+        verbose_name_plural = "cities"
+        ordering = ["name"]
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=150)
     phone_number = models.CharField(max_length=30, blank=True, null=True, unique=True)
-    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True)
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
     direction = models.CharField(max_length=150, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     avatar = models.URLField(null=True, blank=True)     # save in Storage
@@ -85,7 +108,7 @@ class DreamerProfile(models.Model):
     name = models.CharField(max_length=150)
     email = models.EmailField(blank=True, null=True, unique=True)
     phone_number = models.CharField(max_length=30, unique=True)
-    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True)
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
     direction = models.CharField(max_length=150)
     created_at = models.DateTimeField(auto_now_add=True)
 
