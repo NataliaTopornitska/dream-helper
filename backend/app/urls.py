@@ -23,4 +23,5 @@ from app.settings import API_PREF
 urlpatterns = [
     path("admin/", admin.site.urls),
     path(f"{API_PREF}/users/", include("users.urls", namespace="users")),
+    path(f"{API_PREF}/dreamhelper/", include("dreams.urls", namespace="dreams")),
 ]
