@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from rest_framework import generics
+from rest_framework import generics, exceptions
 from rest_framework.generics import get_object_or_404
 
 
@@ -13,6 +13,8 @@ class CreateUserView(generics.CreateAPIView):
 
 def activate_user(request, pk, activationtoken):
     user = get_object_or_404(User, id=pk)
+    if user.is_active:
+        return HttpResponse("The user account is already active!")
     token = get_object_or_404(ActivationToken, token=activationtoken)
     if token.user == user:
         user.is_active = True

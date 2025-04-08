@@ -41,13 +41,6 @@ class UserSerializer(serializers.ModelSerializer):
             "user": user.email,
             "activation_link": activation_link,
         }
-        print(f"!!!!!!!!!!!!!!!!!!!!!! os.path.join(settings.BASE_DIR, templates) = {os.path.join(settings.BASE_DIR, 'templates')}")
-        print(f"!!!!!!!!!!!!!!!!! template name:  {os.path.join(
-                settings.BASE_DIR,
-                "templates",
-                "email",
-                "activate_account_email.html",
-            ),}")
 
         send_email_with_template(
             subject="Activate Your Account",
