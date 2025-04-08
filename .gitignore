@@ -6,3 +6,4 @@ backend/db.sqlite3
 media
 .env
 backend/venv/
+db.sqlite3
