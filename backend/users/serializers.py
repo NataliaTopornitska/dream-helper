@@ -64,3 +64,18 @@ class UserSerializer(serializers.ModelSerializer):
             user.save()
 
         return user
+
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ("id", "email", "is_staff", "is_active")
+        read_only_fields = (
+            "id",
+            "is_staff",
+            "is_active",
+        )
+
+    def update(self, instance, validated_data):
+        """Update a user"""
+        return super().update(instance, validated_data)

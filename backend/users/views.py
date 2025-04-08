@@ -1,10 +1,19 @@
 from django.http import HttpResponse
-from rest_framework import generics, exceptions
+from rest_framework import generics
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.generics import get_object_or_404
-
+from rest_framework.response import Response
+from rest_framework.settings import api_settings
+from rest_framework.authtoken.models import Token
+from rest_framework.views import APIView
 
 from users.models import User, ActivationToken
-from users.serializers import UserSerializer
+
+from rest_framework.permissions import IsAuthenticated
+
+from users.serializers import UserSerializer, UserUpdateSerializer
 
 
 class CreateUserView(generics.CreateAPIView):
@@ -24,3 +33,27 @@ def activate_user(request, pk, activationtoken):
         raise ValueError("Activation token does not belong to this user")
     user.save()
     return HttpResponse("Your Account Has Ben Activated!")
+
+
+class LoginUserView(ObtainAuthToken):
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+    serializer_class = AuthTokenSerializer
+
+
+class ManageUserView(generics.RetrieveUpdateAPIView):
+    serializer_class = UserUpdateSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self):
+        return self.request.user
+
+
+class LogoutUserView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        # Delete access token
+        Token.objects.filter(user=request.user).delete()
+        return Response({"message": "You logout successfully."}, status=200)
