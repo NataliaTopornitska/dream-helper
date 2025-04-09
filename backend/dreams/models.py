@@ -30,10 +30,6 @@ class Comment(models.Model):
         ordering = ["-created_at"]
 
 
-class Donation(models.Model):
-    pass
-
-
 class Dream(models.Model):
     STATUS_DREAM = (
         ("Application", "Application"),
@@ -49,11 +45,11 @@ class Dream(models.Model):
     categories = models.ManyToManyField(
         Category, related_name="dreams", blank=True, default=[]
     )
-    content = models.TextField()
+    content = models.TextField(blank=False, null=False)
     goal = models.DecimalField(decimal_places=2, max_digits=10, default=0)
     photo = models.URLField(null=True, blank=True)
     donations = models.ManyToManyField(
-        Donation, related_name="dreams", blank=True, default=[]
+        "Donation", related_name="dreams", blank=True, default=[]
     )
     status = models.CharField(
         max_length=12, choices=STATUS_DREAM, default="Application"
@@ -72,3 +68,25 @@ class Dream(models.Model):
 
     def __str__(self):
         return f"{self.owner}: {self.title} (goal: {str(self.goal)})"
+
+
+class Donation(models.Model):
+    STATUS_DONATION = (
+        ("Prepared", "Prepared"),
+        ("Paid", "Paid"),
+        ("Canceled", "Canceled"),
+    )
+    donator = models.ForeignKey(
+        User, on_delete=models.CASCADE, blank=True, null=True
+    )  # may be anonymouse donation
+    dream = models.ForeignKey(
+        Dream, on_delete=models.CASCADE, related_name="donations_set"
+    )
+    amount = models.DecimalField(decimal_places=2, max_digits=10)
+    status = models.CharField(max_length=8, choices=STATUS_DONATION, default="Pending")
+    url_payment = models.URLField(max_length=400, null=True, blank=True)
+    is_anonymous = models.BooleanField(default=False)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.date.strftime("%Y-%m-%d %H:%M") + " - " + str(self.amount)
