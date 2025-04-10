@@ -1,11 +1,13 @@
 import os
 
+from django.db.models import Sum
 from rest_framework import mixins
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
-from dreams.models import Category, Dream
+from dreams.models import Category, Dream, Donation
 from dreams.serializers import (
     CategorySerializer,
     DreamCreateSerializer,
@@ -15,6 +17,8 @@ from dreams.serializers import (
 from utils.email import send_email_with_template
 
 from app import settings
+
+from users.models import User, DreamerProfile
 
 
 class CategoryView(
@@ -97,3 +101,32 @@ class DreamViewSet(
     #     if self.action == "update":  # update only Admin
     #         return (IsAdminUser,)
     #     return super().get_permissions()
+
+
+class DreamStatisticsView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        total_dreams = Dream.objects.count()
+        people = (
+            User.objects.count() + DreamerProfile.objects.count()
+        )  #  later may be only active users
+
+        anonymous_donations = (
+            Donation.objects.filter(is_anonymous=True).aggregate(
+                total_sum=Sum("amount")
+            )["total_sum"]
+            or 0
+        )
+
+        total_donations = (
+            Donation.objects.aggregate(total_sum=Sum("amount"))["total_sum"] or 0
+        )
+
+        data = {
+            "total_dreams": total_dreams,
+            "people": people,
+            "anonymous_donations": anonymous_donations,
+            "total_donations": total_donations,
+        }
+
+        return Response(data)
