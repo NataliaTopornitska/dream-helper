@@ -91,11 +91,8 @@ class CountrySerializer(serializers.ModelSerializer):
         )
 
 
-
 class CitySerializer(serializers.ModelSerializer):
-    country_name = serializers.CharField(
-        write_only=True
-    )  # country_name for writing
+    country_name = serializers.CharField(write_only=True)  # country_name for writing
     country = CountrySerializer(read_only=True)  # for look at
 
     class Meta:
