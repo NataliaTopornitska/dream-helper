@@ -1,7 +1,7 @@
 import os
 
 from rest_framework import mixins
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
@@ -90,3 +90,10 @@ class DreamViewSet(
         # if self.action == "make_donation":
         #     return AddDonationSerializer
         return DreamBaseSerializer
+
+    # def get_permissions(self):
+    #     if self.action == "create":  # create only AuthUser
+    #         return (IsAuthenticated,)
+    #     if self.action == "update":  # update only Admin
+    #         return (IsAdminUser,)
+    #     return super().get_permissions()

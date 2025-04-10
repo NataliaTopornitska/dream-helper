@@ -63,7 +63,9 @@ class DreamBaseSerializer(serializers.ModelSerializer):
 
 
 class DreamCreateSerializer(DreamBaseSerializer):
-    dreamer = DreamerProfileCreateSerializer()
+    dreamer = DreamerProfileCreateSerializer(
+        write_only=True, required=False, allow_null=True
+    )
     new_category = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
@@ -85,8 +87,12 @@ class DreamCreateSerializer(DreamBaseSerializer):
             dreamer = None
             dreamer_data = validated_data.pop("dreamer", None)
             print(f"{dreamer_data=}")
-            to_another = validated_data.pop("to_another")
-            if to_another and dreamer_data:
+            to_another = validated_data.get("to_another")
+
+            if not to_another:
+                validated_data.pop("dreamer", None)
+
+            if to_another:
                 # create Dreamer if dreamer_data
                 if dreamer_data and any(dreamer_data.values()):  # check that not empty
 
@@ -101,7 +107,6 @@ class DreamCreateSerializer(DreamBaseSerializer):
                     dreamer_serializer.is_valid(raise_exception=True)
                     dreamer = dreamer_serializer.save()
 
-                print(f"{dreamer=}")
             categories_data = validated_data.pop("categories", [])
 
             new_category = validated_data.pop("new_category", None)

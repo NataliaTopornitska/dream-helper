@@ -246,6 +246,8 @@ class UserProfileCreateSerializer(serializers.ModelSerializer):
         profile = super().update(instance, validated_data)
         if name:
             profile.name = name
+            profile.save(update_fields=["name"])
+
         return profile
 
 
