@@ -53,7 +53,6 @@ class User(AbstractUser):
     is_donator = models.BooleanField(_("is donator"), default=False)
     is_active = models.BooleanField(_("is active"), default=False)
 
-
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
@@ -98,10 +97,13 @@ class UserProfile(models.Model):
     city = models.ForeignKey(City, on_delete=models.CASCADE)
     direction = models.CharField(max_length=150, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    avatar = models.URLField(null=True, blank=True)     # save in Storage
+    avatar = models.URLField(null=True, blank=True)  # save in Storage
 
     class Meta:
         ordering = ["-created_at"]
+
+    def __str__(self) -> str:
+        return f"{self.name} ({self.city.name}) - {self.phone_number}"
 
 
 class DreamerProfile(models.Model):
@@ -111,9 +113,10 @@ class DreamerProfile(models.Model):
     city = models.ForeignKey(City, on_delete=models.CASCADE)
     direction = models.CharField(max_length=150)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_collective = models.BooleanField(default=False)
 
     class Meta:
         ordering = ["name"]
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.city.name}) - {self.phone_number}"

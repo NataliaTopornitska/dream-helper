@@ -62,6 +62,7 @@ class Dream(models.Model):
     comments = models.ManyToManyField(
         Comment, related_name="dreams", blank=True, default=[]
     )
+    number_views = models.IntegerField(default=0)
 
     class Meta:
         ordering = ["-created_at"]
