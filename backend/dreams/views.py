@@ -1,7 +1,11 @@
 import os
+import random
 
+from django.core.cache import cache
+from django.core.serializers import serialize
 from django.db.models import Sum
-from rest_framework import mixins
+from rest_framework import mixins, status
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -12,6 +16,7 @@ from dreams.serializers import (
     CategorySerializer,
     DreamCreateSerializer,
     DreamBaseSerializer,
+    RandomDreamsSerializer,
 )
 
 from utils.email import send_email_with_template
@@ -87,6 +92,8 @@ class DreamViewSet(
             return DreamBaseSerializer
         if self.action == "create":
             return DreamCreateSerializer
+        if self.action == "get_random_dreams":
+            return RandomDreamsSerializer
         # if self.action == "upload_dream_photo":
         #     return DreamPhotoSerializer
         # if self.action == "update":
@@ -95,12 +102,30 @@ class DreamViewSet(
         #     return AddDonationSerializer
         return DreamBaseSerializer
 
-    # def get_permissions(self):
-    #     if self.action == "create":  # create only AuthUser
-    #         return (IsAuthenticated,)
-    #     if self.action == "update":  # update only Admin
-    #         return (IsAdminUser,)
-    #     return super().get_permissions()
+        # def get_permissions(self):
+        #     if self.action == "create":  # create only AuthUser
+        #         return (IsAuthenticated,)
+        #     if self.action == "update":  # update only Admin
+        #         return (IsAdminUser,)
+        #     return super().get_permissions()
+
+    @action(
+        methods=["get"],
+        detail=False,
+        url_path="get_random_dreams",
+    )
+    def get_random_dreams(self, request):
+        active_dreams = Dream.objects.filter(status="Active")
+        numbers = settings.RANDOM_DREAMS_HOME
+        numbers = min(int(numbers), len(active_dreams))
+        ids = Dream.objects.values_list("id", flat=True)
+        random_ids = random.sample(list(ids), numbers)  # get number random ID
+        queryset = Dream.objects.filter(id__in=random_ids).order_by("?")   #  without ordering
+
+        return Response(
+            RandomDreamsSerializer(queryset, many=True).data,
+            status=status.HTTP_200_OK,
+        )
 
 
 class DreamStatisticsView(APIView):

@@ -128,3 +128,7 @@ class DreamCreateSerializer(DreamBaseSerializer):
 
         except Exception as e:
             raise serializers.ValidationError(f"Dream creation failed: {e}")
+
+
+class RandomDreamsSerializer(DreamBaseSerializer):
+    pass
