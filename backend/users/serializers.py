@@ -144,7 +144,7 @@ class DreamerProfileCreateSerializer(serializers.ModelSerializer):
     def validate_dreamer(self, value):
         to_another = self.initial_data.get("to_another", True)
         if not to_another:
-            return None  # Если to_another=False, игнорируем dreamer
+            return None  # if to_another=False, ignore dreamer
         return value
 
     def create(self, validated_data):

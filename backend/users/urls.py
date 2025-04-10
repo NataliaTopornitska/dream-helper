@@ -1,6 +1,13 @@
 from django.urls import path
 
-from users.views import CreateUserView, activate_user, LoginUserView, ManageUserView, LogoutUserView
+from users.views import (
+    CreateUserView,
+    activate_user,
+    LoginUserView,
+    ManageUserView,
+    LogoutUserView,
+    UserProfileView,
+)
 
 
 app_name = "users"
@@ -12,4 +19,5 @@ urlpatterns = [
     path("login/", LoginUserView.as_view(), name="token"),
     path("me/", ManageUserView.as_view(), name="manage"),
     path("logout/", LogoutUserView.as_view(), name="logout"),
+    path("profile/", UserProfileView.as_view(), name="profile"),
 ]
