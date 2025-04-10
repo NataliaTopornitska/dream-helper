@@ -91,12 +91,24 @@ class City(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=150)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="userprofile"
+    )
+    name = models.CharField(
+        max_length=150,
+        blank=True,
+        null=True,
+    )
     phone_number = models.CharField(max_length=30, blank=True, null=True, unique=True)
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    city = models.ForeignKey(
+        City,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
     direction = models.CharField(max_length=150, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_collective = models.BooleanField(default=False)
     avatar = models.URLField(null=True, blank=True)  # save in Storage
 
     class Meta:
