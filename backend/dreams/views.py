@@ -1,8 +1,5 @@
-import copy
-import io
 import os
 import random
-from PIL import Image
 
 from django.db.models import Sum
 from rest_framework import mixins, status
@@ -22,7 +19,12 @@ from dreams.serializers import (
 )
 
 from utils.email import send_email_with_template
-from utils.storage import get_s3_client, get_file_name
+from utils.storage import (
+    get_s3_client,
+    get_file_name,
+    delete_image_from_storage,
+    upload_image_and_miniature_to_storage,
+)
 
 from app import settings
 
@@ -142,27 +144,14 @@ class DreamViewSet(
     )
     def upload_dream_photo(self, request, pk=None):
         dream = self.get_object()
-        s3_client = get_s3_client()
+        # s3_client = get_s3_client()
 
         # Delete old photo_url & thumbnail_url if it exists from bucket
         if dream.photo_url:
-            try:
-                # name object from 'photo_url'
-                old_photo_url_key = "/".join(str(dream.photo_url).split("/")[-2:])
-                s3_client.delete_object(Bucket=BUCKET_NAME, Key=old_photo_url_key)
-
-                old_photo_url_key = "mini-" + old_photo_url_key  #   miniature of photo
-                s3_client.delete_object(Bucket=BUCKET_NAME, Key=old_photo_url_key)
-
-            except Exception as e:
-                return Response(
-                    {"error": f"Deleting error: {str(e)}"},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
+            delete_image_from_storage(dream.photo_url)
 
         # upload new photo
         file = request.FILES.get("photo")
-        other_copy_file = copy.deepcopy(file)  # use other_copy_file for create miniature
 
         if not file:
             return Response(
@@ -182,38 +171,8 @@ class DreamViewSet(
                 {"error": "Uploaded file is empty."}, status=status.HTTP_400_BAD_REQUEST
             )
 
-        try:
-            file_copy_into = io.BytesIO(file.read())
-            file_copy_into.seek(0)  # copy for original file
-
-            # upload original into S3
-            object_name = get_file_name("dreams", dream.id, file.name)
-            s3_client.upload_fileobj(file_copy_into, BUCKET_NAME, object_name)
-
-            # create miniature
-            mini_buffer = io.BytesIO()
-            image = Image.open(other_copy_file)  # using other copy
-            image.thumbnail((int(RESIZE_PHOTO_DREAM), int(RESIZE_PHOTO_DREAM)))
-            image.save(mini_buffer, format="JPEG")
-            mini_buffer.seek(0)
-
-            # upload miniature into S3
-            mini_object_name = "mini-" + object_name
-            s3_client.upload_fileobj(mini_buffer, BUCKET_NAME, mini_object_name)
-
-            #  save url to dream
-            dream.photo_url = (
-                f"{STORAGE_HOST}:{STORAGE_PORT}/{BUCKET_NAME}/{object_name}"
-            )
-            dream.thumbnail_url = (
-                f"{STORAGE_HOST}:{STORAGE_PORT}/{BUCKET_NAME}/{mini_object_name}"
-            )
-            dream.save()
-
-        except Exception as e:
-            return Response(
-                {"error": f"Saving error: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST
-            )
+        # create miniature, upload original & miniature to s3 storage
+        upload_image_and_miniature_to_storage(file, dream, "dreams", "photo_url")
 
         return Response(
             {
