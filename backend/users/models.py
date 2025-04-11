@@ -132,3 +132,7 @@ class DreamerProfile(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.city.name}) - {self.phone_number}"
+
+
+class Subscriber(models.Model):
+    email = models.EmailField(unique=True)

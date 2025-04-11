@@ -12,7 +12,7 @@ from rest_framework.settings import api_settings
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 
-from users.models import User, ActivationToken, UserProfile
+from users.models import User, ActivationToken, UserProfile, Subscriber
 
 from rest_framework.permissions import IsAuthenticated
 
@@ -21,6 +21,7 @@ from users.serializers import (
     UserUpdateSerializer,
     UserProfileCreateSerializer,
     UserProfileSerializer,
+    SubscriberSerializer,
 )
 
 
@@ -80,3 +81,10 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
         if self.request.method in ("POST", "PUT"):  # or "PUT", is update()
             return UserProfileCreateSerializer
         return UserProfileSerializer
+
+
+class SubscriberView(
+    generics.CreateAPIView, generics.ListAPIView, generics.DestroyAPIView
+):
+    serializer_class = SubscriberSerializer
+    queryset = Subscriber.objects.all()

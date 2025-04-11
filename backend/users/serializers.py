@@ -6,7 +6,14 @@ from rest_framework import serializers, request
 from app import settings
 from app.settings import DOMAIN, API_PREF
 
-from users.models import ActivationToken, DreamerProfile, Country, City, UserProfile
+from users.models import (
+    ActivationToken,
+    DreamerProfile,
+    Country,
+    City,
+    UserProfile,
+    Subscriber,
+)
 from utils.email import send_email_with_template
 
 
@@ -263,3 +270,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "is_collective",
             "created_at",
         )
+
+
+class SubscriberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscriber
+        fields = ("id", "email")

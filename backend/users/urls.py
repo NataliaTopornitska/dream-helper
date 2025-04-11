@@ -7,6 +7,7 @@ from users.views import (
     ManageUserView,
     LogoutUserView,
     UserProfileView,
+    SubscriberView,
 )
 
 
@@ -20,4 +21,5 @@ urlpatterns = [
     path("me/", ManageUserView.as_view(), name="manage"),
     path("logout/", LogoutUserView.as_view(), name="logout"),
     path("profile/", UserProfileView.as_view(), name="profile"),
+    path("subscribers/", SubscriberView.as_view(), name="subscribers"),
 ]

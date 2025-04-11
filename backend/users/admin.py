@@ -2,7 +2,15 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.utils.translation import gettext as _
 
-from .models import User, DreamerProfile, UserProfile, ActivationToken, Country, City
+from .models import (
+    User,
+    DreamerProfile,
+    UserProfile,
+    ActivationToken,
+    Country,
+    City,
+    Subscriber,
+)
 
 
 @admin.register(User)
@@ -34,8 +42,12 @@ class UserAdmin(DjangoUserAdmin):
             },
         ),
     )
-    list_display = ("email", "is_staff", "is_active", )
-    search_fields = ("email", )
+    list_display = (
+        "email",
+        "is_staff",
+        "is_active",
+    )
+    search_fields = ("email",)
     ordering = ("email",)
 
 
@@ -45,3 +57,4 @@ admin.site.register(Country)
 admin.site.register(City)
 admin.site.register(UserProfile)
 admin.site.register(DreamerProfile)
+admin.site.register(Subscriber)
