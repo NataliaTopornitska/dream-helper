@@ -3,6 +3,7 @@ from django.template.context_processors import request
 from rest_framework import serializers
 
 from dreams.models import Category, Comment, Dream
+from rest_framework.fields import ImageField
 
 from users.models import DreamerProfile
 from users.serializers import DreamerProfileCreateSerializer
@@ -28,6 +29,8 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class DreamBaseSerializer(serializers.ModelSerializer):
+    photo_url = serializers.URLField(read_only=True)
+    thumbnail_url = serializers.URLField(read_only=True)
     number_donations = serializers.SerializerMethodField()  # count donations
     total_amount_donations = serializers.SerializerMethodField()  #  total amount
     number_comments = serializers.SerializerMethodField()
@@ -43,7 +46,8 @@ class DreamBaseSerializer(serializers.ModelSerializer):
             "categories",
             "content",
             "goal",
-            "photo",
+            "photo_url",
+            "thumbnail_url",
             "status",
             "created_at",
             "number_donations",
@@ -132,3 +136,11 @@ class DreamCreateSerializer(DreamBaseSerializer):
 
 class RandomDreamsSerializer(DreamBaseSerializer):
     pass
+
+
+class DreamPhotoSerializer(serializers.ModelSerializer):
+    photo = ImageField()
+
+    class Meta:
+        model = Dream
+        fields = ("id", "photo")

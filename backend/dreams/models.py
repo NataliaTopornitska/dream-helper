@@ -50,7 +50,7 @@ class Dream(models.Model):
     content = models.TextField(blank=False, null=False)
     goal = models.DecimalField(decimal_places=2, max_digits=10, default=0)
     photo_url = models.URLField(null=True, blank=True)
-    thumbnail_url = models.URLField(null=True, blank=True)     # miniature
+    thumbnail_url = models.URLField(null=True, blank=True)  # miniature
     donations = models.ManyToManyField(
         "Donation", related_name="dreams", blank=True, default=[]
     )
