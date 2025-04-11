@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework.authtoken",
+    "easy_thumbnails",
     "users",
     "dreams",
 ]
@@ -143,12 +144,23 @@ REST_FRAMEWORK = {
     ]
 }
 
-
+# for Web
 DOMAIN = os.getenv("DOMAIN")
 API_PREF = os.getenv("API_PREF")
 RANDOM_DREAMS_HOME = os.getenv("RANDOM_DREAMS_HOME")
 
+
+# email MailHog
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
 # EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
 EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_PORT = os.getenv("EMAIL_PORT")
+
+
+#  S3 storage
+STORAGE_ACCESS_KEY = os.getenv("STORAGE_ACCESS_KEY")
+STORAGE_SECRET_KEY = os.getenv("STORAGE_SECRET_KEY")
+STORAGE_HOST = os.getenv("STORAGE_HOST")
+STORAGE_PORT = os.getenv("STORAGE_PORT")
+BUCKET_NAME = os.getenv("BUCKET_NAME")
+RESIZE_PHOTO_DREAM = os.getenv("RESIZE_PHOTO_DREAM")
