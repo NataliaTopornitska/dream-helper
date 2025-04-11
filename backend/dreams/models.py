@@ -4,6 +4,8 @@ from users.models import User
 
 from users.models import DreamerProfile
 
+from app.settings import RESIZE_PHOTO_DREAM
+
 
 class Category(models.Model):
     name = models.CharField(max_length=65, unique=True)
@@ -47,7 +49,8 @@ class Dream(models.Model):
     )
     content = models.TextField(blank=False, null=False)
     goal = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    photo = models.URLField(null=True, blank=True)
+    photo_url = models.URLField(null=True, blank=True)
+    thumbnail_url = models.URLField(null=True, blank=True)     # miniature
     donations = models.ManyToManyField(
         "Donation", related_name="dreams", blank=True, default=[]
     )
