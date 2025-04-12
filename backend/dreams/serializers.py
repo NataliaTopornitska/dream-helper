@@ -56,13 +56,16 @@ class DreamBaseSerializer(serializers.ModelSerializer):
         )
 
     def get_number_donations(self, obj):
-        return obj.donations.count()  # donations - related_name
+        return obj.donations.filter(status="Paid").count()  # donations - related_name
 
     def get_number_comments(self, obj):
         return obj.comments.count()  # comments - related_name
 
     def get_total_amount_donations(self, obj):
-        return obj.donations.aggregate(total=Sum("amount"))["total"] or 0
+        return (
+            obj.donations.filter(status="Paid").aggregate(total=Sum("amount"))["total"]
+            or 0
+        )
 
 
 class DreamCreateSerializer(DreamBaseSerializer):
@@ -152,6 +155,7 @@ class AddDonationSerializer(serializers.ModelSerializer):
         (30, "30"),
     ]
 
+    dream = serializers.CharField(read_only=True)
     amount = serializers.ChoiceField(choices=AMOUNT_CHOICES)
     your_amount = serializers.FloatField(required=False, default=0)
     is_anonymous = serializers.BooleanField(required=False, default=False)
@@ -173,14 +177,15 @@ class AddDonationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("For donation: amount is required.")
         return data
 
-    # def create(self, validated_data):
-    #     print(f'{self.context["request"]=}')
-    #     user = self.context["request"].user
-    #     if user != AnonymousUser and user.is_authenticated:
-    #         validated_data["donator"] = user
-    #     else:
-    #         validated_data["donator"] = None  # anonymous
-    #     return super().create(validated_data)
+    def create(self, validated_data):
+        print(f'{self.context["request"]=}')
+        user = self.context["request"].user
+        if user.is_authenticated:
+            validated_data["donator"] = user
+        else:
+            validated_data["donator"] = None
+            validated_data["is_anonymous"] = True  # anonymous
+        return super().create(validated_data)
 
 
 class DonationSerializer(serializers.ModelSerializer):
