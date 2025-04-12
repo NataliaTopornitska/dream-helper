@@ -273,6 +273,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class SubscriberSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(read_only=True)
+
     class Meta:
         model = Subscriber
-        fields = ("id", "email")
+        fields = ("id", "email", "is_active")

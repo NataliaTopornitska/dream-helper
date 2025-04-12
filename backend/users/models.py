@@ -136,3 +136,10 @@ class DreamerProfile(models.Model):
 
 class Subscriber(models.Model):
     email = models.EmailField(unique=True)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["email"]
+
+    def __str__(self) -> str:
+        return self.email

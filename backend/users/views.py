@@ -1,8 +1,5 @@
-from django.contrib.auth import get_user_model
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.http import HttpResponse
-from rest_framework import generics
+from rest_framework import generics, mixins
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -11,10 +8,11 @@ from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
+from rest_framework.viewsets import GenericViewSet
 
 from users.models import User, ActivationToken, UserProfile, Subscriber
 
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from users.serializers import (
     UserSerializer,
@@ -84,7 +82,11 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
 
 
 class SubscriberView(
-    generics.CreateAPIView, generics.ListAPIView, generics.DestroyAPIView
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    GenericViewSet,
 ):
-    serializer_class = SubscriberSerializer
     queryset = Subscriber.objects.all()
+    serializer_class = SubscriberSerializer
+    permission_classes = (IsAdminUser,)
