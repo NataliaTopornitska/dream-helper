@@ -1,8 +1,7 @@
 from django.db.models import Sum
-from django.template.context_processors import request
 from rest_framework import serializers
 
-from dreams.models import Category, Comment, Dream
+from dreams.models import Category, Comment, Dream, Donation
 from rest_framework.fields import ImageField
 
 from users.models import DreamerProfile
@@ -144,3 +143,56 @@ class DreamPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dream
         fields = ("id", "photo")
+
+
+class AddDonationSerializer(serializers.ModelSerializer):
+    AMOUNT_CHOICES = [
+        (5, "5"),
+        (15, "15"),
+        (30, "30"),
+    ]
+
+    amount = serializers.ChoiceField(choices=AMOUNT_CHOICES)
+    your_amount = serializers.FloatField(required=False, default=0)
+    is_anonymous = serializers.BooleanField(required=False, default=False)
+
+    class Meta:
+        model = Donation
+        fields = (
+            "dream",
+            "amount",
+            "your_amount",
+            "is_anonymous",
+        )
+
+    def validate(self, data):
+        # if your_amount: ignore amount
+        if data.get("your_amount", 0) > 0:
+            data["amount"] = None
+        elif not data.get("amount"):
+            raise serializers.ValidationError("For donation: amount is required.")
+        return data
+
+    # def create(self, validated_data):
+    #     print(f'{self.context["request"]=}')
+    #     user = self.context["request"].user
+    #     if user != AnonymousUser and user.is_authenticated:
+    #         validated_data["donator"] = user
+    #     else:
+    #         validated_data["donator"] = None  # anonymous
+    #     return super().create(validated_data)
+
+
+class DonationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Donation
+        fields = (
+            "id",
+            "donator",
+            "dream",
+            "amount",
+            "status",
+            "is_anonymous",
+            "date",
+            "url_payment",
+        )

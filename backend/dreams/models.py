@@ -21,7 +21,9 @@ class Category(models.Model):
 
 class Comment(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    dream = models.ForeignKey("Dream", on_delete=models.CASCADE)
+    dream = models.ForeignKey(
+        "Dream", on_delete=models.CASCADE, related_name="comments"
+    )
     content = models.TextField(blank=False, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -51,9 +53,6 @@ class Dream(models.Model):
     goal = models.DecimalField(decimal_places=2, max_digits=10, default=0)
     photo_url = models.URLField(null=True, blank=True)
     thumbnail_url = models.URLField(null=True, blank=True)  # miniature
-    donations = models.ManyToManyField(
-        "Donation", related_name="dreams", blank=True, default=[]
-    )
     status = models.CharField(
         max_length=12, choices=STATUS_DREAM, default="Application"
     )
@@ -62,10 +61,9 @@ class Dream(models.Model):
     stripe_product_id = models.CharField(
         max_length=255, null=True, blank=True, default=None
     )
-    comments = models.ManyToManyField(
-        Comment, related_name="dreams", blank=True, default=[]
-    )
     number_views = models.IntegerField(default=0)
+    #  dream.donations.all()  -   get donations of dream
+    # dream.comments.all()  -   get comments of dream
 
     class Meta:
         ordering = ["-created_at"]
@@ -80,17 +78,22 @@ class Donation(models.Model):
         ("Paid", "Paid"),
         ("Canceled", "Canceled"),
     )
+    dream = models.ForeignKey(Dream, on_delete=models.CASCADE, related_name="donations")
     donator = models.ForeignKey(
-        User, on_delete=models.CASCADE, blank=True, null=True
+        User, on_delete=models.CASCADE, blank=True, null=True, related_name="donations"
     )  # may be anonymouse donation
-    dream = models.ForeignKey(
-        Dream, on_delete=models.CASCADE, related_name="donations_set"
-    )
     amount = models.DecimalField(decimal_places=2, max_digits=10)
     status = models.CharField(max_length=8, choices=STATUS_DONATION, default="Pending")
     url_payment = models.URLField(max_length=400, null=True, blank=True)
-    is_anonymous = models.BooleanField(default=False)
+    is_anonymous = models.BooleanField(
+        default=False
+    )  # if Auth user do anonymous donation
     date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["dream"]),
+        ]
 
     def __str__(self):
         return self.date.strftime("%Y-%m-%d %H:%M") + " - " + str(self.amount)
