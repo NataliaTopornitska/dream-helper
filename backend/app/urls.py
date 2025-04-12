@@ -20,8 +20,14 @@ from django.urls import path, include
 
 from app.settings import API_PREF
 
+from dreams.views import stripe_webhook
+from utils.stripe import CancelView, SuccessView
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path(f"{API_PREF}/users/", include("users.urls", namespace="users")),
     path(f"{API_PREF}/dreamhelper/", include("dreams.urls", namespace="dreams")),
+    path("api/v1/cancel/", CancelView.as_view(), name="cancel"),
+    path("api/v1/success/", SuccessView.as_view(), name="success"),
+    path("api/v1/webhook/", stripe_webhook, name="stripe-webhook"),
 ]
