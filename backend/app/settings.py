@@ -33,8 +33,8 @@ DEBUG = os.getenv("DEBUG")
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
+    "host.docker.internal",  # for Docker
 ]
-
 
 # Application definition
 
@@ -164,3 +164,9 @@ STORAGE_HOST = os.getenv("STORAGE_HOST")
 STORAGE_PORT = os.getenv("STORAGE_PORT")
 BUCKET_NAME = os.getenv("BUCKET_NAME")
 RESIZE_PHOTO_DREAM = os.getenv("RESIZE_PHOTO_DREAM")
+
+
+#  Stripe
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY")
+STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
