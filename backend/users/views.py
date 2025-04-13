@@ -20,6 +20,7 @@ from users.serializers import (
     UserProfileCreateSerializer,
     UserProfileSerializer,
     SubscriberSerializer,
+    SubscriberCreateSerializer,
 )
 
 
@@ -82,6 +83,7 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
 
 
 class SubscriberView(
+    mixins.CreateModelMixin,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
@@ -90,3 +92,19 @@ class SubscriberView(
     queryset = Subscriber.objects.all()
     serializer_class = SubscriberSerializer
     permission_classes = (IsAdminUser,)
+
+    def get_permission_class(self):
+        if self.action in (
+            "update",
+            "partial_update",
+        ):
+            return (IsAdminUser,)
+        return self.permission_classes
+
+    def get_serializer_class(self):
+        if self.action in (
+            "create",
+            "get",
+        ):
+            return SubscriberCreateSerializer
+        return self.serializer_class

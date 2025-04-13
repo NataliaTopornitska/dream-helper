@@ -109,7 +109,8 @@ class UserProfile(models.Model):
     direction = models.CharField(max_length=150, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_collective = models.BooleanField(default=False)
-    avatar = models.URLField(null=True, blank=True)  # save in Storage
+    avatar_url = models.URLField(null=True, blank=True)  # save in Storage
+    thumbnail_url = models.URLField(null=True, blank=True)  # miniature
 
     class Meta:
         ordering = ["-created_at"]

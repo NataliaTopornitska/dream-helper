@@ -398,13 +398,6 @@ def stripe_webhook(request):
     return HttpResponse(status=200)
 
 
-# class DonationViewSet()
-#     from django.db.models import Sum
-# action: total amount
-#     total_donations = Donation.objects.filter(status="Paid").aggregate(Sum("amount"))["amount__sum"]
-#     total_donations = total_donations or 0
-
-
 class DonationViewSet(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,

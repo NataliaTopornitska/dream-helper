@@ -278,3 +278,13 @@ class SubscriberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscriber
         fields = ("id", "email", "is_active")
+
+
+class SubscriberCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Subscriber
+        fields = (
+            "id",
+            "email",
+        )
