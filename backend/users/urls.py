@@ -9,12 +9,14 @@ from users.views import (
     LogoutUserView,
     UserProfileView,
     SubscriberView,
+    DreamerProfileView,
 )
 
 app_name = "users"
 
 router = DefaultRouter()
 router.register(r"subscribers", SubscriberView, basename="subscribers")
+router.register(r"dreamers", DreamerProfileView, basename="dreamers")
 
 urlpatterns = [
     path("register/", CreateUserView.as_view(), name="create"),

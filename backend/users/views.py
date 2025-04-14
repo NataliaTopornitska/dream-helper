@@ -10,9 +10,9 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
-from users.models import User, ActivationToken, UserProfile, Subscriber
+from users.models import User, ActivationToken, UserProfile, DreamerProfile, Subscriber
 
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 
 from users.serializers import (
     UserSerializer,
@@ -21,6 +21,8 @@ from users.serializers import (
     UserProfileSerializer,
     SubscriberSerializer,
     SubscriberCreateSerializer,
+    DreamerProfileSerializer,
+    DreamerProfileCreateSerializer,
 )
 
 
@@ -91,20 +93,41 @@ class SubscriberView(
 ):
     queryset = Subscriber.objects.all()
     serializer_class = SubscriberSerializer
-    permission_classes = (IsAdminUser,)
+    permission_classes = [
+        IsAdminUser,
+    ]
 
-    def get_permission_class(self):
-        if self.action in (
-            "update",
-            "partial_update",
-        ):
-            return (IsAdminUser,)
-        return self.permission_classes
+    def get_permissions(self):
+        if self.action in [
+            "create",
+        ]:
+            return [AllowAny()]
+        return [IsAdminUser()]
 
     def get_serializer_class(self):
-        if self.action in (
-            "create",
-            "get",
-        ):
+        if self.action in ("create",):
             return SubscriberCreateSerializer
+        return self.serializer_class
+
+
+class DreamerProfileView(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    GenericViewSet,
+):
+    queryset = DreamerProfile.objects.all()
+    serializer_class = DreamerProfileSerializer
+    permission_classes = [
+        IsAdminUser,
+    ]
+
+    def get_serializer_class(self):
+        if self.action in [
+            "create",
+            "update",
+            "partial_update",
+        ]:
+            return DreamerProfileCreateSerializer
         return self.serializer_class
