@@ -116,7 +116,10 @@ class UserProfile(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self) -> str:
-        return f"{self.name} ({self.city.name}) - {self.phone_number}"
+        name = self.name if self.name else "No Name"
+        city = self.city.name if self.city else "No City"
+        phone = self.phone_number if self.phone_number else "No Phone"
+        return f"{name} ({city}) - {phone}"
 
 
 class DreamerProfile(models.Model):

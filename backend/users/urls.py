@@ -10,6 +10,7 @@ from users.views import (
     UserProfileView,
     SubscriberView,
     DreamerProfileView,
+    UploadAvatarView,
 )
 
 app_name = "users"
@@ -25,6 +26,7 @@ urlpatterns = [
     path("me/", ManageUserView.as_view(), name="manage"),
     path("logout/", LogoutUserView.as_view(), name="logout"),
     path("profile/", UserProfileView.as_view(), name="profile"),
+    path("profile/upload_avatar/", UploadAvatarView.as_view(), name="upload_avatar"),
 ]
 
 urlpatterns += router.urls

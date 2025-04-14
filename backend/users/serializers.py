@@ -5,6 +5,7 @@ from rest_framework import serializers, request
 
 from app import settings
 from app.settings import DOMAIN, API_PREF
+from rest_framework.fields import ImageField
 
 from users.models import (
     ActivationToken,
@@ -51,7 +52,7 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
         send_email_with_template(
-            subject="Activate Your Account",
+            subject="🎉 Welcome to DreamHelper! Activate Your Account",
             template_name=os.path.join(
                 settings.BASE_DIR,
                 "templates",
@@ -269,6 +270,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "is_collective",
             "created_at",
         )
+
+
+class UserProfileAvatarSerializer(serializers.ModelSerializer):
+    photo_avatar = ImageField()
+
+    class Meta:
+        model = UserProfile
+        fields = ("id", "photo_avatar")
 
 
 class SubscriberSerializer(serializers.ModelSerializer):
