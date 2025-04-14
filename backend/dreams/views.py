@@ -97,7 +97,7 @@ class DreamViewSet(
         }
 
         send_email_with_template(
-            subject="Your request for Dream fulfillment has been received",
+            subject="✨ Your Dream Has Been Added to DreamsHelper!",
             template_name=os.path.join(
                 settings.BASE_DIR,
                 "templates",
@@ -166,7 +166,6 @@ class DreamViewSet(
     )
     def upload_dream_photo(self, request, pk=None):
         dream = self.get_object()
-        # s3_client = get_s3_client()
 
         # Delete old photo_url & thumbnail_url if it exists from bucket
         if dream.photo_url:
