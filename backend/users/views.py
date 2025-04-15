@@ -1,9 +1,8 @@
 from django.http import HttpResponse
-from rest_framework import generics, mixins, status, viewsets
+from rest_framework import generics, mixins, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
@@ -32,9 +31,12 @@ from utils.storage import (
     upload_image_and_miniature_to_storage,
 )
 
+from app.settings import RESIZE_PHOTO_AVATAR
+
 
 class CreateUserView(generics.CreateAPIView):
     serializer_class = UserSerializer
+    permission_classes = (AllowAny,)
 
 
 def activate_user(request, pk, activationtoken):
@@ -83,6 +85,13 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_object(self):
+        if not self.request.user.is_active:
+            return Response(
+                {
+                    "error": "We are very sorry, but your account is not activated. First you need to activate the link from the letter you received to your email."
+                },
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
         return self.request.user.userprofile
 
     def get_serializer_class(self):
@@ -96,6 +105,13 @@ class UploadAvatarView(APIView):
     serializer_class = UserProfileAvatarSerializer
 
     def get_object(self):
+        if not self.request.user.is_active:
+            return Response(
+                {
+                    "error": "We are very sorry, but your account is not activated. First you need to activate the link from the letter you received to your email."
+                },
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
         return self.request.user.userprofile
 
     def post(self, request):
@@ -126,7 +142,14 @@ class UploadAvatarView(APIView):
             )
 
         # create miniature, upload original & miniature to s3 storage
-        upload_image_and_miniature_to_storage(file, profile, "avatars", "avatar_url")
+        upload_image_and_miniature_to_storage(
+            file,
+            profile,
+            "avatars",
+            "avatar_url",
+            int(RESIZE_PHOTO_AVATAR),
+            int(RESIZE_PHOTO_AVATAR),
+        )
 
         return Response(
             {

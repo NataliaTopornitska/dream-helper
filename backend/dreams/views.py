@@ -9,7 +9,7 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import mixins, status
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
@@ -23,6 +23,7 @@ from dreams.serializers import (
     DreamPhotoSerializer,
     AddDonationSerializer,
     DonationSerializer,
+    DreamUpdateSerializer,
 )
 
 from utils.email import send_email_with_template
@@ -41,7 +42,8 @@ from app.settings import (
     BUCKET_NAME,
     STORAGE_HOST,
     STORAGE_PORT,
-    RESIZE_PHOTO_DREAM,
+    RESIZE_PHOTO_DREAM_WIDTH,
+    RESIZE_PHOTO_DREAM_HEIGHT,
     DOMAIN,
     STRIPE_WEBHOOK_SECRET,
     DEFAULT_FROM_EMAIL,
@@ -77,6 +79,17 @@ class DreamViewSet(
 ):
     queryset = Dream.objects.all()
     serializer_class = DreamBaseSerializer
+    permission_classes = [IsAuthenticated()]
+
+    def get_permissions(self):
+        if self.action in (
+            "update",
+            "partial_update",
+        ):  # update only Admin
+            return [IsAdminUser()]
+        if self.action in ("create", "upload_dream_photo"):  # create only AuthUser
+            return [IsAuthenticated()]
+        return [AllowAny()]
 
     def retrieve(self, request, *args, **kwargs):
         # every time, if watch detail of Dream, number_views +1
@@ -89,10 +102,20 @@ class DreamViewSet(
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
 
+        user = request.user
+
+        if not user.is_active:
+            return Response(
+                {
+                    "error": "We are very sorry, but your account is not activated. First you need to activate the link from the letter you received to your email."
+                },
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+
         dream = self.serializer_class.Meta.model.objects.get(pk=response.data["id"])
 
         context = {
-            "owner": request.user,
+            "owner": user,
             "application": dream.title,
         }
 
@@ -115,28 +138,21 @@ class DreamViewSet(
         return response
 
     def get_serializer_class(self):
-        if self.action == "list":
-            return DreamBaseSerializer
-        if self.action == "retrieve":
-            return DreamBaseSerializer
+        # if self.action == "list":
+        #     return DreamBaseSerializer
+        # if self.action == "retrieve":
+        #     return DreamBaseSerializer
         if self.action == "create":
             return DreamCreateSerializer
         if self.action == "get_random_dreams":
             return RandomDreamsSerializer
         if self.action == "upload_dream_photo":
             return DreamPhotoSerializer
-        # if self.action == "update":
-        #     return DreamUpdateSerializer
+        if self.action in ("update", "partial_update"):
+            return DreamUpdateSerializer
         if self.action == "make_donation":
             return AddDonationSerializer
         return DreamBaseSerializer
-
-        # def get_permissions(self):
-        #     if self.action == "create":  # create only AuthUser
-        #         return (IsAuthenticated,)
-        #     if self.action == "update":  # update only Admin
-        #         return (IsAdminUser,)
-        #     return super().get_permissions()
 
     @action(
         methods=["get"],
@@ -161,7 +177,7 @@ class DreamViewSet(
     @action(
         methods=["post"],
         detail=True,
-        permission_classes=(IsAuthenticated,),
+        permission_classes=[IsAuthenticated],
         url_path="upload_dream_photo",
     )
     def upload_dream_photo(self, request, pk=None):
@@ -193,7 +209,14 @@ class DreamViewSet(
             )
 
         # create miniature, upload original & miniature to s3 storage
-        upload_image_and_miniature_to_storage(file, dream, "dreams", "photo_url")
+        upload_image_and_miniature_to_storage(
+            file,
+            dream,
+            "dreams",
+            "photo_url",
+            int(RESIZE_PHOTO_DREAM_WIDTH),
+            int(RESIZE_PHOTO_DREAM_HEIGHT),
+        )
 
         return Response(
             {

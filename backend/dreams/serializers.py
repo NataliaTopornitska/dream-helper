@@ -5,7 +5,7 @@ from dreams.models import Category, Comment, Dream, Donation
 from rest_framework.fields import ImageField
 
 from users.models import DreamerProfile
-from users.serializers import DreamerProfileCreateSerializer
+from users.serializers import DreamerProfileCreateSerializer, DreamerProfileSerializer
 
 from users.models import Country, City
 
@@ -91,14 +91,11 @@ class DreamCreateSerializer(DreamBaseSerializer):
         # get data Dreamer
         try:
             dreamer = None
-            dreamer_data = validated_data.pop("dreamer", None)
-            print(f"{dreamer_data=}")
             to_another = validated_data.get("to_another")
-
-            if not to_another:
+            if to_another is False:
                 validated_data.pop("dreamer", None)
-
-            if to_another:
+            else:
+                dreamer_data = validated_data.pop("dreamer", None)
                 # create Dreamer if dreamer_data
                 if dreamer_data and any(dreamer_data.values()):  # check that not empty
 
@@ -146,6 +143,45 @@ class DreamPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dream
         fields = ("id", "photo")
+
+
+class DreamUpdateSerializer(serializers.ModelSerializer):
+    new_category = serializers.CharField(required=False, allow_blank=True)
+
+    class Meta:
+        model = Dream
+        fields = (
+            "id",
+            "owner",
+            "to_another",
+            "dreamer",
+            "title",
+            "categories",
+            "new_category",
+            "content",
+            "created_at",
+            "goal",
+            "status",
+        )
+
+    def update(self, instance, validated_data):
+
+        new_category = validated_data.pop("new_category", None)
+
+        # Update categories
+        categories_data = validated_data.pop("categories", None)
+        if new_category:
+            new_category, _ = Category.objects.get_or_create(name=new_category.title())
+            categories_data.append(new_category)
+        if categories_data:
+            instance.categories.set(categories_data)  # update relationships
+
+        # Update another fields
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+        return instance
 
 
 class AddDonationSerializer(serializers.ModelSerializer):
