@@ -4,8 +4,6 @@ from users.models import User
 
 from users.models import DreamerProfile
 
-from app.settings import RESIZE_PHOTO_DREAM
-
 
 class Category(models.Model):
     name = models.CharField(max_length=65, unique=True)

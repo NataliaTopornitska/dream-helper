@@ -141,7 +141,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
-    ]
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
 }
 
 # for Web
@@ -164,8 +167,9 @@ STORAGE_SECRET_KEY = os.getenv("STORAGE_SECRET_KEY")
 STORAGE_HOST = os.getenv("STORAGE_HOST")
 STORAGE_PORT = os.getenv("STORAGE_PORT")
 BUCKET_NAME = os.getenv("BUCKET_NAME")
-RESIZE_PHOTO_DREAM = os.getenv("RESIZE_PHOTO_DREAM")
-
+RESIZE_PHOTO_DREAM_WIDTH = os.getenv("RESIZE_PHOTO_DREAM_WIDTH")
+RESIZE_PHOTO_DREAM_HEIGHT = os.getenv("RESIZE_PHOTO_DREAM_HEIGHT")
+RESIZE_PHOTO_AVATAR = os.getenv("RESIZE_PHOTO_AVATAR")
 
 #  Stripe
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")

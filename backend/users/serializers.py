@@ -1,7 +1,7 @@
 import os
 
 from django.contrib.auth import get_user_model
-from rest_framework import serializers, request
+from rest_framework import serializers
 
 from app import settings
 from app.settings import DOMAIN, API_PREF
@@ -186,11 +186,11 @@ class DreamerProfileCreateSerializer(serializers.ModelSerializer):
 
 class UserProfileCreateSerializer(serializers.ModelSerializer):
     country = serializers.PrimaryKeyRelatedField(
-        queryset=Country.objects.all(), required=False
+        queryset=Country.objects.all(), required=False, allow_null=True, default=None
     )
     other_country = serializers.CharField(required=False, allow_blank=True)
     city = serializers.PrimaryKeyRelatedField(
-        queryset=City.objects.all(), required=False
+        queryset=City.objects.all(), required=False, allow_null=True, default=None
     )
     other_city = serializers.CharField(required=False, allow_blank=True)
 
@@ -269,6 +269,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "direction",
             "is_collective",
             "created_at",
+            "avatar_url",
+            "thumbnail_url",
         )
 
 
@@ -315,13 +317,16 @@ class DreamerProfileSerializer(serializers.ModelSerializer):
 
 class DreamerProfileCreateSerializer(serializers.ModelSerializer):
     country = serializers.PrimaryKeyRelatedField(
-        queryset=Country.objects.all(), required=False
+        queryset=Country.objects.all(), required=False, allow_null=True, default=None
     )
     other_country = serializers.CharField(required=False, allow_blank=True)
     city = serializers.PrimaryKeyRelatedField(
-        queryset=City.objects.all(), required=False
+        queryset=City.objects.all(), required=False, allow_null=True, default=None
     )
     other_city = serializers.CharField(required=False, allow_blank=True)
+    name = serializers.CharField(required=False, allow_blank=True)
+    phone_number = serializers.CharField(required=False, allow_blank=True)
+    direction = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = DreamerProfile

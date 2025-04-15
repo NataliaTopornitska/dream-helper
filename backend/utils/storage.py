@@ -12,7 +12,6 @@ from app.settings import (
     STORAGE_ACCESS_KEY,
     STORAGE_SECRET_KEY,
     BUCKET_NAME,
-    RESIZE_PHOTO_DREAM,
 )
 from rest_framework import status
 from rest_framework.response import Response
@@ -75,7 +74,12 @@ def delete_image_from_storage(url_image: str):
 
 
 def upload_image_and_miniature_to_storage(
-    file, instance, catalog: str, field_name: str
+    file,
+    instance,
+    catalog: str,
+    field_name: str,
+    width_thumbnail: int,
+    height_thumbnail: int,
 ):
     """
     automatically save origin of image to "/catalog/ID-uuid-name_file"  & miniature to "/mini-catalog/ID-uuid-name_file
@@ -100,7 +104,7 @@ def upload_image_and_miniature_to_storage(
         # create miniature
         mini_buffer = io.BytesIO()
         image = Image.open(other_copy_file)  # using other copy
-        image.thumbnail((int(RESIZE_PHOTO_DREAM), int(RESIZE_PHOTO_DREAM)))
+        image.thumbnail((width_thumbnail, height_thumbnail))
         image.save(mini_buffer, format="JPEG")
         mini_buffer.seek(0)
 
