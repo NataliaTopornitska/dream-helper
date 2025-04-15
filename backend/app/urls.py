@@ -21,6 +21,7 @@ from django.urls import path, include
 from app.settings import API_PREF
 
 from dreams.views import stripe_webhook
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from utils.stripe import CancelView, SuccessView
 
 urlpatterns = [
@@ -30,4 +31,10 @@ urlpatterns = [
     path("api/v1/cancel/", CancelView.as_view(), name="cancel"),
     path("api/v1/success/", SuccessView.as_view(), name="success"),
     path("api/v1/webhook/", stripe_webhook, name="stripe-webhook"),
+    path("api/v1/schema/", SpectacularAPIView.as_view(), name="schema"),
+    path(
+        "api/v1/doc/swagger/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
 ]
