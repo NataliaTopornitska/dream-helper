@@ -81,6 +81,13 @@ class DreamViewSet(
     serializer_class = DreamBaseSerializer
     permission_classes = [IsAuthenticated()]
 
+    def get_queryset(self):
+        queryset = self.queryset
+        # only admins can see all of dreams
+        if self.action == "list" and not self.request.user.is_staff:
+            queryset = queryset.filter(status__in=["Active", "Completed"])
+        return queryset
+
     def get_permissions(self):
         if self.action in (
             "update",

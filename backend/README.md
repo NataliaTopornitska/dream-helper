@@ -1,3 +1,13 @@
+# What the backend uses:
+ * `pip install pillow`
+ * `pip install easy-thumbnails`
+ * `pip install django-rest-framework`
+ * `pip install boto3`
+ * `pip install python-dotenv`
+ * `pip install stripe`
+ * `pip install psycopg2`   # (for PostgreSQL)
+
+
 # How to run? 
  * python backend/manage.py runserver 
  * docker run --name mailhog -p 1025:1025 -p 8025:8025 mailhog/mailhog 
@@ -9,5 +19,5 @@
 !!! set up Anonymous access in MinIO Storage 
 
 
-# Run a project with simple commandRun a project with simple command
+# Run a project with simple command:
  * backend:  `docker-compose up -d --build`
