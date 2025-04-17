@@ -359,7 +359,7 @@ def stripe_webhook(request):
             }
 
             send_email_with_template(
-                subject="Confirmation of Your Donation",
+                subject="🎁 Confirmation of Your Donation",
                 template_name=os.path.join(
                     settings.BASE_DIR,
                     "templates",
@@ -395,7 +395,7 @@ def stripe_webhook(request):
             }
 
             send_email_with_template(
-                subject=f"Your Dream '{dream.title}' Has Been Completed!",
+                subject=f"💰 Your Dream '{dream.title}' Has Been Fully Funded! 🎉",
                 template_name=os.path.join(
                     settings.BASE_DIR,
                     "templates",
@@ -432,6 +432,7 @@ class DonationViewSet(
 
 
 class DreamStatisticsView(APIView):
+    permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
         total_dreams = Dream.objects.count()

@@ -39,7 +39,7 @@ class Dream(models.Model):
         ("Completed", "Completed"),
     )
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=45)
     to_another = models.BooleanField(default=False)
     dreamer = models.ForeignKey(
         DreamerProfile, on_delete=models.CASCADE, blank=True, null=True

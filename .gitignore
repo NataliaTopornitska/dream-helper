@@ -1,12 +1,3 @@
-.venv
-.DS_Store
-**__pycache__
-.idea
-backend/db.sqlite3
-media
-.env
-backend/venv/
-db.sqlite3
 .idea
 .vscode
 build
@@ -22,5 +13,11 @@ raw_reports
 reports
 cypress/screenshots
 cypress/videos
-
+backend/db.sqlite3
+media
+.env
+backend/venv/
+.venv/
+db.sqlite3
 .vite
+__pycache__/

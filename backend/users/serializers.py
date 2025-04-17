@@ -115,7 +115,7 @@ class CitySerializer(serializers.ModelSerializer):
         country_name = validated_data.pop("country_name")
         country, _ = Country.objects.get_or_create(name=country_name)
         validated_data["country"] = country
-        print(f"from CitySerializer: {validated_data["country"]=}")
+        print(f"from CitySerializer: {validated_data['country']=}")
         return City.objects.create(**validated_data)
 
 
