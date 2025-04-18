@@ -5,6 +5,7 @@
  * `pip install boto3`
  * `pip install python-dotenv`
  * `pip install stripe`
+ * `pip install django-filter`
  * `pip install psycopg2`   # (for PostgreSQL)
 
 
