@@ -14,8 +14,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
-from dreams.models import Category, Dream, Donation
-from dreams.serializers import (
+from .models import Category, Dream, Donation
+from .serializers import (
     CategorySerializer,
     DreamCreateSerializer,
     DreamBaseSerializer,
@@ -56,6 +56,9 @@ from utils.stripe import (
     create_checkout_session,
 )
 
+from django_filters import rest_framework as filters
+from .filters import DreamFilter
+
 
 class CategoryView(
     mixins.CreateModelMixin,
@@ -80,6 +83,8 @@ class DreamViewSet(
     queryset = Dream.objects.all()
     serializer_class = DreamBaseSerializer
     permission_classes = [IsAuthenticated()]
+    filterset_class = DreamFilter
+    filter_backends = (filters.DjangoFilterBackend,)
 
     def get_queryset(self):
         queryset = self.queryset
