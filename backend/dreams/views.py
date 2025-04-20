@@ -175,9 +175,9 @@ class DreamViewSet(
         active_dreams = Dream.objects.filter(status="Active")
         numbers = settings.RANDOM_DREAMS_HOME
         numbers = min(int(numbers), len(active_dreams))
-        ids = Dream.objects.values_list("id", flat=True)
+        ids = active_dreams.values_list("id", flat=True)
         random_ids = random.sample(list(ids), numbers)  # get number random ID
-        queryset = Dream.objects.filter(id__in=random_ids).order_by(
+        queryset = active_dreams.filter(id__in=random_ids).order_by(
             "?"
         )  #  without ordering
 

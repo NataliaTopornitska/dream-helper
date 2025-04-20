@@ -1,13 +1,13 @@
 services:
-  frontend:
-    container_name: frontend
-    build:
-      context: .
-      dockerfile: frontend/Dockerfile
-    ports:
-      - "5173:5173"
-    networks:
-      - dreams_net
+#  frontend:
+#    container_name: frontend
+#    build:
+#      context: .
+#      dockerfile: frontend/Dockerfile
+#    ports:
+#      - "5173:5173"
+#    networks:
+#      - dreams_net
 
   # Backend (Django + SQLite)
   backend:
@@ -50,9 +50,6 @@ services:
       - "9001:9001"
     env_file:
       - backend/.env
-#    environment:
-#      MINIO_ROOT_USER: dreamsadmin
-#      MINIO_ROOT_PASSWORD: dreamsadmin
     volumes:
       - minio_data:/data
     healthcheck:
