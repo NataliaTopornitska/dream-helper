@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "easy_thumbnails",
     "django_filters",
+    "corsheaders",
     "users",
     "dreams",
 ]
@@ -57,6 +58,7 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = "users.User"
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -64,6 +66,11 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  #  Allowed requests from frontend
+    "http://127.0.0.1:5173",
 ]
 
 ROOT_URLCONF = "app.urls"
@@ -176,6 +183,7 @@ ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
 STORAGE_ACCESS_KEY = os.getenv("STORAGE_ACCESS_KEY")
 STORAGE_SECRET_KEY = os.getenv("STORAGE_SECRET_KEY")
 STORAGE_HOST = os.getenv("STORAGE_HOST")
+PUBLIC_STORAGE_HOST = os.getenv("PUBLIC_STORAGE_HOST")
 STORAGE_PORT = os.getenv("STORAGE_PORT")
 BUCKET_NAME = os.getenv("BUCKET_NAME")
 RESIZE_PHOTO_DREAM_WIDTH = os.getenv("RESIZE_PHOTO_DREAM_WIDTH")

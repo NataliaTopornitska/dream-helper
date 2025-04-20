@@ -8,6 +8,7 @@ from botocore.exceptions import ClientError
 
 from app.settings import (
     STORAGE_HOST,
+    PUBLIC_STORAGE_HOST,
     STORAGE_PORT,
     STORAGE_ACCESS_KEY,
     STORAGE_SECRET_KEY,
@@ -116,12 +117,12 @@ def upload_image_and_miniature_to_storage(
         setattr(
             instance,
             field_name,
-            f"{STORAGE_HOST}:{STORAGE_PORT}/{BUCKET_NAME}/{object_name}",
+            f"{PUBLIC_STORAGE_HOST}:{STORAGE_PORT}/{BUCKET_NAME}/{object_name}",
         )
         setattr(
             instance,
             "thumbnail_url",
-            f"{STORAGE_HOST}:{STORAGE_PORT}/{BUCKET_NAME}/{mini_object_name}",
+            f"{PUBLIC_STORAGE_HOST}:{STORAGE_PORT}/{BUCKET_NAME}/{mini_object_name}",
         )
 
         instance.save()
