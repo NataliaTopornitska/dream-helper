@@ -11,6 +11,8 @@ from users.views import (
     SubscriberView,
     DreamerProfileView,
     UploadAvatarView,
+    CountryView,
+    CityView,
 )
 
 app_name = "users"
@@ -18,6 +20,8 @@ app_name = "users"
 router = DefaultRouter()
 router.register(r"subscribers", SubscriberView, basename="subscribers")
 router.register(r"dreamers", DreamerProfileView, basename="dreamers")
+router.register(r"countries", CountryView, basename="countries")
+router.register(r"cities", CityView, basename="cities")
 
 urlpatterns = [
     path("register/", CreateUserView.as_view(), name="create"),

@@ -10,7 +10,15 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
-from users.models import User, ActivationToken, UserProfile, DreamerProfile, Subscriber
+from users.models import (
+    User,
+    ActivationToken,
+    UserProfile,
+    DreamerProfile,
+    Subscriber,
+    Country,
+    City,
+)
 
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 
@@ -24,6 +32,9 @@ from users.serializers import (
     DreamerProfileSerializer,
     DreamerProfileCreateSerializer,
     UserProfileAvatarSerializer,
+    CountrySerializer,
+    CitySerializer,
+    CityUpdateSerializer,
 )
 
 from utils.storage import (
@@ -207,4 +218,56 @@ class DreamerProfileView(
             "partial_update",
         ]:
             return DreamerProfileCreateSerializer
+        return self.serializer_class
+
+
+class CountryView(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    GenericViewSet,
+):
+    queryset = Country.objects.all()
+    serializer_class = CountrySerializer
+    permission_classes = [
+        IsAuthenticated,
+    ]
+
+    def get_permissions(self):
+        if self.action in [
+            "create",
+            "list",
+        ]:
+            return [IsAuthenticated()]
+        return [IsAdminUser()]
+
+
+class CityView(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    GenericViewSet,
+):
+    queryset = City.objects.all()
+    serializer_class = CitySerializer
+    permission_classes = [
+        IsAuthenticated,
+    ]
+
+    def get_permissions(self):
+        if self.action in [
+            "create",
+            "list",
+        ]:
+            return [IsAuthenticated()]
+        return [IsAdminUser()]
+
+    def get_serializer_class(self):
+        if self.action in [
+            "update",
+            "partial_update",
+        ]:
+            return CityUpdateSerializer
         return self.serializer_class
