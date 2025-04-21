@@ -44,6 +44,9 @@ from utils.storage import (
 
 from app.settings import RESIZE_PHOTO_AVATAR
 
+from .filters import CityFilter
+from django_filters import rest_framework as filters
+
 
 class CreateUserView(generics.CreateAPIView):
     serializer_class = UserSerializer
@@ -252,6 +255,8 @@ class CityView(
 ):
     queryset = City.objects.all()
     serializer_class = CitySerializer
+    filterset_class = CityFilter
+    filter_backends = (filters.DjangoFilterBackend,)
     permission_classes = [
         IsAuthenticated,
     ]
