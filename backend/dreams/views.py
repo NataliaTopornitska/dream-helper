@@ -2,13 +2,14 @@ import os
 import random
 
 import stripe
-from django.db.models import Sum
+from django.db.models import Sum, Count, Q, ExpressionWrapper, F, Case, When, Value
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import mixins, status
 from rest_framework.decorators import action
+from rest_framework.fields import FloatField
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -80,7 +81,13 @@ class DreamViewSet(
     mixins.UpdateModelMixin,
     GenericViewSet,
 ):
-    queryset = Dream.objects.all()
+    queryset = Dream.objects.all().annotate(
+        number_donations=Count("donations", filter=Q(donations__status="Paid")),
+        total_amount_donations=Sum(
+            "donations__amount", filter=Q(donations__status="Paid")
+        ),
+        number_comments=Count("comments"),
+    )
     serializer_class = DreamBaseSerializer
     permission_classes = [IsAuthenticated()]
     filterset_class = DreamFilter
@@ -91,6 +98,7 @@ class DreamViewSet(
         # only admins can see all of dreams
         if self.action == "list" and not self.request.user.is_staff:
             queryset = queryset.filter(status__in=["Active", "Completed"])
+
         return queryset
 
     def get_permissions(self):

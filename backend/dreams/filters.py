@@ -34,6 +34,18 @@ class DreamFilter(django_filters.FilterSet):
         label="City",
         method="filter_city",
     )
+    popularity = django_filters.OrderingFilter(
+        # may second field for display to UI
+        fields=(
+            ("goal"),
+            ("created_at"),
+            ("number_views"),
+            ("number_donations"),
+            ("total_amount_donations"),
+            ("number_comments"),
+        ),
+        label="Popularity",
+    )
 
     class Meta:
         model = Dream
@@ -43,6 +55,7 @@ class DreamFilter(django_filters.FilterSet):
             "goal_range",
             "country",
             "city",
+            "popularity",
         )
 
     def __init__(self, *args, **kwargs):

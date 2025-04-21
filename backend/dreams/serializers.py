@@ -1,8 +1,8 @@
-from django.db.models import Sum
+from django.db.models import Sum, ExpressionWrapper
 from rest_framework import serializers
 
 from dreams.models import Category, Comment, Dream, Donation
-from rest_framework.fields import ImageField
+from rest_framework.fields import ImageField, DecimalField, FloatField
 
 from users.models import DreamerProfile
 from users.serializers import DreamerProfileCreateSerializer, DreamerProfileSerializer
@@ -33,6 +33,7 @@ class DreamBaseSerializer(serializers.ModelSerializer):
     number_donations = serializers.SerializerMethodField()  # count donations
     total_amount_donations = serializers.SerializerMethodField()  #  total amount
     number_comments = serializers.SerializerMethodField()
+    level_completed = serializers.SerializerMethodField()
 
     class Meta:
         model = Dream
@@ -53,6 +54,7 @@ class DreamBaseSerializer(serializers.ModelSerializer):
             "total_amount_donations",
             "number_comments",
             "number_views",
+            "level_completed",  # in %
         )
 
     def get_number_donations(self, obj):
@@ -66,6 +68,17 @@ class DreamBaseSerializer(serializers.ModelSerializer):
             obj.donations.filter(status="Paid").aggregate(total=Sum("amount"))["total"]
             or 0
         )
+
+    def get_level_completed(self, obj):
+        goal = obj.goal
+        total = self.get_total_amount_donations(obj)
+        if not goal:
+            return 0
+        try:
+            level = float(total) / float(goal) * 100
+        except Exception:
+            level = 0
+        return round(level, 2)
 
 
 class DreamCreateSerializer(DreamBaseSerializer):
