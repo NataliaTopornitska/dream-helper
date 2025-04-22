@@ -250,3 +250,9 @@ class DonationSerializer(serializers.ModelSerializer):
             "date",
             "url_payment",
         )
+
+
+class AddCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ("content",)

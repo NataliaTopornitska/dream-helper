@@ -2,20 +2,20 @@ import os
 import random
 
 import stripe
-from django.db.models import Sum, Count, Q, ExpressionWrapper, F, Case, When, Value
+from django.db.models import Sum, Count, Q
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import mixins, status
 from rest_framework.decorators import action
-from rest_framework.fields import FloatField
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
-from .models import Category, Dream, Donation
+from .models import Category, Dream, Donation, Comment
 from .serializers import (
     CategorySerializer,
     DreamCreateSerializer,
@@ -25,6 +25,8 @@ from .serializers import (
     AddDonationSerializer,
     DonationSerializer,
     DreamUpdateSerializer,
+    AddCommentSerializer,
+    CommentSerializer,
 )
 
 from utils.email import send_email_with_template
@@ -172,6 +174,8 @@ class DreamViewSet(
             return DreamUpdateSerializer
         if self.action == "make_donation":
             return AddDonationSerializer
+        if self.action == "add_comment":
+            return AddCommentSerializer
         return DreamBaseSerializer
 
     @action(
@@ -326,6 +330,27 @@ class DreamViewSet(
         except Exception as e:
             return Response({"error": str(e)}, status=500)
 
+    @action(
+        methods=["post"],
+        detail=True,
+        url_path="add_comment",
+    )
+    def add_comment(self, request, pk=None):
+        owner = request.user
+        if not owner.is_authenticated:
+            raise PermissionDenied(detail="You must be logged in to add a comment.")
+        dream = Dream.objects.get(pk=pk)
+        content = request.data.get("content")
+        if not content:
+            return Response({"error": "Content is required"}, status=400)
+
+        new_comment = Comment(content=content, owner=owner, dream=dream)
+        new_comment.save()
+
+        return Response(
+            {"detail": "Comment added successfully."}, status=status.HTTP_200_OK
+        )
+
 
 @csrf_exempt
 def stripe_webhook(request):
@@ -476,3 +501,16 @@ class DreamStatisticsView(APIView):
         }
 
         return Response(data)
+
+
+class CommentViewSet(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    GenericViewSet,
+):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsAdminUser]
