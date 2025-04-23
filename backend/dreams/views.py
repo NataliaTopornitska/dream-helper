@@ -16,6 +16,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
 from .models import Category, Dream, Donation, Comment
+from .pagination import DreamSetPagination
 from .serializers import (
     CategorySerializer,
     DreamCreateSerializer,
@@ -94,6 +95,7 @@ class DreamViewSet(
     permission_classes = [IsAuthenticated()]
     filterset_class = DreamFilter
     filter_backends = (filters.DjangoFilterBackend,)
+    pagination_class = DreamSetPagination
 
     def get_queryset(self):
         queryset = self.queryset
