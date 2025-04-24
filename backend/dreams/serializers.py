@@ -55,6 +55,7 @@ class DreamBaseSerializer(serializers.ModelSerializer):
             "number_comments",
             "number_views",
             "level_completed",  # in %
+            "completed_at",
         )
 
     def get_number_donations(self, obj):

@@ -12,6 +12,10 @@ class DreamFilter(django_filters.FilterSet):
         ("501_1000", "501 - 1000"),
         ("more_1000", "More than 1000"),
     )
+    DREAM_TYPE_CHOICES = (
+        (False, "Private"),
+        (True, "Collective"),
+    )
 
     category = django_filters.ModelChoiceFilter(
         queryset=Category.objects.all(),
@@ -22,6 +26,11 @@ class DreamFilter(django_filters.FilterSet):
         choices=GOAL_CHOICES,
         method="filter_goal_range",
         label="Goal Range",
+    )
+    dream_type = django_filters.ChoiceFilter(
+        choices=DREAM_TYPE_CHOICES,
+        method="filter_dream_type",
+        label="Dream Type",
     )
     country = django_filters.ModelChoiceFilter(
         queryset=Country.objects.all(),
@@ -53,6 +62,7 @@ class DreamFilter(django_filters.FilterSet):
             "status",
             "category",
             "goal_range",
+            "dream_type",
             "country",
             "city",
             "popularity",
@@ -94,6 +104,12 @@ class DreamFilter(django_filters.FilterSet):
     def filter_city(self, queryset, name, value):
         return queryset.filter(
             Q(dreamer__city=value) | Q(owner__userprofile__city=value)
+        )
+
+    def filter_dream_type(self, queryset, name, value):
+        return queryset.filter(
+            Q(dreamer__is_collective=value)
+            | Q(dreamer__isnull=True, owner__userprofile__is_collective=value)
         )
 
     def filter_goal_range(self, queryset, name, value):
