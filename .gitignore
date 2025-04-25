@@ -17,3 +17,6 @@ cypress/videos
 __pycache__
 db.sqlite3
 .env
+backup_db.sqlite3
+frontend/
+vite.config.ts

@@ -257,3 +257,15 @@ class AddCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ("content",)
+
+
+class DreamDonationsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Donation
+        fields = "__all__"
+
+
+class DreamCommentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = "__all__"

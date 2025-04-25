@@ -2,6 +2,7 @@ import os
 import random
 
 import stripe
+from django.core.exceptions import BadRequest, ObjectDoesNotExist
 from django.db.models import Sum, Count, Q
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -28,6 +29,8 @@ from .serializers import (
     DreamUpdateSerializer,
     AddCommentSerializer,
     CommentSerializer,
+    DreamDonationsSerializer,
+    DreamCommentsSerializer,
 )
 
 from utils.email import send_email_with_template
@@ -353,6 +356,42 @@ class DreamViewSet(
             {"detail": "Comment added successfully."}, status=status.HTTP_200_OK
         )
 
+    @action(
+        methods=["get"],
+        detail=True,
+        url_path="all_donations",
+    )
+    def all_donations(self, request, pk=None):
+        try:
+            dream = Dream.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return Response({"detail": "Dream with this ID not found."}, status=404)
+
+        donations = dream.donations.all()
+        if not donations:
+            return Response({"message": "No donations yet."}, status=204)
+
+        serialized_data = DreamDonationsSerializer(donations, many=True)
+        return Response(serialized_data.data, status=200)
+
+    @action(
+        methods=["get"],
+        detail=True,
+        url_path="all_comments",
+    )
+    def all_comments(self, request, pk=None):
+        try:
+            dream = Dream.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return Response({"detail": "Dream with this ID not found."}, status=404)
+
+        comments = dream.comments.all()
+        if not comments:
+            return Response({"message": "No comments yet."}, status=204)
+
+        serialized_data = DreamCommentsSerializer(comments, many=True)
+        return Response(serialized_data.data, status=200)
+
 
 @csrf_exempt
 def stripe_webhook(request):
@@ -516,3 +555,19 @@ class CommentViewSet(
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [IsAdminUser]
+
+
+# class DreamDonationsView(APIView):
+#     permission_classes = [AllowAny]
+#     serializer_class = DreamDonationsSerializer
+#
+#     def get(self, request, *args, **kwargs):
+#         return HttpResponse
+#
+#
+# class DreamCommentsView(APIView):
+#     permission_classes = [AllowAny]
+#     serializer_class = DreamCommentsSerializer
+#
+#     def get(self, request, *args, **kwargs):
+#         pass
