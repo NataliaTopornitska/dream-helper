@@ -13,7 +13,7 @@ class DreamFilter(django_filters.FilterSet):
         ("more_1000", "More than 1000"),
     )
     DREAM_TYPE_CHOICES = (
-        (False, "Private"),
+        (False, "Personal"),
         (True, "Collective"),
     )
 
