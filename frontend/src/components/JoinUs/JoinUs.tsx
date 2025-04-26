@@ -1,6 +1,6 @@
 import React from 'react';
 import './JoinUs.scss';
-import { useIsMobile } from '../../hooks/use-mobile';
+import { useIsMobile } from '../../use-mobile';
 
 const JoinUs: React.FC = () => {
   const isMobile = useIsMobile();
@@ -21,7 +21,7 @@ const JoinUs: React.FC = () => {
           <div className="option-card">
             <div className="option-image">
               <img
-                src="/dream-helper/img/home-page/block6-1.png"
+                src="/dream-helper/home-page/block6-1.png"
                 alt="Support dream"
               />
             </div>
@@ -31,7 +31,7 @@ const JoinUs: React.FC = () => {
           <div className="option-card">
             <div className="option-image">
               <img
-                src="/dream-helper/img/home-page/block6-2.png"
+                src="/dream-helper/home-page/block6-2.png"
                 alt="Submit dream"
               />
             </div>
@@ -41,7 +41,7 @@ const JoinUs: React.FC = () => {
           <div className="option-card">
             <div className="option-image">
               <img
-                src="/dream-helper/img/home-page/block6-3.png"
+                src="/dream-helper/home-page/block6-3.png"
                 alt="Share stories"
               />
             </div>
@@ -51,7 +51,7 @@ const JoinUs: React.FC = () => {
           <div className="option-card">
             <div className="option-image">
               <img
-                src="/dream-helper/img/home-page/block6-4.png"
+                src="/dream-helper/home-page/block6-4.png"
                 alt="Celebrate fulfilled dreams"
               />
             </div>

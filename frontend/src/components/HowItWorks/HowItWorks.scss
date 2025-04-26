@@ -1,6 +1,6 @@
 .how-it-works {
   position: relative;
-  padding: 60px 0;
+  padding: 64px 0 60px;
   overflow: hidden;
 
   &-container {
@@ -10,10 +10,10 @@
   }
 
   &-title {
-    font-size: 36px;
-    font-weight: 700;
-    margin-bottom: 60px;
-    text-align: center;
+    font-size: 33px;
+    font-weight: 600;
+    margin-bottom: 100px;
+    text-align:start;
   }
 }
 
@@ -43,20 +43,22 @@
   }
 
   &-number {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background-color: #ffcc80;
+    font-family: "Inter", sans-serif;
+    width: 120px;
+    height: 120px;
+    border-radius: 72%;
+    background-color: #FFCC74;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 36px;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 32px;
     transition: transform 0.5s ease;
+    border: 1px solid #191919;
 
     &:hover {
-      transform: scale(1.2);
+      transform: scale(1.1);
     }
   }
 
@@ -67,7 +69,9 @@
   }
 
   &-description {
-    font-size: 16px;
+    font-family: "Reddit Sans Condensed", sans-serif;
+    font-size: 19px;
+    color: #464646;
     line-height: 1.5;
     max-width: 250px;
   }
@@ -81,6 +85,8 @@
     margin-top: 40px;
   }
 }
+
+
 
 /* Tablet styles */
 @media (min-width: 768px) and (max-width: 1023px) {

@@ -1,9 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Footer.scss';
-import { useIsMobile } from '../../hooks/use-mobile';
+import { useIsMobile } from '../../use-mobile';
 
 const Footer: React.FC = () => {
   const isMobile = useIsMobile();
+  const [email, setEmail] = useState('');
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch(
+        'http://127.0.0.1:8000/api/v1/users/subscribers/',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email }),
+        },
+      );
+
+      if (response.ok) {
+        alert('Thank you for subscribing!');
+        setEmail('');
+      } else {
+        const data = await response.json();
+
+        alert(`Failed: ${data.detail || 'Something went wrong'}`);
+      }
+    } catch (error) {
+      alert('Network error. Please try again later.');
+    }
+  };
 
   return (
     <footer className={`footer ${isMobile ? 'mobile' : ''}`}>
@@ -22,11 +51,14 @@ const Footer: React.FC = () => {
             <p className="newsletter-text">
               Subscribe to our news to stay up to date with events
             </p>
-            <form className="newsletter-form">
+            <form className="newsletter-form" onSubmit={handleSubmit}>
               <input
                 type="email"
                 placeholder="Email"
                 className="newsletter-input"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
               />
               <button type="submit" className="newsletter-button">
                 Send
@@ -58,9 +90,9 @@ const Footer: React.FC = () => {
               rel="noopener noreferrer"
             >
               <img
-                src="/dream-helper/img/home-page/instagram.png"
+                src="/dream-helper/home-page/instagram.png"
                 alt="Instagram"
-              />
+              />{' '}
               Instagram
             </a>
             <a
@@ -69,10 +101,7 @@ const Footer: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img
-                src="/dream-helper/img/home-page/facebook.png"
-                alt="Facebook"
-              />
+              <img src="/dream-helper/home-page/facebook.png" alt="Facebook" />{' '}
               Facebook
             </a>
             <a
@@ -82,9 +111,9 @@ const Footer: React.FC = () => {
               rel="noopener noreferrer"
             >
               <img
-                src="/dream-helper/img/home-page/pinterest.png"
+                src="/dream-helper/home-page/pinterest.png"
                 alt="Pinterest"
-              />
+              />{' '}
               Pinterest
             </a>
           </div>

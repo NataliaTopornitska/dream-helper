@@ -1,6 +1,6 @@
 import React from 'react';
 import './HowItWorks.scss';
-import { useIsMobile } from '../../hooks/use-mobile';
+import { useIsMobile } from '../../use-mobile';
 
 const HowItWorks: React.FC = () => {
   const isMobile = useIsMobile();

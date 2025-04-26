@@ -1,6 +1,6 @@
 import React from 'react';
 import './Vision.scss';
-import { useIsMobile } from '../../hooks/use-mobile';
+import { useIsMobile } from '../../use-mobile';
 
 const Vision: React.FC = () => {
   const isMobile = useIsMobile();
@@ -11,7 +11,7 @@ const Vision: React.FC = () => {
         <div className={`vision-content ${isMobile ? 'mobile' : ''}`}>
           <div className="vision-image">
             <img
-              src="/dream-helper/img/home-page/block-4.png"
+              src="/dream-helper/home-page/block-4.png"
               alt="Person with megaphone"
             />
           </div>

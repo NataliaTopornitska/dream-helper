@@ -15,7 +15,7 @@
     align-items: center;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
     transition: transform 0.5s ease;
-    border: 1px solid rgb(126, 124, 124);
+    border: 1px solid #191919;
 
     &:hover {
       transform: scale(1.02);
@@ -52,9 +52,10 @@
   }
 
   &-title {
-    font-size: 36px;
-    font-weight: 700;
+    font-size: 33px;
+    font-weight: 600;
     margin-bottom: 20px;
+    color: #191919;
 
     .mobile & {
       font-size: 28px;
@@ -63,12 +64,16 @@
   }
 
   &-description {
+    font-family: "Reddit Sans Condensed", sans-serif;
+    color: #464646;
     font-size: 18px;
     line-height: 1.6;
+    margin-right: 48px;
 
     .mobile & {
       font-size: 16px;
       text-align: center;
+      margin-right: 0;
     }
   }
 }

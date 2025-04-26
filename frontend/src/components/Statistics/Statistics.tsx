@@ -24,6 +24,35 @@ const Statistics: React.FC = () => {
     }
   }, []);
 
+  // For the backend
+
+  // useEffect(() => {
+  //   async function fetchStatistics() {
+  //     try {
+  //       const response = await fetch(
+  //         'http://127.0.0.1:8000/api/v1/dreamhelper/statistics/',
+  //       );
+
+  //       if (!response.ok) {
+  //         throw new Error('Error getting data.');
+  //       }
+
+  //       const data = await response.json();
+
+  //       setStatistics({
+  //         totalDreams: data.total_dreams,
+  //         people: data.people,
+  //         anonymousDonations: data.anonymous_donations,
+  //         totalDonations: data.total_donations,
+  //       });
+  //     } catch (error) {
+  //       console.error('Error getting statistics data:', error);
+  //     }
+  //   }
+
+  //   fetchStatistics();
+  // }, []);
+
   return (
     <section className="statistics">
       <div className="statistics-wave-bg"></div>
@@ -32,7 +61,7 @@ const Statistics: React.FC = () => {
         <div className="statistics-grid">
           <div className="stat-card">
             <img
-              src="/dream-helper/img/home-page/block2-1.png"
+              src="/dream-helper/home-page/block2-1.png"
               alt="Hot air balloon"
               className="stat-icon"
             />
@@ -42,7 +71,7 @@ const Statistics: React.FC = () => {
 
           <div className="stat-card">
             <img
-              src="/dream-helper/img/home-page/block2-2.png"
+              src="/dream-helper/home-page/block2-2.png"
               alt="Active person with items"
               className="stat-icon"
             />
@@ -52,7 +81,7 @@ const Statistics: React.FC = () => {
 
           <div className="stat-card">
             <img
-              src="/dream-helper/img/home-page/block2-3.png"
+              src="/dream-helper/home-page/block2-3.png"
               alt="Anonymous donation"
               className="stat-icon"
             />
@@ -62,7 +91,7 @@ const Statistics: React.FC = () => {
 
           <div className="stat-card">
             <img
-              src="/dream-helper/img/home-page/block2-4.png"
+              src="/dream-helper/home-page/block2-4.png"
               alt="Donation box with coins"
               className="stat-icon"
             />

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Header.scss';
 import { Menu, X } from 'lucide-react';
-import { useIsMobile } from '../../hooks/use-mobile';
+import { useIsMobile } from '../../use-mobile';
 
 const Header: React.FC = () => {
   const isMobile = useIsMobile();
@@ -62,13 +62,6 @@ const Header: React.FC = () => {
               </nav>
               <button className="login-button">Log In or Sign Up</button>
             </div>
-            {/* <nav className="nav">
-              <ul className="nav-list">
-                <li className="nav-item"><a href="#dreams">Dreams</a></li>
-                <li className="nav-item"><a href="#donors">Top Donors</a></li>
-              </ul>
-            </nav>
-            <button className="login-button">Log In or Sign Up</button> */}
           </>
         )}
       </div>
