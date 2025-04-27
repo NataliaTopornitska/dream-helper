@@ -373,7 +373,7 @@ class DreamViewSet(
         except ObjectDoesNotExist:
             return Response({"detail": "Dream with this ID not found."}, status=404)
 
-        donations = dream.donations.all()
+        donations = dream.donations.filter(status="Paid")
         if not donations:
             return Response({"message": "No donations yet."}, status=204)
 
