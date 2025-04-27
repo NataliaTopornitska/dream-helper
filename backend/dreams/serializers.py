@@ -209,6 +209,7 @@ class AddDonationSerializer(serializers.ModelSerializer):
     amount = serializers.ChoiceField(choices=AMOUNT_CHOICES)
     your_amount = serializers.FloatField(required=False, default=0)
     is_anonymous = serializers.BooleanField(required=False, default=False)
+    follow = serializers.BooleanField(required=False, default=False)
 
     class Meta:
         model = Donation
@@ -217,6 +218,7 @@ class AddDonationSerializer(serializers.ModelSerializer):
             "amount",
             "your_amount",
             "is_anonymous",
+            "follow"
         )
 
     def validate(self, data):

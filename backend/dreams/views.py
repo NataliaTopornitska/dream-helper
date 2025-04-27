@@ -16,7 +16,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
-from .models import Category, Dream, Donation, Comment
+from .models import Category, Dream, Donation, Comment, Follower
 from .pagination import DreamSetPagination
 from .serializers import (
     CategorySerializer,
@@ -324,6 +324,12 @@ class DreamViewSet(
             new_donation.save()
             print(f"{new_donation=}")
 
+            follow = request.data.get("follow", None)
+            if follow:
+                # this user follow to this dream
+                follower = Follower.objects.create(dream=dream, user=user)
+                follower.save()
+
             # add donation in dream  (any status)
             dream.donations.add(new_donation)
             dream.save()
@@ -555,19 +561,3 @@ class CommentViewSet(
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [IsAdminUser]
-
-
-# class DreamDonationsView(APIView):
-#     permission_classes = [AllowAny]
-#     serializer_class = DreamDonationsSerializer
-#
-#     def get(self, request, *args, **kwargs):
-#         return HttpResponse
-#
-#
-# class DreamCommentsView(APIView):
-#     permission_classes = [AllowAny]
-#     serializer_class = DreamCommentsSerializer
-#
-#     def get(self, request, *args, **kwargs):
-#         pass

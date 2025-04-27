@@ -95,3 +95,17 @@ class Donation(models.Model):
 
     def __str__(self):
         return self.date.strftime("%Y-%m-%d %H:%M") + " - " + str(self.amount)
+
+
+class Follower(models.Model):
+    dream = models.ForeignKey(Dream, on_delete=models.CASCADE, related_name="followers")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="followers"
+    )
+
+    def __str__(self):
+        return f"{self.user} follows {self.dream}"
+
+    class Meta:
+        ordering = ["user", "dream"]
+        unique_together = ("user", "dream")
