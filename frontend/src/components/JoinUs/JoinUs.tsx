@@ -1,6 +1,7 @@
 import React from 'react';
 import './JoinUs.scss';
 import { useIsMobile } from '../../use-mobile';
+import { Link } from 'react-router-dom';
 
 const JoinUs: React.FC = () => {
   const isMobile = useIsMobile();
@@ -61,7 +62,11 @@ const JoinUs: React.FC = () => {
 
         <div className="join-buttons">
           <button className="btn-outline">Add My Dream</button>
-          <button className="btn-solid">Make a Donation</button>
+          <button className="btn-solid">
+            <Link to="/dreams" className="btn-link">
+              Make a Donation
+            </Link>
+          </button>
         </div>
       </div>
     </section>

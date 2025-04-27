@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import './Header.scss';
+import './DreamsHeader.scss';
 import { Menu, X } from 'lucide-react';
 import { useIsMobile } from '../../use-mobile';
 import { Link } from 'react-router-dom';
 
-const Header: React.FC = () => {
+const DreamsHeader: React.FC = () => {
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -30,12 +30,13 @@ const Header: React.FC = () => {
               <div className="mobile-nav">
                 <nav className="nav">
                   <ul className="nav-list">
-                    <li className="nav-item">
+                    <li className="nav-items">
                       <a
-                        href="/dream-helper/dreams"
+                        href="/"
+                        className="dreams-link"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        Dreams
+                        Home page
                       </a>
                     </li>
                     <li className="nav-item">
@@ -60,7 +61,9 @@ const Header: React.FC = () => {
               <nav className="nav">
                 <ul className="nav-list">
                   <li className="nav-item">
-                    <Link to="/dreams">Dreams</Link>
+                    <Link to="/dreams" className="dreams-link">
+                      Dreams
+                    </Link>
                   </li>
                   <li className="nav-item">
                     <a href="#donors">Top Donors</a>
@@ -76,4 +79,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default DreamsHeader;

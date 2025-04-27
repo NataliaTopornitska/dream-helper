@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "label": "Up to 100",
+    "minValue": 0,
+    "maxValue": 100
+  },
+  {
+    "id": 2,
+    "label": "101–500",
+    "minValue": 101,
+    "maxValue": 500
+  },
+  {
+    "id": 3,
+    "label": "501–1000",
+    "minValue": 501,
+    "maxValue": 1000
+  },
+  {
+    "id": 4,
+    "label": "More than 1000",
+    "minValue": 1000,
+    "maxValue": null
+  }
+]

@@ -1,27 +1,41 @@
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from 'react-router-dom';
 import Header from './components/Header/Header';
-import Hero from './components/Hero/Hero';
-import Statistics from './components/Statistics/Statistics';
-import DreamCarousel from './components/DreamCarousel/DreamCarousel';
-import Vision from './components/Vision/Vision';
-import HowItWorks from './components/HowItWorks/HowItWorks';
-import JoinUs from './components/JoinUs/JoinUs';
 import Footer from './components/Footer/Footer';
+import DreamsHeader from './components/DreamsHeader/DreamsHeader';
+import DreamsFooter from './components/DreamsFooter/DreamsFooter';
+
+import HomePage from './pages/HomePage/HomePage';
+import DreamsPage from './pages/DreamsPage/DreamsPage';
 import './App.scss';
+
+function AppContent() {
+  const location = useLocation();
+  const isDreamsPage = location.pathname.startsWith('/dreams');
+
+  return (
+    <div className="app">
+      {isDreamsPage ? <DreamsHeader /> : <Header />}
+      <main>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/dreams" element={<DreamsPage />} />
+        </Routes>
+      </main>
+      {isDreamsPage ? <DreamsFooter /> : <Footer />}
+    </div>
+  );
+}
 
 function App() {
   return (
-    <div className="app">
-      <Header />
-      <main>
-        <Hero />
-        <Statistics />
-        <DreamCarousel />
-        <Vision />
-        <HowItWorks />
-        <JoinUs />
-      </main>
-      <Footer />
-    </div>
+    <Router basename="/dream-helper">
+      <AppContent />
+    </Router>
   );
 }
 

@@ -1,0 +1,146 @@
+[
+    {
+        "id": 20,
+        "name": "Berlin",
+        "country": {
+            "id": 13,
+            "name": "Germany"
+        }
+    },
+    {
+        "id": 1,
+        "name": "Buenos Aires",
+        "country": {
+            "id": 1,
+            "name": "Argentina"
+        }
+    },
+    {
+        "id": 11,
+        "name": "Cancun",
+        "country": {
+            "id": 5,
+            "name": "Mexico"
+        }
+    },
+    {
+        "id": 12,
+        "name": "Carmen del City",
+        "country": {
+            "id": 5,
+            "name": "Mexico"
+        }
+    },
+    {
+        "id": 10,
+        "name": "Dnipro",
+        "country": {
+            "id": 2,
+            "name": "Ukraine"
+        }
+    },
+    {
+        "id": 6,
+        "name": "Irpin",
+        "country": {
+            "id": 2,
+            "name": "Ukraine"
+        }
+    },
+    {
+        "id": 7,
+        "name": "Kharkiv",
+        "country": {
+            "id": 2,
+            "name": "Ukraine"
+        }
+    },
+    {
+        "id": 8,
+        "name": "Kiyv",
+        "country": {
+            "id": 2,
+            "name": "Ukraine"
+        }
+    },
+    {
+        "id": 19,
+        "name": "London",
+        "country": {
+            "id": 12,
+            "name": "United Kingdom"
+        }
+    },
+    {
+        "id": 13,
+        "name": "Mexico City",
+        "country": {
+            "id": 5,
+            "name": "Mexico"
+        }
+    },
+    {
+        "id": 14,
+        "name": "Mumbai",
+        "country": {
+            "id": 7,
+            "name": "India"
+        }
+    },
+    {
+        "id": 16,
+        "name": "Nairobi",
+        "country": {
+            "id": 9,
+            "name": "Kenya"
+        }
+    },
+    {
+        "id": 9,
+        "name": "Neuquen",
+        "country": {
+            "id": 1,
+            "name": "Argentina"
+        }
+    },
+    {
+        "id": 17,
+        "name": "New York",
+        "country": {
+            "id": 10,
+            "name": "United States"
+        }
+    },
+    {
+        "id": 15,
+        "name": "Sao Paulo",
+        "country": {
+            "id": 8,
+            "name": "Brazil"
+        }
+    },
+    {
+        "id": 21,
+        "name": "Sydney",
+        "country": {
+            "id": 14,
+            "name": "Australia"
+        }
+    },
+    {
+        "id": 2,
+        "name": "Tigre",
+        "country": {
+            "id": 1,
+            "name": "Argentina"
+        }
+    },
+    {
+        "id": 18,
+        "name": "Toronto",
+        "country": {
+            "id": 11,
+            "name": "Canada"
+        }
+    }
+]

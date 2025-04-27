@@ -1,5 +1,6 @@
 import React from 'react';
 import './Hero.scss';
+import { Link } from 'react-router-dom';
 
 const Hero: React.FC = () => {
   return (
@@ -15,7 +16,11 @@ const Hero: React.FC = () => {
           </p>
           <div className="hero-buttons">
             <button className="btn-outline">Add My Dream</button>
-            <button className="btn-solid">Make a Donation</button>
+            <button className="btn-solid">
+              <Link to="/dreams" className="btn-link">
+                Make a Donation
+              </Link>
+            </button>
           </div>
         </div>
         <div className="hero-image">

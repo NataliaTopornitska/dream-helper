@@ -27,6 +27,10 @@
   color: inherit;
 }
 
+.nav-item a.dreams-link {
+ text-decoration: underline;
+}
+
 .nav-block {
   display: flex;
   align-items: center;
@@ -56,6 +60,18 @@
     }
   }
 }
+
+.nav-items a {
+  text-decoration: none;
+  font-weight: 600;
+  color: #191919;
+}
+
+  .nav-items a:hover {
+    color: #555;
+    text-decoration: underline;
+  }
+
 
 .login-button {
   background-color: #000;

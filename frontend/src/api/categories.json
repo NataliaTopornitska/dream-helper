@@ -1,0 +1,52 @@
+[
+    {
+        "id": 4,
+        "name": "Animals",
+        "description": ""
+    },
+    {
+        "id": 6,
+        "name": "Building",
+        "description": ""
+    },
+    {
+        "id": 5,
+        "name": "Eco",
+        "description": ""
+    },
+    {
+        "id": 7,
+        "name": "Education",
+        "description": ""
+    },
+    {
+        "id": 3,
+        "name": "Food",
+        "description": ""
+    },
+    {
+        "id": 1,
+        "name": "Health",
+        "description": "We help people who need medical care."
+    },
+    {
+        "id": 10,
+        "name": "Mental Wellness",
+        "description": ""
+    },
+    {
+        "id": 8,
+        "name": "Social Help",
+        "description": ""
+    },
+    {
+        "id": 9,
+        "name": "Social Impact",
+        "description": "1"
+    },
+    {
+        "id": 2,
+        "name": "Transport",
+        "description": ""
+    }
+]

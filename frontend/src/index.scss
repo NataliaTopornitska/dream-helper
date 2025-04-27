@@ -9,7 +9,17 @@ body {
   color: #000;
   background-color: #fff;
   overflow-x: hidden;
+}
+
+.home-page {
   background-image: url('/public/home-page/background.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top;
+}
+
+.dream-page {
+  background-image: url('/public/dreams-page/background-2.svg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: top;
