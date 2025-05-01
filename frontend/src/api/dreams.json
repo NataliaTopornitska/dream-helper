@@ -1,8 +1,8 @@
 {
     "count": 34,
     "num_pages": 1,
-    "next": null,
-    "previous": null,
+    "next": "http://localhost:8000/api/v1/dreamhelper/dreams/?category=&city=&country=&dream_type=&goal_range=more_1000&page=3&page_size=4&popularity=-goal&status=Active",
+    "previous": "http://localhost:8000/api/v1/dreamhelper/dreams/?category=&city=&country=&dream_type=&goal_range=more_1000&page_size=4&popularity=-goal&status=Active",
     "allowed_page_sizes": [
         4,
         8,
@@ -30,6 +30,7 @@
             "number_comments": 0,
             "number_views": 5,
             "level_completed": 30.0,
+            "city_id": 2,
             "completed_at": null
         },
         {
@@ -74,6 +75,7 @@
             "number_comments": 0,
             "number_views": 9,
             "level_completed": 0.0,
+            "city_id": 6,
             "completed_at": null
         },
         {
@@ -96,6 +98,7 @@
             "number_comments": 0,
             "number_views": 3,
             "level_completed": 0.0,
+            "city_id": 7,
             "completed_at": null
         },
         {
@@ -118,6 +121,7 @@
             "number_comments": 0,
             "number_views": 20,
             "level_completed": 1.0,
+            "city_id": 8,
             "completed_at": null
         },
         {
@@ -142,6 +146,7 @@
             "number_comments": 0,
             "number_views": 2,
             "level_completed": 0.0,
+            "city_id": 17,
             "completed_at": null
         },
         {
@@ -165,6 +170,7 @@
             "number_comments": 0,
             "number_views": 5,
             "level_completed": 1.0,
+            "city_id": 18,
             "completed_at": null
         },
         {
@@ -188,6 +194,7 @@
             "number_comments": 0,
             "number_views": 4,
             "level_completed": 0.5,
+            "city_id": 19,
             "completed_at": null
         },
         {
@@ -211,6 +218,7 @@
             "number_comments": 0,
             "number_views": 4,
             "level_completed": 13.33,
+            "city_id": 20,
             "completed_at": null
         },
         {
@@ -234,6 +242,7 @@
             "number_comments": 0,
             "number_views": 2,
             "level_completed": 0.0,
+            "city_id": 21,
             "completed_at": null
         },
         {
@@ -414,6 +423,7 @@
             "number_comments": 0,
             "number_views": 4,
             "level_completed": 6.0,
+            "city_id": 9,
             "completed_at": null
         },
         {
@@ -436,6 +446,7 @@
             "number_comments": 0,
             "number_views": 6,
             "level_completed": 5.0,
+            "city_id": 10,
             "completed_at": null
         },
         {
@@ -458,6 +469,7 @@
             "number_comments": 0,
             "number_views": 9,
             "level_completed": 34.67,
+            "city_id": 11,
             "completed_at": null
         },
         {
@@ -480,6 +492,7 @@
             "number_comments": 1,
             "number_views": 38,
             "level_completed": 106.0,
+            "city_id": 12,
             "completed_at": "2025-04-12T16:25:27-03:00"
         },
         {
@@ -549,6 +562,7 @@
             "number_comments": 0,
             "number_views": 47,
             "level_completed": 16.33,
+            "city_id": 14,
             "completed_at": null
         },
         {
@@ -617,6 +631,7 @@
             "number_comments": 0,
             "number_views": 35,
             "level_completed": 53.75,
+            "city_id": 15,
             "completed_at": "2025-04-16T16:55:34-03:00"
         },
         {
@@ -639,6 +654,7 @@
             "number_comments": 2,
             "number_views": 27,
             "level_completed": 12.0,
+            "city_id": 16,
             "completed_at": null
         },
         {

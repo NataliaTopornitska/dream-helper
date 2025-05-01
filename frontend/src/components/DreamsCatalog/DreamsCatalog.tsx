@@ -1,5 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+
+// 1
 import dreamsData from '../../api/dreams.json';
+// 1
 import './DreamsCatalog.scss';
 import {
   Dream,
@@ -10,9 +13,11 @@ import {
   Country,
   City,
 } from '../../types/dreams';
+// 1
 import categoriesData from '../../api/categories.json';
 import citiesData from '../../api/cities.json';
 import countriesData from '../../api/countries.json';
+// 1
 import fundingoalData from '../../api/funding_goal.json';
 import popularityData from '../../api/popularity.json';
 import typeOptions from '../../api/type.json';
@@ -37,6 +42,12 @@ const DreamsCatalog = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [dreamsPerPage, setDreamsPerPage] = useState(8);
   const [totalPages, setTotalPages] = useState(1);
+  const [pagination, setPagination] = useState({
+    next: '',
+    previous: '',
+    count: 0,
+    num_pages: 0,
+  });
 
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [isFundingDropdownOpen, setIsFundingDropdownOpen] = useState(false);
@@ -46,6 +57,8 @@ const DreamsCatalog = () => {
   const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
   const [isDreamsPerPageDropdownOpen, setIsDreamsPerPageDropdownOpen] =
     useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const fundingRanges: FundingRange[] = fundingoalData;
 
@@ -53,8 +66,13 @@ const DreamsCatalog = () => {
 
   const typesOption: string[] = typeOptions;
 
-  const fetchDreams = () => {
+  const fetchDreams = async () => {
+    // локальний JSON
     const data = dreamsData as DreamResponse;
+
+    // з API
+    // const response = await fetch('http://127.0.0.1:8000/api/v1/dreamhelper/dreams/');
+    // const data: DreamResponse = await response.json();
 
     setDreams(data.results);
     setFilteredDreams(data.results.filter(dream => dream.status === 'Active'));
@@ -65,17 +83,58 @@ const DreamsCatalog = () => {
     setTotalPages(Math.ceil(totalDreams / dreamsPerPage));
   };
 
-  const fetchCategories = () => {
+  const fetchCategories = async () => {
+    // — локальний JSON
     setCategories(categoriesData);
+
+    //— з API
+    // const response = await fetch('http://127.0.0.1:8000/api/v1/dreamhelper/categories/');
+    // const data = await response.json();
+    // setCategories(data);
   };
 
-  const fetchCountries = () => {
+  const fetchCountries = async () => {
+    // — локальний JSON
     setCountries(countriesData);
+
+    //— з API
+    // const response = await fetch('http://127.0.0.1:8000/api/v1/users/countries/');
+    // const data = await response.json();
+    // setCountries(data);
   };
 
-  const fetchCities = () => {
+  const fetchCities = async () => {
+    // — локальний JSON
     setCities(citiesData);
+
+    //— з API
+    // const response = await fetch('http://127.0.0.1:8000/api/v1/users/cities/');
+    // const data = await response.json();
+    // setCities(data);
   };
+
+  useEffect(() => {
+    function handleOutsideClick(event: MouseEvent) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        setIsCategoryDropdownOpen(false);
+        setIsFundingDropdownOpen(false);
+        setIsSortDropdownOpen(false);
+        setIsCountryDropdownOpen(false);
+        setIsCityDropdownOpen(false);
+        setIsTypeDropdownOpen(false);
+        setIsDreamsPerPageDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleOutsideClick);
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, []);
 
   useEffect(() => {
     fetchDreams();
@@ -83,6 +142,19 @@ const DreamsCatalog = () => {
     fetchCountries();
     fetchCities();
   }, []);
+
+  useEffect(() => {
+    if (selectedCountry) {
+      const filteredCities = citiesData.filter(
+        city => city.country.id === selectedCountry.id,
+      );
+
+      setCities(filteredCities);
+      setSelectedCity(null);
+    } else {
+      setCities(citiesData);
+    }
+  }, [selectedCountry]);
 
   useEffect(() => {
     if (activeTab === 'active') {
@@ -124,12 +196,19 @@ const DreamsCatalog = () => {
         if (maxValue !== null && goalValue > maxValue) return false;
       }
 
+      if (selectedCountry) {
+        const city = cities.find(city => city.id === dream.city_id);
+        if (!city || city.country.id !== selectedCountry.id) return false;
+      }
+
+      if (selectedCity && dream.city_id !== selectedCity.id) return false;
+
       if (selectedType) {
-        const isPrivate = !dream.to_another;
+        const isPersonal = !dream.to_another;
 
         if (
-          (selectedType === 'Private' && !isPrivate) ||
-          (selectedType === 'Collective' && isPrivate)
+          (selectedType === 'Personal' && !isPersonal) ||
+          (selectedType === 'Collective' && isPersonal)
         ) {
           return false;
         }
@@ -278,7 +357,7 @@ const DreamsCatalog = () => {
         </button>
       </div>
 
-      <div className="filter-controls">
+      <div ref={wrapperRef} className="filter-controls">
         <div className="dropdown-wrapper">
           <button
             className="filter-button"
@@ -597,8 +676,8 @@ const DreamsCatalog = () => {
                   <span>Need</span>
                 </div>
                 <div className="progress-values">
-                  <span>{collected.toLocaleString('uk-UA')}₴</span>
-                  <span>{goalAmount.toLocaleString('uk-UA')}₴</span>
+                  <span>${collected.toLocaleString('en-US')}</span>
+                  <span>${goalAmount.toLocaleString('en-US')}</span>
                 </div>
               </div>
 

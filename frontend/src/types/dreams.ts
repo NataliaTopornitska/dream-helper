@@ -37,6 +37,7 @@ export interface Dream {
   number_views: number;
   level_completed: number;
   completed_at: string | null;
+  city_id: number;
 }
 
 export interface DreamResponse {

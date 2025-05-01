@@ -323,11 +323,10 @@
       background-color: white;
       border-radius: 8px;
       padding: 3px;
-      gap: 5px;
-      font-size: 16px;
+      gap: 1px;
 
       .stat-value {
-        font-size: 18px;
+        font-size: 1px;
         color: black;
       }
 
@@ -335,23 +334,22 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 4px;
-        font-size: 12px;
+        gap: 2px;
         color: black;
+        margin-right: 2px;
 
         .stat-icon {
           visibility: visible;
           display: inline-block;
-          width: 24px;
-          height: 24px;
-          font-size: 14px;
+          width: 16px;
+          height: 16px;
         }
       }
     }
   }
 
   div.stat-item span {
-    font-size: 14px;
+    font-size: 11px;
     font-family: "Inter", sans-serif;
   }
 
