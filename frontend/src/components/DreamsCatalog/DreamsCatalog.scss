@@ -266,6 +266,37 @@
 }
 
 
+.no-dreams {
+  text-align: center;
+  padding: 100px 20px;
+
+  .no-dreams-image {
+    max-width: 300px;
+    width: 100%;
+    margin: 0 auto 20px;
+    display: block;
+  }
+
+  .no-dreams-title {
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 22px;
+    color: #000000;
+  }
+
+  .no-dreams-subtitle {
+    font-family: "Reddit Sans Condensed", sans-serif;
+    font-size: 20px;
+    color: #191919;
+    max-width: 365px;
+    text-align: center;
+    margin: 0 auto;
+  }
+}
+
+
+
+
 
 // Additional
 .dream-card {

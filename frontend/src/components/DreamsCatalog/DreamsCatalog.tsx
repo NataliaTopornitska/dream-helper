@@ -40,7 +40,6 @@ const DreamsCatalog = () => {
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [dreamsPerPage, setDreamsPerPage] = useState(8);
   const [totalPages, setTotalPages] = useState(1);
   const [pagination, setPagination] = useState({
     next: '',
@@ -55,16 +54,20 @@ const DreamsCatalog = () => {
   const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
   const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false);
   const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
-  const [isDreamsPerPageDropdownOpen, setIsDreamsPerPageDropdownOpen] =
-    useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const [selectedDreamsPerPageLabel, setSelectedDreamsPerPageLabel] =
+    useState('Dreams Per Page');
+  const [dreamsPerPage, setDreamsPerPage] = useState(8);
+  const [isDreamsPerPageDropdownOpen, setIsDreamsPerPageDropdownOpen] =
+    useState(false);
 
   const fundingRanges: FundingRange[] = fundingoalData;
 
   const sortOptions: SortOption[] = popularityData;
 
   const typesOption: string[] = typeOptions;
+  const [isSearching, setIsSearching] = useState(false);
 
   const fetchDreams = async () => {
     // локальний JSON
@@ -98,9 +101,9 @@ const DreamsCatalog = () => {
     setCountries(countriesData);
 
     //— з API
-    // const response = await fetch('http://127.0.0.1:8000/api/v1/users/countries/');
-    // const data = await response.json();
-    // setCountries(data);
+    //   const response = await fetch('http://127.0.0.1:8000/api/v1/users/countries/');
+    //   const data = await response.json();
+    //   setCountries(data);
   };
 
   const fetchCities = async () => {
@@ -108,9 +111,31 @@ const DreamsCatalog = () => {
     setCities(citiesData);
 
     //— з API
-    // const response = await fetch('http://127.0.0.1:8000/api/v1/users/cities/');
-    // const data = await response.json();
-    // setCities(data);
+    //   const response = await fetch('http://127.0.0.1:8000/api/v1/users/cities/');
+    //   const data = await response.json();
+    //   setCities(data);
+  };
+
+  // const handleDreamsPerPageChange = (value: string) => {
+  //   if (value === 'All') {
+  //     setDreamsPerPage(filteredDreams.length);
+  //   } else {
+  //     setDreamsPerPage(Number(value));
+  //   }
+  //   setSelectedDreamsPerPageLabel(value);
+  //   setIsDreamsPerPageDropdownOpen(false);
+  //   setCurrentPage(1);
+  // };
+
+  const handleDreamsPerPageChange = (size: string | number) => {
+    if (size === 'All') {
+      setDreamsPerPage(filteredDreams.length);
+    } else {
+      setDreamsPerPage(Number(size));
+    }
+    setSelectedDreamsPerPageLabel(size === 'All' ? 'All' : String(size));
+    setIsDreamsPerPageDropdownOpen(false);
+    setCurrentPage(1);
   };
 
   useEffect(() => {
@@ -161,7 +186,7 @@ const DreamsCatalog = () => {
       const activeDreams = dreams.filter(dream => dream.status === 'Active');
 
       setFilteredDreams(activeDreams);
-      setTotalPages(Math.ceil(activeDreams.length / dreamsPerPage));
+      setTotalPages(Math.ceil(activeDreams.length / 8));
     } else {
       const completedDreams = dreams.filter(
         dream => dream.status === 'Completed',
@@ -172,7 +197,7 @@ const DreamsCatalog = () => {
     }
 
     setCurrentPage(1);
-  }, [activeTab, dreams, dreamsPerPage]);
+  }, [activeTab, dreams]);
 
   const handleSearch = () => {
     const result = dreams.filter(dream => {
@@ -198,10 +223,25 @@ const DreamsCatalog = () => {
 
       if (selectedCountry) {
         const city = cities.find(city => city.id === dream.city_id);
-        if (!city || city.country.id !== selectedCountry.id) return false;
+
+        if (
+          !city ||
+          (typeof city.country === 'object'
+            ? city.country.id !== selectedCountry.id
+            : city.country !== selectedCountry.id)
+        ) {
+          return false;
+        }
       }
 
       if (selectedCity && dream.city_id !== selectedCity.id) return false;
+
+      // if (selectedCountry) {
+      //   const city = cities.find(city => city.id === dream.city_id);
+      //   if (!city || city.country.id !== selectedCountry.id) return false;
+      // }
+
+      // if (selectedCity && dream.city_id !== selectedCity.id) return false;
 
       if (selectedType) {
         const isPersonal = !dream.to_another;
@@ -256,12 +296,14 @@ const DreamsCatalog = () => {
     setSelectedCountry(null);
     setSelectedCity(null);
     setSelectedType(null);
+    setSelectedDreamsPerPageLabel('Dreams Per Page');
+    setDreamsPerPage(8);
 
     if (activeTab === 'active') {
       const activeDreams = dreams.filter(dream => dream.status === 'Active');
 
       setFilteredDreams(activeDreams);
-      setTotalPages(Math.ceil(activeDreams.length / dreamsPerPage));
+      setTotalPages(Math.ceil(activeDreams.length / 8));
     } else {
       const completedDreams = dreams.filter(
         dream => dream.status === 'Completed',
@@ -286,7 +328,7 @@ const DreamsCatalog = () => {
   };
 
   const renderPagination = () => {
-    if (totalPages <= 1) {
+    if (dreamsPerPage === filteredDreams.length || totalPages <= 1) {
       return null;
     }
 
@@ -339,6 +381,25 @@ const DreamsCatalog = () => {
 
     return text.slice(0, maxLength) + '...';
   };
+
+  const currentDreams = getCurrentDreams();
+
+  if (currentDreams.length === 0) {
+    return (
+      <div className="no-dreams">
+        <img
+          src="/dream-helper/dreams-page/none.png"
+          alt="No dreams"
+          className="no-dreams-image"
+        />
+        <p className="no-dreams-title">No dreams found just yet</p>
+        <p className="no-dreams-subtitle">
+          But every big dream starts with a small step. Maybe yours will be the
+          first?
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="dreams-catalog">
@@ -566,37 +627,18 @@ const DreamsCatalog = () => {
             className="filter-button"
             onClick={() => {
               setIsDreamsPerPageDropdownOpen(!isDreamsPerPageDropdownOpen);
-              setIsCategoryDropdownOpen(false);
-              setIsFundingDropdownOpen(false);
-              setIsSortDropdownOpen(false);
-              setIsCountryDropdownOpen(false);
-              setIsCityDropdownOpen(false);
-              setIsTypeDropdownOpen(false);
             }}
           >
-            Dreams Per Page <span className="arrow">⮟</span>
+            {selectedDreamsPerPageLabel} <span className="arrow">⮟</span>
           </button>
+
           {isDreamsPerPageDropdownOpen && (
             <div className="dropdown-menu">
               {[4, 8, 16, 'All'].map((size, index) => (
                 <div
                   key={index}
                   className="dropdown-item"
-                  onClick={() => {
-                    setDreamsPerPage(
-                      size === 'All' ? filteredDreams.length : (size as number),
-                    );
-                    setIsDreamsPerPageDropdownOpen(false);
-                    setTotalPages(
-                      Math.ceil(
-                        filteredDreams.length /
-                          (size === 'All'
-                            ? filteredDreams.length
-                            : (size as number)),
-                      ),
-                    );
-                    setCurrentPage(1);
-                  }}
+                  onClick={() => handleDreamsPerPageChange(size)}
                 >
                   {size}
                 </div>
