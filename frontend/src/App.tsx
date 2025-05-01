@@ -1,5 +1,5 @@
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Routes,
   Route,
   useLocation,
@@ -33,7 +33,7 @@ function AppContent() {
 
 function App() {
   return (
-    <Router basename="/dream-helper">
+    <Router>
       <AppContent />
     </Router>
   );
