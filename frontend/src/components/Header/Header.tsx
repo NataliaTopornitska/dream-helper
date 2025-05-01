@@ -32,7 +32,7 @@ const Header: React.FC = () => {
                   <ul className="nav-list">
                     <li className="nav-item">
                       <a
-                        href="/dream-helper/dreams"
+                        href="/dream-helper/#/dreams"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         Dreams
