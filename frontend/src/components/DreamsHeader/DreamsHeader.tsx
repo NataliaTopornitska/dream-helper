@@ -32,7 +32,7 @@ const DreamsHeader: React.FC = () => {
                   <ul className="nav-list">
                     <li className="nav-items">
                       <a
-                        href="/"
+                        href="/dream-helper/#/"
                         className="dreams-link"
                         onClick={() => setIsMenuOpen(false)}
                       >
