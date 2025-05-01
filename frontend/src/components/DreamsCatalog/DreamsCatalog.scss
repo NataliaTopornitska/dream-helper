@@ -295,6 +295,27 @@
 }
 
 
+@media (min-width: 767px) {
+  .hero {
+    padding-top: 0;
+  }
+
+  .no-dreams {
+    padding: 50px 20px;
+  }
+}
+
+@media ( min-width: 768px) and (max-width: 1024px) {
+
+.hero {
+  padding-top: 70px;
+}
+
+  .no-dreams {
+    padding: 50px 20px;
+  }
+}
+
 
 
 
