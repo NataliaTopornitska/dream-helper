@@ -1,0 +1,30 @@
+.idea
+.vscode
+build
+dist
+node_modules
+.DS_Store
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+raw_reports
+reports
+cypress/screenshots
+cypress/videos
+__pycache__
+backup_db.sqlite3
+backend/utils/__pycache__
+# Файлы окружения
+.env
+backend/.env
+
+# Кэш Python
+__pycache__/
+*.pyc
+*.pyo
+
+# База данных SQLite
+backend/db.sqlite3
+backup_dreams.json

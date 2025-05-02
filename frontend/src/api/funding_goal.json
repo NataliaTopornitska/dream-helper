@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "label": "Up to 100",
+    "value": "until_100"
+  },
+  {
+    "id": 2,
+    "label": "101–500",
+    "value": "101_500"
+  },
+  {
+    "id": 3,
+    "label": "501–1000",
+    "value": "501_1000",
+    "maxValue": 1000
+  },
+  {
+    "id": 4,
+    "label": "More than 1000",
+    "value": "more_1000"
+  }
+]

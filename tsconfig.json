@@ -1,0 +1,8 @@
+{
+  "extends": "@mate-academy/students-ts-config",
+  "include": ["frontend/src"],
+  "compilerOptions": {
+    "sourceMap": false,
+    "types": ["node"]
+  }
+}

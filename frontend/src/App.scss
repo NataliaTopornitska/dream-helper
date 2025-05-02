@@ -1,0 +1,34 @@
+.app {
+  width: 100%;
+  overflow: hidden;
+}
+
+main {
+  position: relative;
+}
+
+button {
+  font-family: "Raleway", sans-serif;
+  cursor: pointer;
+}
+
+@mixin container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.wave-bottom {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  z-index: -1;
+}
+
+.wave-top {
+  top: 0;
+}
+
+.wave-bottom {
+  bottom: 0;
+}

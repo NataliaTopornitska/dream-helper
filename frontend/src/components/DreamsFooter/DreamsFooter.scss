@@ -1,0 +1,238 @@
+.footer {
+  padding: 60px 0;
+  position: relative;
+  border-top: 1px solid #191919;
+
+  &-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 30px;
+
+    @media (min-width: 768px) and (max-width: 1023px) {
+      width: 85%;
+    }
+
+    .mobile & {
+      grid-template-columns: 1fr;
+      text-align: left;
+
+      .footer-left,
+      .footer-middle,
+      .footer-right {
+        align-items: flex-start;
+        width: 100%;
+      }
+
+      .newsletter-form {
+        align-items: flex-start;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .links-column {
+        align-items: flex-start;
+        width: 100%;
+      }
+
+      .social-links {
+        flex-direction: row;
+        justify-content: flex-end;
+        align-self: flex-end;
+        width: 100%;
+        margin-top: 20px;
+      }
+
+      .newsletter-input,
+      .newsletter-button {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+  }
+
+  &-left {
+    padding-right: 120px;
+
+    .mobile & {
+      padding-right: 0;
+      margin-bottom: 30px;
+    }
+  }
+
+  &-logo {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+
+  &-tagline {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  &-middle {
+    display: flex;
+    flex-direction: column;
+    padding-right: 40px;
+
+    .mobile & {
+      margin-bottom: 30px;
+    }
+  }
+
+  &-newsletter {
+    margin-bottom: 30px;
+
+    .newsletter-title {
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 15px;
+    }
+
+    .newsletter-text {
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 10px;
+
+      .mobile & {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    .newsletter-input {
+      width: 300px;
+      height: 46px;
+      padding: 10px 15px;
+      border: 1px solid #FFFFFF;
+      border-radius: 30px;
+      border-color: #191919;
+      font-size: 14px;
+      font-size: 17px;
+
+      .mobile & {
+        width: 100%;
+        max-width: 300px;
+        margin-bottom: 10px;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: #191919;
+      }
+    }
+
+    .newsletter-button {
+      background-color: #191919;
+      color: #fff;
+      border: none;
+      border-radius: 100px;
+      padding: 14px 24px;
+      font-weight: 500;
+      cursor: pointer;
+      font-size: 16px;
+
+      .mobile & {
+        width: 100%;
+        max-width: 300px;
+      }
+
+      &:hover {
+        background-color: #333;
+      }
+    }
+  }
+
+  &-links {
+    .links-column {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+
+      .mobile & {
+        align-items: center;
+      }
+    }
+
+    .footer-link {
+      color: #191919;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &-right {
+    .social-links {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      align-items: flex-start;
+
+      .mobile & {
+        align-items: center;
+      }
+    }
+
+    .social-link {
+      display: flex;
+      justify-content: flex-start;
+      gap: 8px;
+      color: #191919;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+      align-items: flex-start;
+
+      img {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+      }
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .footer {
+    &-container {
+      grid-template-columns: 1fr 2fr;
+    }
+
+    &-left {
+      grid-column: 1;
+    }
+
+    &-middle {
+      grid-column: 2;
+    }
+
+    &-right {
+      grid-column: 1 / span 2;
+      margin-top: 30px;
+
+      .social-links {
+        flex-direction: row;
+        justify-content: center;
+        gap: 30px;
+      }
+    }
+  }
+}

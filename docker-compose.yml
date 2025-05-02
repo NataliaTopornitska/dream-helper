@@ -1,0 +1,131 @@
+services:
+  frontend:
+    container_name: frontend
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "5173:5173"
+    env_file:
+      - .env
+    networks:
+      - dreams_net
+
+  # Backend (Django + SQLite)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - backend/.env
+    depends_on:
+      - mailhog
+      - minio
+      - stripe_cli
+    networks:
+      - dreams_net
+
+  # MailHog (SMTP Testing)
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    env_file:
+      - backend/.env
+    networks:
+      - dreams_net
+
+  # MinIO server (storage)
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    command: server --console-address ":9001" /data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    env_file:
+      - backend/.env
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://minio:9000/minio/health/live" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+     - dreams_net
+
+ # mc_setup (for MinIO setup)
+  minio_mc:
+    image: minio/mc
+    container_name: minio-dreams-mc
+    volumes:
+      - ./wait-for-it.sh:/wait-for-it.sh
+      - ./backend/set-cors.sh:/set-cors.sh
+    entrypoint: /bin/sh -c "/wait-for-it.sh minio:9000 -- /set-cors.sh && tail -f /dev/null"
+    depends_on:
+      - minio
+    networks:
+      - dreams_net
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://minio:9000/minio/health/live" ]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+
+  # Stripe CLI
+  stripe_cli:
+    image: stripe/stripe-cli
+    container_name: stripe_cli
+    env_file:
+      - backend/.env
+    networks:
+      - dreams_net
+    command: ["listen", "--forward-to", "http://host.docker.internal:8000/api/v1/webhook/"]  # webhook
+
+networks:
+  dreams_net:
+    driver: bridge
+
+volumes:
+  minio_data:
+    driver: local
+  db:
+    driver: local
+
+
+#  db:
+#    image: postgres:latest
+#    environment:
+#      POSTGRES_USER: <>
+#      POSTGRES_PASSWORD: <>
+#      POSTGRES_DB: dreams
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data
+#    networks:
+#      - dreams_net
+
+#  pgadmin:
+#    image: dpage/pgadmin4
+#    container_name: pgadmin_container
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: <>
+#      PGADMIN_DEFAULT_PASSWORD: <>
+#    ports:
+#      - "8080:80"
+#    networks:
+#      - dreams_net
+#    depends_on:
+#      - db
+
+#volumes:
+#  postgres_data:

@@ -1,0 +1,109 @@
+.vision {
+  padding: 60px 0;
+
+  &-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  &-content {
+    background-color: #fff;
+    border-radius: 30px;
+    padding: 50px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.5s ease;
+    border: 1px solid #191919;
+
+    &:hover {
+      transform: scale(1.02);
+    }
+
+    &.mobile {
+      flex-direction: column;
+      padding: 30px;
+    }
+  }
+
+  &-image {
+    flex: 0 0 40%;
+    margin-right: 60px;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+
+    .mobile & {
+      margin-right: 0;
+      margin-bottom: 30px;
+      width: 100%;
+    }
+  }
+
+  &-text {
+    flex: 1;
+
+    .mobile & {
+      width: 100%;
+    }
+  }
+
+  &-title {
+    font-size: 33px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #191919;
+
+    .mobile & {
+      font-size: 28px;
+      text-align: center;
+    }
+  }
+
+  &-description {
+    font-family: "Reddit Sans Condensed", sans-serif;
+    color: #464646;
+    font-size: 18px;
+    line-height: 1.6;
+    margin-right: 48px;
+
+    .mobile & {
+      font-size: 16px;
+      text-align: center;
+      margin-right: 0;
+    }
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .vision {
+    &-content {
+      padding: 40px;
+    }
+
+    &-image {
+      margin-right: 40px;
+    }
+
+    &-title {
+      font-size: 32px;
+    }
+
+    &-description {
+      font-size: 16px;
+    }
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 767px) {
+  .vision {
+    &-content {
+      padding: 30px;
+    }
+  }
+}
