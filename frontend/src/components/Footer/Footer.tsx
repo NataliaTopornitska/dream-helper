@@ -26,6 +26,7 @@ const Footer: React.FC = () => {
         setEmail('');
       } else {
         const data = await response.json();
+
         alert(`Failed: ${data.detail || 'Something went wrong'}`);
       }
     } catch (error) {
@@ -89,7 +90,8 @@ const Footer: React.FC = () => {
               rel="noopener noreferrer"
             >
               <img
-                src="/dream-helper/img/home-page/instagram.png"
+
+                src="/dream-helper/home-page/instagram.png"
                 alt="Instagram"
               />{' '}
               Instagram
@@ -100,10 +102,7 @@ const Footer: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img
-                src="/dream-helper/img/home-page/facebook.png"
-                alt="Facebook"
-              />{' '}
+              <img src="/dream-helper/home-page/facebook.png" alt="Facebook" />{' '}
               Facebook
             </a>
             <a
@@ -113,7 +112,7 @@ const Footer: React.FC = () => {
               rel="noopener noreferrer"
             >
               <img
-                src="/dream-helper/img/home-page/pinterest.png"
+                src="/dream-helper/home-page/pinterest.png"
                 alt="Pinterest"
               />{' '}
               Pinterest

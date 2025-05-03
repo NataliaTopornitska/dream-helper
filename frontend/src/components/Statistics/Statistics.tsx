@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Statistics.scss';
 
-// import statisticsData from '../../api/statistics.json';
-
 const Statistics: React.FC = () => {
   const [statistics, setStatistics] = useState({
     totalDreams: 0,
@@ -11,18 +9,6 @@ const Statistics: React.FC = () => {
     totalDonations: 0,
   });
 
-//   useEffect(() => {
-//     if (statisticsData && statisticsData.length > 0) {
-//       const data = statisticsData[0];
-//
-//       setStatistics({
-//         totalDreams: data.total_dreams,
-//         people: data.people,
-//         anonymousDonations: data.anonymous_donations,
-//         totalDonations: data.total_donations,
-//       });
-//     }
-//   }, []);
   useEffect(() => {
     async function fetchStatistics() {
       try {

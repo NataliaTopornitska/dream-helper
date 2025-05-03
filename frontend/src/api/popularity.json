@@ -1,14 +1,14 @@
 [
-  { "id": 1, "label": "Goal", "field": "goal", "direction": "asc" },
-  { "id": 2, "label": "Goal (descending)", "field": "goal", "direction": "desc" },
-  { "id": 3, "label": "Created at", "field": "created_at", "direction": "asc" },
-  { "id": 4, "label": "Created at (descending)", "field": "created_at", "direction": "desc" },
-  { "id": 5, "label": "Number of views", "field": "number_views", "direction": "asc" },
-  { "id": 6, "label": "Number of views (descending)", "field": "number_views", "direction": "desc" },
-  { "id": 7, "label": "Number of donations", "field": "number_donations", "direction": "asc" },
-  { "id": 8, "label": "Number of donations (descending)", "field": "number_donations", "direction": "desc" },
-  { "id": 9, "label": "Total amount of donations", "field": "total_amount_donations", "direction": "asc" },
-  { "id": 10, "label": "Total amount of donations (descending)", "field": "total_amount_donations", "direction": "desc" },
-  { "id": 11, "label": "Number of comments", "field": "number_comments", "direction": "asc" },
-  { "id": 12, "label": "Number of comments (descending)", "field": "number_comments", "direction": "desc" }
+  { "id": 1, "label": "Goal 🠕", "field": "goal", "direction": "asc" },
+  { "id": 2, "label": "Goal 🠗", "field": "goal", "direction": "desc" },
+  { "id": 3, "label": "Created 🠕", "field": "created_at", "direction": "asc" },
+  { "id": 4, "label": "Created 🠗", "field": "created_at", "direction": "desc" },
+  { "id": 5, "label": "Views 🠕", "field": "number_views", "direction": "asc" },
+  { "id": 6, "label": "Views 🠗", "field": "number_views", "direction": "desc" },
+  { "id": 7, "label": "Donations 🠕", "field": "number_donations", "direction": "asc" },
+  { "id": 8, "label": "Donations 🠗", "field": "number_donations", "direction": "desc" },
+  { "id": 9, "label": "Total 🠕", "field": "total_amount_donations", "direction": "asc" },
+  { "id": 10, "label": "Total 🠗", "field": "total_amount_donations", "direction": "desc" },
+  { "id": 11, "label": "Comments 🠕", "field": "number_comments", "direction": "asc" },
+  { "id": 12, "label": "Comments 🠗", "field": "number_comments", "direction": "desc" }
 ]

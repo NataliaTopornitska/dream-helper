@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+
 import './DreamsCatalog.scss';
 import {
   Dream,
@@ -8,12 +9,15 @@ import {
   Country,
   City,
 } from '../../types/dreams';
+
 import fundingoalData from '../../api/funding_goal.json';
 import popularityData from '../../api/popularity.json';
 import typeOptions from '../../api/type.json';
 
 const DreamsCatalog = () => {
+
   const [activeTab, setActiveTab] = useState<'Active' | 'Completed'>('Active');
+
   const [dreams, setDreams] = useState<Dream[]>([]);
   const [filteredDreams, setFilteredDreams] = useState<Dream[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -30,6 +34,7 @@ const DreamsCatalog = () => {
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+
   const [dreamsPerPage, setDreamsPerPage] = useState(8);
   const [pagination, setPagination] = useState({
     next: '',
@@ -44,10 +49,12 @@ const DreamsCatalog = () => {
   const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
   const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false);
   const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
+
   const [isDreamsPerPageDropdownOpen, setIsDreamsPerPageDropdownOpen] =
     useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+
   const fundingRanges: FundingRange[] = fundingoalData;
 
   const sortOptions: SortOption[] = popularityData;
@@ -116,7 +123,6 @@ const DreamsCatalog = () => {
       fetchCities(selectedCountry ? selectedCountry.id.toString(): "");  // Если `selectedCountry` нет, передаём ""
     }
   }, [selectedCountry]);
-  
 
   useEffect(() => {
     function handleOutsideClick(event: MouseEvent) {
@@ -207,7 +213,7 @@ const DreamsCatalog = () => {
       })
       .catch(error => console.error("Ошибка запроса:", error));  
   };  
-  
+
   const resetFilters = () => {
     setSelectedCategory(null);
     setSelectedFundingRange(null);
@@ -276,6 +282,7 @@ const DreamsCatalog = () => {
 
     return text.slice(0, maxLength) + '...';
   };
+
 
 
   return (
@@ -514,6 +521,7 @@ const DreamsCatalog = () => {
           >
             Dreams Per Page <span className="arrow">⮟</span>
           </button>
+
           {isDreamsPerPageDropdownOpen && (
             <div className="dropdown-menu">
               {[4, 8, 16, 'All'].map((size, index) => (
@@ -578,6 +586,7 @@ const DreamsCatalog = () => {
                   onError={(e) => {
                     console.log("Image not found for dream:", dream.id);
                     (e.target as HTMLImageElement).src = "/dream-helper/home-page/a-dream.png";
+
                   }}
                 />
                 <div className="dream-stats">

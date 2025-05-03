@@ -3,10 +3,13 @@ import './Header.scss';
 import { Menu, X } from 'lucide-react';
 import { useIsMobile } from '../../use-mobile';
 import { Link } from 'react-router-dom';
+import AuthModal from '../AuthModal/AuthModal';
 
 const Header: React.FC = () => {
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'register'>('register');
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -20,6 +23,7 @@ const Header: React.FC = () => {
             DreamHelper
           </Link>
         </h1>
+
         {isMobile ? (
           <>
             <button className="menu-toggle" onClick={toggleMenu}>
@@ -32,7 +36,7 @@ const Header: React.FC = () => {
                   <ul className="nav-list">
                     <li className="nav-item">
                       <a
-                        href="/dream-helper/dreams"
+                        href="/dream-helper/#/dreams"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         Dreams
@@ -47,7 +51,10 @@ const Header: React.FC = () => {
                 </nav>
                 <button
                   className="login-button"
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={() => {
+                    setIsAuthModalOpen(true);
+                    setAuthMode('register');
+                  }}
                 >
                   Log In or Sign Up
                 </button>
@@ -55,23 +62,33 @@ const Header: React.FC = () => {
             )}
           </>
         ) : (
-          <>
-            <div className="nav-block">
-              <nav className="nav">
-                <ul className="nav-list">
-                  <li className="nav-item">
-                    <Link to="/dreams">Dreams</Link>
-                  </li>
-                  <li className="nav-item">
-                    <a href="#donors">Top Donors</a>
-                  </li>
-                </ul>
-              </nav>
-              <button className="login-button">Log In or Sign Up</button>
-            </div>
-          </>
+          <div className="nav-block">
+            <nav className="nav">
+              <ul className="nav-list">
+                <li className="nav-item">
+                  <Link to="/dreams">Dreams</Link>
+                </li>
+                <li className="nav-item">
+                  <a href="">Top Donors</a>
+                </li>
+              </ul>
+            </nav>
+            <button
+              className="login-button"
+              onClick={() => setIsAuthModalOpen(true)}
+            >
+              Log In or Sign Up
+            </button>
+          </div>
         )}
       </div>
+
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        authMode={authMode}
+        setAuthMode={setAuthMode}
+      />
     </header>
   );
 };
