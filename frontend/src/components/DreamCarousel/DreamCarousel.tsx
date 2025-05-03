@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import './DreamCarousel.scss';
 import randomDreams from '../../api/random_dreams.json';
 import { useIsMobile } from '../../use-mobile';
+import SupportModal from '../SupportModal/SupportModal';
 
 export interface Dream {
   id: number;
@@ -26,6 +27,7 @@ const DreamCarousel: React.FC = () => {
   const [dreams, setDreams] = useState<Dream[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const isMobile = useIsMobile();
+  const [activeDream, setActiveDream] = useState<Dream | null>(null);
 
   const shuffleArray = (array: Dream[]) => {
     const newArray = [...array];
@@ -159,11 +161,9 @@ const DreamCarousel: React.FC = () => {
                     <img
                       src={dream.thumbnail_url || 'home-page/a-dream.png'}
                       alt={dream.title}
-                      onLoad={event => {
-                        const img = event.currentTarget;
-
-                        img.classList.add('loaded');
-                      }}
+                      onLoad={event =>
+                        event.currentTarget.classList.add('loaded')
+                      }
                       onError={event => {
                         const img = event.currentTarget;
 
@@ -213,20 +213,34 @@ const DreamCarousel: React.FC = () => {
                       <span>Need</span>
                     </div>
                     <div className="progress-values">
-                      <span>{collected.toLocaleString('uk-UA')}₴</span>
-                      <span>{goalAmount.toLocaleString('uk-UA')}₴</span>
+                      <span>{collected.toLocaleString('en-US')}$</span>
+                      <span>{goalAmount.toLocaleString('en-US')}$</span>
                     </div>
                   </div>
-                  <button className="dream-support-btn">Support</button>
+                  <button
+                    className="dream-support-btn"
+                    onClick={() => setActiveDream(dream)}
+                  >
+                    Support
+                  </button>
                 </div>
               );
             })}
           </div>
+
           <button className="carousel-nav next" onClick={handleNext}>
             &gt;
           </button>
         </div>
       </div>
+
+      {activeDream && (
+        <SupportModal
+          isOpen={true}
+          dream={activeDream}
+          onClose={() => setActiveDream(null)}
+        />
+      )}
     </section>
   );
 };
