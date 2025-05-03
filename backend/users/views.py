@@ -239,8 +239,11 @@ class CountryView(
 
     def get_permissions(self):
         if self.action in [
-            "create",
             "list",
+        ]:
+            return [AllowAny()]
+        if self.action in [
+            "create",
         ]:
             return [IsAuthenticated()]
         return [IsAdminUser()]
@@ -264,9 +267,12 @@ class CityView(
     def get_permissions(self):
         if self.action in [
             "create",
-            "list",
         ]:
             return [IsAuthenticated()]
+        if self.action in [
+            "list",
+        ]:
+            return [AllowAny()]
         return [IsAdminUser()]
 
     def get_serializer_class(self):
