@@ -72,6 +72,11 @@ class DreamFilter(django_filters.FilterSet):
         super().__init__(*args, **kwargs)
         # if country, get cities only of this country
         country_id = self.data.get("country")
+        city_id = self.data.get("city")
+        if city_id:
+            self.filters["city"].queryset = City.objects.filter(
+                    id=city_id
+                )
         if country_id:
             try:
                 country_id = int(country_id)
@@ -102,8 +107,21 @@ class DreamFilter(django_filters.FilterSet):
         )
 
     def filter_city(self, queryset, name, value):
+        # get pk of city
+        city_pk = value.pk if hasattr(value, "pk") else value
+
+        # annotate city for dreamer
+        # & city for owner (in his profile)
+        queryset = queryset.annotate(
+            dreamer_city_id=F("dreamer__city_id"),
+            owner_city_id=F("owner__userprofile__city_id"),
+        )
+
+        # if dreamer not null - using this value
+        # else check owner (his profile)
         return queryset.filter(
-            Q(dreamer__city=value) | Q(owner__userprofile__city=value)
+            Q(dreamer__isnull=False, dreamer_city_id=city_pk)
+            | Q(dreamer__isnull=True, owner_city_id=city_pk)
         )
 
     def filter_dream_type(self, queryset, name, value):

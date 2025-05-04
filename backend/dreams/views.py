@@ -69,7 +69,7 @@ class CategoryView(
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
-    # mixins.DestroyModelMixin,
+    mixins.DestroyModelMixin,
     GenericViewSet,
 ):
     queryset = Category.objects.all()
@@ -78,13 +78,11 @@ class CategoryView(
 
     def get_permissions(self):
         if self.action in (
-            "create",
-        ):
-            return [IsAuthenticated()]
-        if self.action in (
             "list",
         ):
             return [AllowAny()]
+        if self.action in ("create",):  # create only AuthUser
+            return [IsAuthenticated()]
         return [IsAdminUser()]
 
 
