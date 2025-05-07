@@ -57,7 +57,7 @@ const DreamsCatalog = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [selectedDreamsPerPageLabel, setSelectedDreamsPerPageLabel] =
-    useState('Dreams Per Page');
+    useState('Per Page');
   const [dreamsPerPage, setDreamsPerPage] = useState(8);
   const [isDreamsPerPageDropdownOpen, setIsDreamsPerPageDropdownOpen] =
     useState(false);
@@ -296,7 +296,7 @@ const DreamsCatalog = () => {
     setSelectedCountry(null);
     setSelectedCity(null);
     setSelectedType(null);
-    setSelectedDreamsPerPageLabel('Dreams Per Page');
+    setSelectedDreamsPerPageLabel('Per Page');
     setDreamsPerPage(8);
 
     if (activeTab === 'active') {
