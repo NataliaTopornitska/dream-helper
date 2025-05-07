@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AuthModal.scss';
 
 interface AuthModalProps {
@@ -14,29 +14,50 @@ const AuthModal: React.FC<AuthModalProps> = ({
   authMode,
   setAuthMode,
 }) => {
-  const [email, setEmail] = useState('');
+  const [credential, setCredential] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [activationMessage, setActivationMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    setCredential('');
+    setPassword('');
+  }, [authMode]);
+
+  useEffect(() => {
+    if (activationMessage) {
+      const timer = setTimeout(() => {
+        setActivationMessage('');
+        setAuthMode('login');
+        onClose();
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [activationMessage, setAuthMode]);
 
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      setEmailError('');
-
+    if (authMode === 'register' && (!credential || !/\S+@\S+\.\S+/.test(credential))) {
+      setEmailError('Please enter a valid email');
       return;
     }
+
+    setEmailError('');
+    setIsSubmitting(true);
 
     const url =
       authMode === 'register'
         ? 'http://127.0.0.1:8000/api/v1/users/register/'
         : 'http://127.0.0.1:8000/api/v1/users/login/';
 
-    setIsSubmitting(true);
+    const body =
+      authMode === 'register'
+        ? { email: credential, password }
+        : { username: credential, password };
 
     try {
       const response = await fetch(url, {
@@ -44,10 +65,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+        body: JSON.stringify(body),
       });
 
       if (!response.ok) {
@@ -55,14 +73,16 @@ const AuthModal: React.FC<AuthModalProps> = ({
       }
 
       const data = await response.json();
-
       console.log(data);
 
       if (authMode === 'register') {
         setActivationMessage(
-          'На ваш емейл надіслано код активації. Будь ласка, активуйте акаунт протягом 1 години, щоб увійти.',
+          'An activation code has been sent to your email. Please activate your account within 1 hour to log in.'
         );
+        setCredential('');
+        setPassword('');
       } else {
+        localStorage.setItem('authToken', data.token);
         window.location.href = '/dashboard';
       }
     } catch (error) {
@@ -74,7 +94,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal-content" onClick={e => e.stopPropagation()}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h2>{authMode === 'register' ? 'Sign Up' : 'Log In'}</h2>
 
         {activationMessage ? (
@@ -82,64 +102,66 @@ const AuthModal: React.FC<AuthModalProps> = ({
             <p>{activationMessage}</p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit}>
-            <label>Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="Enter your email address"
-              required
-            />
-            {emailError && <div className="error">{emailError}</div>}
+          <>
+            <form onSubmit={handleSubmit}>
+              <label>{authMode === 'register' ? 'Email' : 'Username'}</label>
+              <input
+                type={authMode === 'register' ? 'email' : 'text'}
+                value={credential}
+                onChange={(e) => setCredential(e.target.value)}
+                placeholder={
+                  authMode === 'register'
+                    ? 'Enter your email address'
+                    : 'Enter your username'
+                }
+                required
+              />
+              {emailError && <div className="error">{emailError}</div>}
 
-            <label>Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              required
-            />
+              <label>Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                required
+              />
 
-            <button
-              className="signup-btn"
-              type="submit"
-              disabled={isSubmitting}
-            >
-              {authMode === 'register' ? 'Sign Up' : 'Log In'}
-            </button>
-          </form>
+              <button className="signup-btn" type="submit" disabled={isSubmitting}>
+                {authMode === 'register' ? 'Sign Up' : 'Log In'}
+              </button>
+            </form>
+
+            <p className="login-link">
+              {authMode === 'register' ? (
+                <span>
+                  Have an account?{' '}
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setAuthMode('login');
+                    }}
+                  >
+                    Log In
+                  </a>
+                </span>
+              ) : (
+                <span>
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setAuthMode('register');
+                    }}
+                  >
+                    Create an account
+                  </a>
+                </span>
+              )}
+            </p>
+          </>
         )}
-
-        <p className="login-link">
-          {authMode === 'register' ? (
-            <span>
-              Have an account?{' '}
-              <a
-                href="#"
-                onClick={e => {
-                  e.preventDefault();
-                  setAuthMode('login');
-                }}
-              >
-                Log In
-              </a>
-            </span>
-          ) : (
-            <span>
-              <a
-                href="#"
-                onClick={e => {
-                  e.preventDefault();
-                  setAuthMode('register');
-                }}
-              >
-                Create an account
-              </a>
-            </span>
-          )}
-        </p>
       </div>
     </div>
   );

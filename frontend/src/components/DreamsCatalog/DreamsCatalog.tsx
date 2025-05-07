@@ -51,16 +51,19 @@ const DreamsCatalog = () => {
   const fundingRanges: FundingRange[] = fundingoalData;
 
   const sortOptions: SortOption[] = popularityData;
+  const [selectedPerPage, setSelectedPerPage] = useState<string | number>('Per Page');
+  const currentPageNumber = currentPage || 1;
+  const totalPages = pagination.num_pages;
 
   const fetchDreams = async () => {
     const response = await fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams/?status=${activeTab}`);
     const data = await response.json();
-  
-    console.log("API Response:", data); // Проверяем, что API возвращает данные
-  
-    setDreams(data.results);  
-    setFilteredDreams(data.results); // Загружаем сразу, чтобы не было пустого состояния
-  
+
+    console.log("API Response:", data);
+
+    setDreams(data.results);
+    setFilteredDreams(data.results);
+
     setPagination({
       next: data.next || "",
       previous: data.previous || "",
@@ -68,7 +71,7 @@ const DreamsCatalog = () => {
       num_pages: data.num_pages
     });
   };
-  
+
 
   const fetchCategories = async () => {
     const response = await fetch('http://127.0.0.1:8000/api/v1/dreamhelper/categories/');
@@ -80,18 +83,19 @@ const DreamsCatalog = () => {
   const fetchCountries = async () => {
     const response = await fetch('http://127.0.0.1:8000/api/v1/users/countries/');
     const data = await response.json();
+
     setCountries(data);
   };
 
-  const fetchCities = async (country: string = "") => { // Значение по умолчанию — пустая строка
+  const fetchCities = async (country: string = "") => {
     const response = await fetch(`http://127.0.0.1:8000/api/v1/users/cities/?country=${country}`);
     const data = await response.json();
     setCities(data);
   };
 
   useEffect(() => {
-    fetchCities(""); // Загружаем ВСЕ города при первой загрузке
-  }, []); // Пустой массив означает вызов `fetchCities()` только при первичной загрузке
+    fetchCities("");
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -101,22 +105,23 @@ const DreamsCatalog = () => {
         setIsSortDropdownOpen(false);
       }
     }
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);  
+  }, []);
 
   useEffect(() => {
-    fetchDreams(); // Загружаем мечты
+    fetchDreams();
     fetchCategories();
     fetchCountries();
-  }, [activeTab]); // Теперь API загружается один раз при рендере и при смене вкладки
-  
+  }, [activeTab]);
+
   useEffect(() => {
-    if (selectedCountry) { 
-      fetchCities(selectedCountry ? selectedCountry.id.toString(): "");  // Если `selectedCountry` нет, передаём ""
+    if (selectedCountry) {
+      fetchCities(selectedCountry ? selectedCountry.id.toString(): "");
     }
   }, [selectedCountry]);
-  
+
 
   useEffect(() => {
     function handleOutsideClick(event: MouseEvent) {
@@ -145,69 +150,68 @@ const DreamsCatalog = () => {
     if (dreams.length > 0) {
       console.log("Updated filteredDreams:", dreams);
       setFilteredDreams(dreams);
-  
+
       setPagination({
-        next: pagination.next, // Используем новое значение API
+        next: pagination.next,
         previous: pagination.previous,
         count: pagination.count,
-        num_pages: pagination.num_pages, // Загружаем из API
+        num_pages: pagination.num_pages,
       });
     }
   }, [dreams]);
-  
-  useEffect(() => {                                             ///////////////////////////////////////diagnoz
-    console.log("Updated filteredDreams:", filteredDreams);  
+
+  useEffect(() => {
+    console.log("Updated filteredDreams:", filteredDreams);
   }, [filteredDreams]);
-  
+
   const handleSearch = () => {
     const queryParams = new URLSearchParams();
-  
+
     if (selectedCategory) queryParams.append("category", String(selectedCategory.id));
-  
-    // ❌ Если выбран город, НЕ передавать страну
+
     if (!selectedCity && selectedCountry) {
       queryParams.append("country", String(selectedCountry.id));
     }
-  
+
     if (selectedCity) {
       queryParams.append("city", String(selectedCity.id));
     }
-  
+
     if (selectedType) {
       queryParams.append("dream_type", selectedType === "Collective" ? "True" : "False");
     }
-  
+
     if (selectedFundingRange) {
-      queryParams.append("goal_range", selectedFundingRange?.value || ""); // Берем value напрямую
+      queryParams.append("goal_range", selectedFundingRange?.value || "");
     }
-  
+
     if (selectedSortOption) {
       const sortParam = selectedSortOption.direction === "asc"
         ? selectedSortOption.field
         : `-${selectedSortOption.field}`;
       queryParams.append("popularity", sortParam);
     }
-  
+
     queryParams.append("status", activeTab);
     queryParams.append("page", currentPage.toString());
     queryParams.append("page_size", dreamsPerPage.toString());
-  
+
     fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams?${queryParams.toString()}`)
       .then(response => response.json())
       .then(data => {
-        console.log("API Response:", data.results); // Проверяем новые данные
-        setFilteredDreams(data.results); // Загружаем мечты
+        console.log("API Response:", data.results);
+        setFilteredDreams(data.results);
         setPagination({
           next: data.next || "",
           previous: data.previous || "",
           count: data.count,
           num_pages: data.num_pages
-        }); // Обновляем пагинацию
+        });
         console.log("Updated pagination with filters:", pagination);
       })
-      .catch(error => console.error("Ошибка запроса:", error));  
-  };  
-  
+      .catch(error => console.error("Ошибка запроса:", error));
+  };
+
   const resetFilters = () => {
     setSelectedCategory(null);
     setSelectedFundingRange(null);
@@ -215,36 +219,47 @@ const DreamsCatalog = () => {
     setSelectedCountry(null);
     setSelectedCity(null);
     setSelectedType(null);
-    setCurrentPage(1); // Возвращаемся на первую страницу
-    
-    fetchDreams(); // Повторно загружаем данные с сервера, чтобы восстановить pagination
-    fetchCities(""); // Запрашиваем все города
-  };  
+    setCurrentPage(1);
+    fetchDreams();
+    fetchCities("");
+    setSelectedPerPage('Per Page');
+    setDreamsPerPage(8);
+    setCurrentPage(1);
+  };
 
   const handlePageChange = (pageUrl: string) => {
     if (pageUrl) {
       fetch(pageUrl)
         .then(response => response.json())
         .then(data => {
-          console.log("API Response:", data); // Проверяем API-ответ
-  
+          console.log("API Response:", data);
+
           setFilteredDreams(data.results);
           setPagination({
-            next: data.next, // Обновляем ссылку на следующую страницу
-            previous: data.previous, // Обновляем ссылку на предыдущую страницу
+            next: data.next,
+            previous: data.previous,
             count: data.count,
-            num_pages: data.num_pages
+            num_pages: data.num_pages,
           });
+          const pageNumber = new URL(pageUrl).searchParams.get('page');
+
+          if (pageNumber) {
+            setCurrentPage(Number(pageNumber));
+          } else if (pagination.previous && pageUrl === pagination.previous) {
+            setCurrentPage(currentPage - 1);
+          } else if (pagination.next && pageUrl === pagination.next) {
+            setCurrentPage(currentPage + 1);
+          }
         })
         .catch(error => console.error("Ошибка запроса:", error));
     }
-  };  
+  };
 
-  console.log("pagination:", pagination);    //////////////////////////////////
+  console.log("pagination:", pagination);
 
   const renderPagination = () => {
-    if (pagination.count === 0) { return null; } // Проверяем по количеству записей, а не по URL
-  
+    if (pagination.count === 0) { return null; }
+
     return (
       <div className="pagination">
         <button
@@ -254,9 +269,11 @@ const DreamsCatalog = () => {
         >
           &lt;
         </button>
-    
-        <span> *** </span> {/* Отображает текущую страницу */}
-    
+
+        <span>
+          {currentPage} / {pagination.num_pages}
+        </span>
+
         <button
           className="pagination-arrow"
           disabled={!pagination.next}
@@ -265,10 +282,9 @@ const DreamsCatalog = () => {
           &gt;
         </button>
       </div>
-    );    
+    );
   };
-  
-  
+
   const truncateText = (text: string, maxLength: number) => {
     if (text.length <= maxLength) {
       return text;
@@ -276,7 +292,6 @@ const DreamsCatalog = () => {
 
     return text.slice(0, maxLength) + '...';
   };
-
 
   return (
     <div className="dreams-catalog">
@@ -512,7 +527,7 @@ const DreamsCatalog = () => {
               setIsTypeDropdownOpen(false);
             }}
           >
-            Dreams Per Page <span className="arrow">⮟</span>
+            {selectedPerPage} <span className="arrow">⮟</span>
           </button>
           {isDreamsPerPageDropdownOpen && (
             <div className="dropdown-menu">
@@ -522,11 +537,12 @@ const DreamsCatalog = () => {
                   className="dropdown-item"
                   onClick={() => {
                     const newPageSize = size === "All" ? 10000 : (size as number);
+
+                    setSelectedPerPage(size);
                     setDreamsPerPage(newPageSize);
                     setIsDreamsPerPageDropdownOpen(false);
                     setCurrentPage(1);
-                    
-                    // Делаем новый запрос в API с выбранным количеством элементов на странице
+
                     fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams?page_size=${newPageSize}`)
                       .then(response => response.json())
                       .then(data => {
@@ -535,7 +551,7 @@ const DreamsCatalog = () => {
                           next: data.next,
                           previous: data.previous,
                           count: data.count,
-                          num_pages: data.num_pages // Теперь берём актуальные данные из API
+                          num_pages: data.num_pages
                         });
                       })
                       .catch(error => console.error("Ошибка запроса:", error));
@@ -634,4 +650,3 @@ const DreamsCatalog = () => {
 };
 
 export default DreamsCatalog;
-

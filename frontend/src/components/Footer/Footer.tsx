@@ -105,18 +105,6 @@ const Footer: React.FC = () => {
               <img src="/dream-helper/home-page/facebook.png" alt="Facebook" />{' '}
               Facebook
             </a>
-            <a
-              href="https://www.pinterest.com"
-              className="social-link"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src="/dream-helper/home-page/pinterest.png"
-                alt="Pinterest"
-              />{' '}
-              Pinterest
-            </a>
           </div>
         </div>
       </div>

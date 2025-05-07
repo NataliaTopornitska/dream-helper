@@ -7,7 +7,7 @@
   &-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 60px 20px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -27,7 +27,7 @@
 }
 
 .hero1 {
-  padding-top: 20px;
+  padding-top: 50px;
 }
 
 .dreams-title {
@@ -102,6 +102,10 @@ line-height: 1.2;
    max-height: 250px;
   }
 
+  .hero-container {
+    padding-top: 20px;
+  }
+
   button.btn {
     &-outline {
       font-size: 15px;
@@ -126,5 +130,9 @@ line-height: 1.2;
     &-solid {
       padding: 10px 30px;
     }
+  }
+
+  .hero-container {
+    padding-top: 20px;
   }
 }

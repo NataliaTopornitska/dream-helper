@@ -9,7 +9,7 @@ const Header: React.FC = () => {
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authMode, setAuthMode] = useState<'login' | 'register'>('register');
+  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -53,7 +53,7 @@ const Header: React.FC = () => {
                   className="login-button"
                   onClick={() => {
                     setIsAuthModalOpen(true);
-                    setAuthMode('register');
+                    setAuthMode('login');
                   }}
                 >
                   Log In or Sign Up
