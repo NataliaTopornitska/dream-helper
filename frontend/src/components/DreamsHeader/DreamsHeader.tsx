@@ -67,7 +67,7 @@ const DreamsHeader: React.FC = () => {
               <nav className="nav">
                 <ul className="nav-list">
                   <li className="nav-item">
-                    <Link to="/dreams">Dreams</Link>
+                    <Link to="/dream-helper/#/dreams">Dreams</Link>
                   </li>
                   <li className="nav-item">
                     <a href="">Top Donors</a>

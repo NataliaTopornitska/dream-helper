@@ -36,8 +36,8 @@
     gap: 10px;
     margin-bottom: 60px;
     align-items: center;
-    // flex-wrap: wrap;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
+    // flex-wrap: nowrap;
 
     .dropdown-wrapper {
       position: relative;
@@ -306,7 +306,7 @@
 }
 
 
-@media (min-width: 767px) {
+@media (max-width: 767px) {
   .hero {
     padding-top: 0;
   }
@@ -315,13 +315,21 @@
     padding: 50px 20px;
   }
 
-  .filter-controls {
-    flex-wrap: wrap;
-  }
+  // .filter-controls {
+  //   flex-wrap: wrap;
+  //   // width: 100%;
+  //   gap: 10px;
+  // }
 
     .filter-button {
       white-space: normal;
       overflow: visible;
+      // max-width: 100%;
+      // flex: 1 1 auto;
+    }
+
+    .pagination {
+      margin-bottom: 60px;
     }
 }
 
