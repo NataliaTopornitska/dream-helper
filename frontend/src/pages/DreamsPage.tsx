@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import DreamsHero from '../../components/DreamsHero/DreamsHero';
-import AllDreams from '../../components/DreamsCatalog/DreamsCatalog';
+import DreamsHero from '../components/DreamsHero/DreamsHero';
+import AllDreams from '../components/DreamsCatalog/DreamsCatalog';
 
 const DreamsPage: React.FC = () => {
   useEffect(() => {
