@@ -1,0 +1,42 @@
+.dreamDetails {
+  padding: 2rem;
+}
+
+.header {
+  display: flex;
+  gap: 2rem;
+}
+
+.dreamImage {
+  width: 60%;
+  border-radius: 12px;
+}
+
+.sidebar {
+  margin-top: 2rem;
+}
+
+.infoCard {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.progressBar {
+  height: 10px;
+  background: #eee;
+  margin: 0.5rem 0;
+}
+
+.progressFill {
+  height: 100%;
+  background: orange;
+  width: 0;
+  transition: width 0.3s ease;
+}
+
+.dream-card-link {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}

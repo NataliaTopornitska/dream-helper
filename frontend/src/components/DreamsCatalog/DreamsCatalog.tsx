@@ -11,6 +11,7 @@ import {
 import fundingoalData from '../../api/funding_goal.json';
 import popularityData from '../../api/popularity.json';
 import typeOptions from '../../api/type.json';
+import { Link } from 'react-router-dom';
 
 const DreamsCatalog = () => {
   const [activeTab, setActiveTab] = useState<'Active' | 'Completed'>('Active');
@@ -586,6 +587,7 @@ const DreamsCatalog = () => {
           return (
             <div key={dream.id} className="dream-card">
               <div className="dream-image">
+                <Link to={`/dreams/${dream.id}`}>
                 <img
                   src={dream.thumbnail_url || "/home-page/a-dream.png"}
                   alt={dream.title}
@@ -596,6 +598,7 @@ const DreamsCatalog = () => {
                     (e.target as HTMLImageElement).src = "/dream-helper/home-page/a-dream.png";
                   }}
                 />
+                </Link>
                 <div className="dream-stats">
                   <div className="stat-item">
                     <img
@@ -615,8 +618,12 @@ const DreamsCatalog = () => {
                   </div>
                 </div>
               </div>
-
-              <h3 className="dream-title">{dream.title}</h3>
+  <h3 className="dream-title">
+                <Link to={`/dreams/${dream.id}`} className="dream-title-link">
+                  {dream.title}
+                </Link>
+              </h3>
+              {/* <h3 className="dream-title">{dream.title}</h3> */}
               <p className="dream-content">
                 {truncateText(dream.content, 140)}
               </p>

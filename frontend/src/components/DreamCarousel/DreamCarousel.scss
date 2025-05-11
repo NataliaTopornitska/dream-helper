@@ -177,6 +177,15 @@
     color: #191919;
   }
 
+    .dream-title-link {
+  text-decoration: none;
+  color: inherit;
+
+  // &:hover {
+  //   color: #555;
+  // }
+}
+
   .dream-content {
     font-family: "Inter", sans-serif;
     padding: 10px 20px 15px;
@@ -267,4 +276,11 @@
   .dream-card {
     min-width: 100%;
   }
+}
+
+.dream-card-link {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
 }
