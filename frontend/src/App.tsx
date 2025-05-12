@@ -9,8 +9,8 @@ import Footer from './components/Footer/Footer';
 import DreamsHeader from './components/DreamsHeader/DreamsHeader';
 import DreamsFooter from './components/DreamsFooter/DreamsFooter';
 
-import HomePage from './pages/HomePage/HomePage';
-import DreamsPage from './pages/DreamsPage/DreamsPage';
+import HomePage from './pages/HomePage';
+import DreamsPage from './pages/DreamsPage';
 import './App.scss';
 
 function AppContent() {
