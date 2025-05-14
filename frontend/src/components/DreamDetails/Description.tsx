@@ -1,7 +1,9 @@
+import styles from './DreamDetails.module.scss';
+
 const Description = ({ content }: { content: string }) => (
-  <div>
-    <h2>Description</h2>
-    <p>{content}</p>
+  <div className={styles.descriptionContainer}>
+    <h2 className={styles.desTitle}>Description</h2>
+    <p className={styles.desContent}>{content}</p>
   </div>
 );
 

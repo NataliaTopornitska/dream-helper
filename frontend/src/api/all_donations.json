@@ -1,0 +1,75 @@
+[
+    {
+        "id": 18,
+        "amount": "99.00",
+        "is_anonymous": false,
+        "date": "2025-04-16T16:44:47.739179-03:00",
+        "donator_profile": {
+            "user": 1,
+            "name": "The DreamHelper Team",
+            "thumbnail_url": "http://localhost:9000/dreams-media/mini-avatars/7-7726f992-5f87-4b7a-854e-6e8bf4af5676-foto.jpg"
+        }
+    },
+    {
+        "id": 19,
+        "amount": "30.00",
+        "is_anonymous": true,
+        "date": "2025-04-16T16:54:57.617966-03:00",
+        "donator_profile": {
+            "user": 1,
+            "name": "The DreamHelper Team",
+            "thumbnail_url": "http://localhost:9000/dreams-media/mini-avatars/7-7726f992-5f87-4b7a-854e-6e8bf4af5676-foto.jpg"
+        }
+    },
+    {
+        "id": 39,
+        "amount": "5.00",
+        "is_anonymous": true,
+        "date": "2025-04-27T11:57:26.736092-03:00",
+        "donator_profile": {
+            "user": 15,
+            "name": "Daniil Ivanov",
+            "thumbnail_url": null
+        }
+    },
+    {
+        "id": 40,
+        "amount": "30.00",
+        "is_anonymous": false,
+        "date": "2025-04-27T11:58:03.270642-03:00",
+        "donator_profile": {
+            "user": 15,
+            "name": "Daniil Ivanov",
+            "thumbnail_url": null
+        }
+    },
+    {
+        "id": 42,
+        "amount": "5.00",
+        "is_anonymous": true,
+        "date": "2025-04-27T19:38:39.465530-03:00",
+        "donator_profile": null
+    },
+    {
+        "id": 43,
+        "amount": "30.00",
+        "is_anonymous": false,
+        "date": "2025-04-27T20:06:31.051891-03:00",
+        "donator_profile": {
+            "user": 21,
+            "name": "user@example.com",
+            "thumbnail_url": null
+        }
+    },
+    {
+        "id": 44,
+        "amount": "50.00",
+        "is_anonymous": false,
+        "date": "2025-05-02T01:09:40.500294-03:00",
+        "donator_profile": {
+            "user": 1,
+            "name": "The DreamHelper Team",
+            "thumbnail_url": "http://localhost:9000/dreams-media/mini-avatars/7-7726f992-5f87-4b7a-854e-6e8bf4af5676-foto.jpg"
+        }
+    }
+]

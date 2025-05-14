@@ -76,15 +76,21 @@ const AuthModal: React.FC<AuthModalProps> = ({
       console.log(data);
 
       if (authMode === 'register') {
-        setActivationMessage(
-          'An activation code has been sent to your email. Please activate your account within 1 hour to log in.'
-        );
-        setCredential('');
-        setPassword('');
-      } else {
-        localStorage.setItem('authToken', data.token);
-        window.location.href = '/dashboard';
-      }
+  setActivationMessage(
+    'An activation code has been sent to your email. Please activate your account within 1 hour to log in.'
+  );
+  setCredential('');
+  setPassword('');
+} else {
+
+  const token = data.access || data.token || data.key;
+  if (token) {
+    localStorage.setItem('authToken', token);
+    window.location.href = '/dashboard';
+  } else {
+    throw new Error('Token not received');
+  }
+}
     } catch (error) {
       console.error('Error:', error);
     } finally {
@@ -104,18 +110,14 @@ const AuthModal: React.FC<AuthModalProps> = ({
         ) : (
           <>
             <form onSubmit={handleSubmit}>
-              <label>{authMode === 'register' ? 'Email' : 'Username'}</label>
-              <input
-                type={authMode === 'register' ? 'email' : 'text'}
-                value={credential}
-                onChange={(e) => setCredential(e.target.value)}
-                placeholder={
-                  authMode === 'register'
-                    ? 'Enter your email address'
-                    : 'Enter your username'
-                }
-                required
-              />
+            <label>Email</label>
+<input
+  type="email"
+  value={credential}
+  onChange={(e) => setCredential(e.target.value)}
+  placeholder="Enter your email address"
+  required
+/>
               {emailError && <div className="error">{emailError}</div>}
 
               <label>Password</label>

@@ -29,16 +29,16 @@ const DreamDetails = () => {
 
   return (
     <div className={styles.dreamDetails}>
-      <h1>{dream.title}</h1>
+      <h1 className={styles.dreamTitle}>{dream.title}</h1>
       <div className={styles.header}>
   <img
   src={dream.photo_url || dream.thumbnail_url}
   alt={dream.title}
-  className={styles.dreamImage}
+  className={`${styles.dreamImage} ${styles.dreamImageStyled}`}
   onError={(e) => {
     const target = e.currentTarget as HTMLImageElement;
     target.onerror = null;
-    target.src = '/dream-helper/home-page/block-1.png';
+    target.src = '/dream-helper/dream-details/details-d.png';
   }}
 />
 
