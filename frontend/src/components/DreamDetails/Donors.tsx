@@ -7,12 +7,7 @@ const Donors = ({ dreamId }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Фільтрація по dreamId — якщо потрібно
-    // Якщо файл містить всі донати з різних мрій, фільтруй так:
-    // const filteredDonors = allDonations.filter(d => d.dream_id === dreamId);
-
-    // Якщо файл уже містить тільки донати для певної мрії:
-    setDonors(allDonations);
+    setDonors(allDonations); // або відфільтруй, якщо потрібно
     setLoading(false);
   }, [dreamId]);
 
@@ -23,29 +18,32 @@ const Donors = ({ dreamId }) => {
   return (
     <div className={styles.donorsContainer}>
       <h3 className={styles.donorsTitle}>Donors</h3>
-      <ul className={styles.donorsList}>
-        {donors.map(donor => (
-          <li key={donor.id} className={styles.donorItem}>
+      <div className={styles.donorsTable}>
+        {donors.map((donor) => (
+          <div key={donor.id} className={styles.donorRow}>
             <div className={styles.donorInfo}>
-              <div className={styles.donorAvatar}>
-                <img
-                  src={donor.donator_profile?.thumbnail_url || "https://via.placeholder.com/30"}
-                  alt={`Avatar ${donor.donator_profile?.name || 'Anonymous'}`}
-                />
-              </div>
+              <img
+                src={donor.donator_profile?.thumbnail_url || "/dream-helper/dream-details/avatar.png"}
+                alt="avatar"
+                className={styles.donorAvatar}
+              />
               <span className={styles.donorName}>
-                {donor.is_anonymous ? 'Anonymous' : donor.donator_profile?.name}
+                {donor.is_anonymous ? 'Anonymous' : donor.donator_profile?.name || 'Anonymous'}
               </span>
             </div>
-            <div className={styles.donationDetails}>
-              <span className={styles.donationAmount}>{donor.amount} $</span>
-              <span className={styles.donationDate}>
+            <div className={styles.donorAmount}>
+              <span className={styles.dLabel}>Amount</span>
+              <span className={styles.dValue}>{Number(donor.amount)} $</span>
+            </div>
+            <div className={styles.donorDate}>
+              <span className={styles.dLabel}>Date</span>
+              <span className={styles.dValue}>
                 {new Date(donor.date).toLocaleDateString()}
               </span>
             </div>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

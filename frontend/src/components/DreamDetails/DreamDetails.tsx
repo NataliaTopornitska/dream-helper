@@ -44,11 +44,15 @@ const DreamDetails = () => {
 
         <InfoCard dream={dream} />
       </div>
-      <Description content={dream.content} />
-      <div className={styles.sidebar}>
-        <Donors dreamId={dream.id} />
-        <SupportButton />
-      </div>
+<div className={styles.detailsWrapper}>
+  <div className={styles.descriptionContainer}>
+  <Description content={dream.content} />
+</div>
+  <div className={styles.sidebar}>
+    <Donors dreamId={dream.id} />
+    <SupportButton />
+  </div>
+</div>
       <Comments dreamId={dream.id} />
     </div>
   );
