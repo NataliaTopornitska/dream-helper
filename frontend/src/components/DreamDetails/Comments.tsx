@@ -47,44 +47,44 @@ const Comments = ({ dreamId }: CommentsProps) => {
     setNewComment('');
   };
 
-return (
-  <>
-    <h2 className={styles.commentTitle}>Coments</h2>
+  return (
+    <>
+      <h2 className={styles.commentTitle}>Coments</h2>
 
-    <div className={styles.wrapper}>
-      <div className={styles.inputRow}>
-        <img
-          src="/dream-helper/dream-details/avatar.png"
-          alt="avatar"
-          className={styles.avatar}
-        />
-<input
-  type="text"
-  value={newComment}
-  onChange={e => setNewComment(e.target.value)}
-  placeholder="Your text here"
-  className={styles.inputField}
-/>
-        <button className={styles.sendButton} onClick={handleSend}>Send</button>
-      </div>
-      <div className={styles.commentsList}>
-        {comments.map(comment => (
-          <div key={comment.id} className={styles.commentItem}>
-            <img
-              src={comment.owner_profile.thumbnail_url || '/dream-helper/dream-details/avatar.png'}
-              alt="avatar"
-              className={styles.avatar}
-            />
-            <div>
-              <strong>{comment.owner_profile.name}</strong>
-              <p>{comment.content}</p>
+      <div className={styles.wrapper}>
+        <div className={styles.inputRow}>
+          <img
+            src="/dream-helper/dream-details/avatar.png"
+            alt="avatar"
+            className={styles.avatarMain}
+          />
+          <input
+            type="text"
+            value={newComment}
+            onChange={e => setNewComment(e.target.value)}
+            placeholder="Your text here"
+            className={styles.inputField}
+          />
+          <button className={styles.sendButton} onClick={handleSend}>Send</button>
+        </div>
+        <div className={styles.commentsList}>
+          {comments.map(comment => (
+            <div key={comment.id} className={styles.commentItem}>
+              <img
+                src={comment.owner_profile.thumbnail_url || '/dream-helper/dream-details/avatar.png'}
+                alt="avatar"
+                className={styles.avatar}
+              />
+              <div className="comment-i">
+                <strong className="comment-author">{comment.owner_profile.name}</strong>
+                <p className="comment-text">{comment.content}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
-  </>
-);
+    </>
+  );
 };
 
 export default Comments;

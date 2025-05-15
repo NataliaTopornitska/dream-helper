@@ -308,7 +308,7 @@
   border-radius: 63px;
   border: none;
   font-size: 17px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   width: 100%;
   margin-top: 26px;
@@ -318,11 +318,12 @@
 
 // Comments
 .wrapper {
-  padding: 0 0 20px 20px;
   max-width: 650px;
   border: 1px solid #464646;
   border-radius: 24px;
   background-color: white;
+  margin-bottom: 86px;
+  border-top: none;
 }
 
 .commentTitle {
@@ -336,8 +337,9 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 1rem;
   background-color: white;
+  border: 1px solid #464646;
+  border-radius: 24px;
 }
 
 .inputRow input {
@@ -345,35 +347,68 @@
   padding: 0.5rem;
 }
 
-.avatar {
-  width: 58px;
-  height: 58px;
+.avatarMain {
+  width: 48px;
+  height: 48px;
   border-radius: 64px;
+  margin: 32px 20px 32px 50px;
+}
+
+.avatar {
+  width: 43px;
+  height: 43px;
+  border-radius: 64px;
+  margin: 24px 40px 24px 24px;
 }
 
 .commentItem {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  align-items: center;
+  border-bottom: 1px solid #464646;
+}
+
+.commentItem:last-child {
+  border-bottom: none;
 }
 
 .inputField {
-  padding: 14px 0;
-  border: 1px solid #191919;
+  padding: 18px 0;
   border-radius: 24px;
   font-size: 16px;
   background-color: white;
+  font-size: 15px;
+  font-weight: 500;
+  border: 1px solid #191919;
+  height: 48px;
+}
+
+.comment-i {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.comment-author {
   font-size: 17px;
-  font-weight: 600;
+  font-weight: 500;
+  color: #191919;
+  margin-bottom: 10px;
+}
+
+.comment-text {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  color: #464646;
 }
 
 .sendButton {
   background-color: #191919;
   color: #FFFFFF;
-  border-radius: 24px;
+  border-radius: 100px;
   font-size: 17px;
-  font-weight: 600;
-  padding: 14px 37px;
+  font-weight: 500;
+  padding: 11px 28px;
+  margin-right: 34px;
 }
 
 
