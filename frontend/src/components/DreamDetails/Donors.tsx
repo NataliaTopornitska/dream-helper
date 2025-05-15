@@ -7,7 +7,7 @@ const Donors = ({ dreamId }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setDonors(allDonations); // або відфільтруй, якщо потрібно
+    setDonors(allDonations);
     setLoading(false);
   }, [dreamId]);
 

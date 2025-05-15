@@ -54,11 +54,16 @@
   align-items: center;
   gap: 2px;
   color: black;
+  margin-left: auto;
 }
 
 .statIcon {
   width: 16px;
   height: 16px;
+}
+
+.topRow p {
+  flex-grow: 1;
 }
 
 .statValue {
@@ -156,7 +161,7 @@
 }
 
 .descriptionContainer {
-  padding: 40px 20px 68px 0;
+  padding: 20px 20px 68px 0;
   max-width: 650px;
 }
 
@@ -242,9 +247,9 @@
 
 .donorName {
   color: #191919;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
-  max-width: 150px;
+  max-width: 100px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -270,7 +275,7 @@
 
 .dValue {
   font-family: "Reddit Sans Condensed", sans-serif;
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 400;
   color: #191919;
   margin-right: 15px;
