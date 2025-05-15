@@ -1,32 +1,90 @@
 import { useEffect, useState } from 'react';
+import styles from './DreamDetails.module.scss';
+import allCommentsData from '../../api/all_comments.json';
 
-const Comments = ({ dreamId }: { dreamId: number }) => {
-  const [comments, setComments] = useState([]);
+interface Comment {
+  id: number;
+  dream_id: number;
+  content: string;
+  created_at: string;
+  owner_profile: {
+    user: number;
+    name: string;
+    thumbnail_url: string | null;
+  };
+}
+
+interface CommentsProps {
+  dreamId: number;
+}
+
+const Comments = ({ dreamId }: CommentsProps) => {
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [newComment, setNewComment] = useState('');
 
   useEffect(() => {
-    fetch(
-      `http://127.0.0.1:8000/api/v1/dreamhelper/dreams/${dreamId}/all_comments/`,
-    )
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => setComments(data))
-      .catch(error => console.error('Fetch error:', error));
+    const allComments = allCommentsData as Comment[];
+    const filtered = allComments.filter(comment => comment.dream_id === dreamId);
+    setComments(filtered);
   }, [dreamId]);
 
-  return (
-    <div>
-      <h3>Comments</h3>
-      {comments.map((comment: any, idx: number) => (
-        <div key={idx}>
-          <strong>{comment.user_name}</strong>: {comment.text}
-        </div>
-      ))}
+  const handleSend = () => {
+    if (!newComment.trim()) return;
+
+    const fakeComment: Comment = {
+      id: Date.now(),
+      dream_id: dreamId,
+      content: newComment,
+      created_at: new Date().toISOString(),
+      owner_profile: {
+        user: 999,
+        name: 'You',
+        thumbnail_url: null,
+      },
+    };
+
+    setComments(prev => [fakeComment, ...prev]);
+    setNewComment('');
+  };
+
+return (
+  <>
+    <h2 className={styles.commentTitle}>Coments</h2>
+
+    <div className={styles.wrapper}>
+      <div className={styles.inputRow}>
+        <img
+          src="/dream-helper/dream-details/avatar.png"
+          alt="avatar"
+          className={styles.avatar}
+        />
+<input
+  type="text"
+  value={newComment}
+  onChange={e => setNewComment(e.target.value)}
+  placeholder="Your text here"
+  className={styles.inputField}
+/>
+        <button className={styles.sendButton} onClick={handleSend}>Send</button>
+      </div>
+      <div className={styles.commentsList}>
+        {comments.map(comment => (
+          <div key={comment.id} className={styles.commentItem}>
+            <img
+              src={comment.owner_profile.thumbnail_url || '/dream-helper/dream-details/avatar.png'}
+              alt="avatar"
+              className={styles.avatar}
+            />
+            <div>
+              <strong>{comment.owner_profile.name}</strong>
+              <p>{comment.content}</p>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
-  );
+  </>
+);
 };
 
 export default Comments;

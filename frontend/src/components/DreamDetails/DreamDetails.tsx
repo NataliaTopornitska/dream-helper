@@ -45,15 +45,17 @@ const DreamDetails = () => {
         <InfoCard dream={dream} />
       </div>
 <div className={styles.detailsWrapper}>
-  <div className={styles.descriptionContainer}>
-  <Description content={dream.content} />
-</div>
+  <div className={styles.descriptionSide}>
+    <div className={styles.descriptionContainer}>
+      <Description content={dream.content} />
+    </div>
+    <Comments dreamId={dream.id} />
+  </div>
   <div className={styles.sidebar}>
     <Donors dreamId={dream.id} />
     <SupportButton />
   </div>
 </div>
-      <Comments dreamId={dream.id} />
     </div>
   );
 };

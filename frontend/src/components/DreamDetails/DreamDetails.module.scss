@@ -167,7 +167,7 @@
 }
 
 .descriptionContainer {
-  padding: 20px 20px 68px 0;
+  padding: 20px 20px 30px 0;
   max-width: 650px;
 }
 
@@ -311,29 +311,70 @@
   font-weight: 600;
   cursor: pointer;
   width: 100%;
-  margin-top: 16px;
+  margin-top: 26px;
 }
 
 
 
+// Comments
+.wrapper {
+  padding: 0 0 20px 20px;
+  max-width: 650px;
+  border: 1px solid #464646;
+  border-radius: 24px;
+  background-color: white;
+}
 
+.commentTitle {
+  font-family: "Inter", sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 23px;
+}
 
-// .supportButton {
-//   background-color: #007bff;
-//   color: white;
-//   border: none;
-//   border-radius: 4px;
-//   padding: 10px 16px;
-//   margin-top: 15px;
-//   cursor: pointer;
-//   width: 100%;
-//   font-size: 1rem;
-//   transition: background-color 0.3s ease;
+.inputRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  background-color: white;
+}
 
-//   &:hover {
-//     background-color: #0056b3;
-//   }
-// }
+.inputRow input {
+  flex: 1;
+  padding: 0.5rem;
+}
+
+.avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 64px;
+}
+
+.commentItem {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.inputField {
+  padding: 14px 0;
+  border: 1px solid #191919;
+  border-radius: 24px;
+  font-size: 16px;
+  background-color: white;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.sendButton {
+  background-color: #191919;
+  color: #FFFFFF;
+  border-radius: 24px;
+  font-size: 17px;
+  font-weight: 600;
+  padding: 14px 37px;
+}
 
 
 
