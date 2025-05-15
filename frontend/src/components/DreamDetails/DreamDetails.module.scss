@@ -17,6 +17,7 @@
   max-width: 700px;
   max-height: 450px;
   border-radius: 24px;
+  flex-shrink: 0;
 }
 
 
@@ -25,11 +26,12 @@
 
 .infoCard {
   padding: 19px;
+  flex-grow: 1;
 }
 
 .infoCard p {
   display: flex;
-  justify-content: space-between;
+  justify-content:space-around;
   align-items: center;
   margin-bottom: 16x;
 }
@@ -54,7 +56,6 @@
   align-items: center;
   gap: 2px;
   color: black;
-  margin-left: auto;
 }
 
 .statIcon {
@@ -62,9 +63,14 @@
   height: 16px;
 }
 
+// .topRow p {
+//   flex-grow: 1;
+// }
+
 .topRow p {
-  flex-grow: 1;
+  flex: 0 1 auto;
 }
+
 
 .statValue {
   font-family: "Reddit Sans Condensed", sans-serif;
@@ -226,7 +232,8 @@
   display: flex;
   align-items: center;
   gap: 8.5px;
-  flex: 1;
+  flex: 0 0 120px;
+  // flex: 1;
   margin-left: 16px;
 }
 
@@ -247,7 +254,7 @@
 
 .donorName {
   color: #191919;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 500;
   max-width: 100px;
   white-space: nowrap;
@@ -255,7 +262,18 @@
   text-overflow: ellipsis;
 }
 
-.donorAmount,
+.donorAmount {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+  flex: 0.4;
+  white-space: nowrap;
+  padding: 0 7px;
+  border-left: 1px solid #464646;
+  border-right: 1px solid #464646;
+}
+
 .donorDate {
   display: flex;
   justify-content: flex-end;
@@ -267,36 +285,55 @@
 
 .dLabel {
   font-family: "Inter", sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   color: #464646;
   font-weight: 400;
-  margin-right: 5px;
+  margin: 0 7px 0 5px;
 }
 
 .dValue {
   font-family: "Reddit Sans Condensed", sans-serif;
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 400;
   color: #191919;
   margin-right: 15px;
 }
 
-.supportButton {
-  background-color: #007bff;
-  color: white;
+
+// Support button
+.dButton {
+  background-color: #191919;
+  color: #FFFFFF;
+  padding: 13px 0;
+  border-radius: 63px;
   border: none;
-  border-radius: 4px;
-  padding: 10px 16px;
-  margin-top: 15px;
+  font-size: 17px;
+  font-weight: 600;
   cursor: pointer;
   width: 100%;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #0056b3;
-  }
+  margin-top: 16px;
 }
+
+
+
+
+
+// .supportButton {
+//   background-color: #007bff;
+//   color: white;
+//   border: none;
+//   border-radius: 4px;
+//   padding: 10px 16px;
+//   margin-top: 15px;
+//   cursor: pointer;
+//   width: 100%;
+//   font-size: 1rem;
+//   transition: background-color 0.3s ease;
+
+//   &:hover {
+//     background-color: #0056b3;
+//   }
+// }
 
 
 

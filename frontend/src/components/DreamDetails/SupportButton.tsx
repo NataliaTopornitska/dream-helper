@@ -1,5 +1,9 @@
+import styles from './DreamDetails.module.scss';
+
 const SupportButton = () => (
-  <button onClick={() => alert('Support modal coming soon!')}>Support</button>
+  <button className={styles.dButton} disabled>
+    Support
+  </button>
 );
 
 export default SupportButton;
