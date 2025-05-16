@@ -49,7 +49,9 @@ const DreamDetails = () => {
     <div className={styles.descriptionContainer}>
       <Description content={dream.content} />
     </div>
-    <Comments dreamId={dream.id} />
+    <div className={styles.commentsContainer}>
+      <Comments dreamId={dream.id} />
+    </div>
   </div>
   <div className={styles.sidebar}>
     <Donors dreamId={dream.id} />
