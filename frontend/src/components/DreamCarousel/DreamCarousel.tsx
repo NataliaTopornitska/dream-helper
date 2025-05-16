@@ -200,7 +200,7 @@ const DreamCarousel: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                   <h3 className="dream-title">
+                  <h3 className="dream-title">
                     <Link
                       to={`/dreams/${dream.id}`}
                       className="dream-title-link"
@@ -208,7 +208,6 @@ const DreamCarousel: React.FC = () => {
                       {dream.title}
                     </Link>
                   </h3>
-                  {/* <h3 className="dream-title">{dream.title}</h3> */}
                   <p className="dream-content">
                     {dream.content.length > 140
                       ? dream.content.slice(0, 140) + '...'
