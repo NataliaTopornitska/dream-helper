@@ -21,12 +21,35 @@ interface CommentsProps {
 const Comments = ({ dreamId }: CommentsProps) => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
+  // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const allComments = allCommentsData as Comment[];
     const filtered = allComments.filter(comment => comment.dream_id === dreamId);
     setComments(filtered);
   }, [dreamId]);
+
+  // Backend
+  
+  //   useEffect(() => {
+  //   const fetchComments = async () => {
+  //     try {
+  //       const response = await fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams/${dreamId}/all_comments/`);
+  //       const data = await response.json();
+  //       console.log('Fetched comments:', data);
+  //       setComments(data);
+  //     } catch (error) {
+  //       console.error('Error fetching comments:', error);
+  //       setComments([]);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   if (dreamId) {
+  //     fetchComments();
+  //   }
+  // }, [dreamId]);
 
   const handleSend = () => {
     if (!newComment.trim()) return;

@@ -6,10 +6,42 @@ const Donors = ({ dreamId }) => {
   const [donors, setDonors] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+
+  // Frontend
+
+   useEffect(() => {
     setDonors(allDonations);
     setLoading(false);
   }, [dreamId]);
+
+
+
+  // Backend
+
+  // useEffect(() => {
+  //   const fetchDonors = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const response = await fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams/${dreamId}/all_donations/`);
+  //       const data = await response.json();
+  //       console.log('Fetched donors data:', data);
+  //       setDonors(data);
+  //     } catch (error) {
+  //       console.error('Error fetching donors:', error);
+  //       setDonors([]);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   if (dreamId) {
+  //     fetchDonors();
+  //   }
+  // }, [dreamId]);
+
+  // if (loading) {
+  //   return <div>Loading donors...</div>;
+  // }
 
   if (loading) {
     return <div>Loading donors...</div>;
