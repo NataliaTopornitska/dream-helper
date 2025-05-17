@@ -211,7 +211,7 @@ class DreamerProfileView(
     queryset = DreamerProfile.objects.all()
     serializer_class = DreamerProfileSerializer
     permission_classes = [
-        IsAdminUser,
+        IsAuthenticated,
     ]
 
     def get_serializer_class(self):
@@ -273,10 +273,6 @@ class CityView(
             "create",
         ]:
             return [IsAuthenticated()]
-        if self.action in [
-            "list",
-        ]:
-            return [AllowAny()]
         return [IsAdminUser()]
 
     def get_serializer_class(self):

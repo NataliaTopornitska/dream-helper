@@ -79,6 +79,18 @@ class CategoryView(
     serializer_class = CategorySerializer
     permission_classes = (IsAdminUser,)
 
+    def get_permissions(self):
+        if self.action in (
+            "create",
+        ):
+            return [IsAuthenticated()]
+        if self.action in (
+            "list",
+        ):
+            return [AllowAny()]
+        return [IsAdminUser()]
+
+
 
 class DreamViewSet(
     mixins.CreateModelMixin,
