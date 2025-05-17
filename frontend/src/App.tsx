@@ -1,5 +1,5 @@
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Routes,
   Route,
   useLocation,
@@ -11,6 +11,7 @@ import DreamsFooter from './components/DreamsFooter/DreamsFooter';
 
 import HomePage from './pages/HomePage';
 import DreamsPage from './pages/DreamsPage';
+import DreamDetailsPage from './pages/DreamDetailsPage';
 import './App.scss';
 
 function AppContent() {
@@ -24,6 +25,7 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/dreams" element={<DreamsPage />} />
+          <Route path="/dreams/:id" element={<DreamDetailsPage />} />
         </Routes>
       </main>
       {isDreamsPage ? <DreamsFooter /> : <Footer />}
@@ -33,7 +35,7 @@ function AppContent() {
 
 function App() {
   return (
-    <Router basename="/dream-helper">
+    <Router>
       <AppContent />
     </Router>
   );

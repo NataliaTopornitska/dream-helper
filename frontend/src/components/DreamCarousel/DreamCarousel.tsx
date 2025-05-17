@@ -3,6 +3,7 @@ import './DreamCarousel.scss';
 import randomDreams from '../../api/random_dreams.json';
 import { useIsMobile } from '../../use-mobile';
 import SupportModal from '../SupportModal/SupportModal';
+import { Link } from 'react-router-dom';
 
 export interface Dream {
   id: number;
@@ -158,6 +159,7 @@ const DreamCarousel: React.FC = () => {
               return (
                 <div key={dream.id} className="dream-card">
                   <div className="dream-image">
+                      <Link to={`/dreams/${dream.id}`}>
                     <img
                       src={dream.thumbnail_url || 'home-page/a-dream.png'}
                       alt={dream.title}
@@ -178,6 +180,7 @@ const DreamCarousel: React.FC = () => {
                       }}
                       className="dream-img"
                     />
+                    </Link>
                     <div className="dream-stats">
                       <div className="stat-item">
                         <img
@@ -197,7 +200,14 @@ const DreamCarousel: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                  <h3 className="dream-title">{dream.title}</h3>
+                  <h3 className="dream-title">
+                    <Link
+                      to={`/dreams/${dream.id}`}
+                      className="dream-title-link"
+                    >
+                      {dream.title}
+                    </Link>
+                  </h3>
                   <p className="dream-content">
                     {dream.content.length > 140
                       ? dream.content.slice(0, 140) + '...'

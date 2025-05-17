@@ -8,18 +8,17 @@ type SupportModalProps = {
 };
 
 const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, dream }) => {
-  const [donationAmount, setDonationAmount] = useState<number | string>(''); // змінити початкове значення на порожній рядок
+  const [donationAmount, setDonationAmount] = useState<number | string>('');
 
   if (!isOpen) return null;
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
 
-    // Якщо введено порожнє значення, скидаємо стан
     if (value === '') {
       setDonationAmount('');
     } else {
-      // Перевірка, чи значення є числом
+
       const parsedValue = parseFloat(value);
 
       if (!isNaN(parsedValue) && parsedValue >= 0) {

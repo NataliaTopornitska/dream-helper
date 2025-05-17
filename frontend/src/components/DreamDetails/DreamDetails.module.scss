@@ -1,0 +1,947 @@
+.dreamDetails {
+  padding: 52px 20px 20px;
+  color: #191919;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  border: 1px solid #191919;
+  padding: 24px 24px 0;
+  border-radius: 34px;
+  background-color: #FFFFFF;
+}
+
+.dreamImageStyled {
+  max-width: 700px;
+  max-height: 450px;
+  border-radius: 24px;
+  flex-shrink: 0;
+}
+
+
+
+// InfoCard
+
+.infoCard {
+  padding: 19px;
+  flex-grow: 1;
+}
+
+.infoCard p {
+  display: flex;
+  justify-content:space-around;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.status {
+  font-family: "Raleway", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #191919;
+  margin-left: auto;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: black;
+}
+
+.statIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.topRow p {
+  flex: 0 1 auto;
+}
+
+.statValue {
+  font-family: "Reddit Sans Condensed", sans-serif;
+  font-size: 14px;
+  color: #464646;
+}
+
+.dreamTitle {
+  font-size: 32px;
+  font-weight: 600;
+  color: #191919;
+  margin-bottom: 24px;
+}
+
+.cardLabel {
+  font-family: "Raleway", sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  text-align: left;
+  width: 170px;
+}
+
+.cardValue {
+  font-family: "Reddit Sans Condensed", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 10px;
+  text-align: left;
+   flex-grow: 1;
+}
+
+.amountRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.amountItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.amountLabel {
+  font-family: "Reddit Sans Condensed", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  margin-bottom: 5px;
+}
+
+.amountValue {
+  font-family: "Inter", sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.sidebar {
+  margin-top: 40px;
+}
+
+.progressBar {
+  height: 6px;
+  background: #FFFFFF;
+  margin: 26px 0 16px;
+  border: 1px solid #191919;
+  border-radius: 24px;
+}
+
+.progressFill {
+  height: 100%;
+  background: #FFCC74;
+  width: 0;
+  transition: width 0.3s ease;
+}
+
+.dream-card-link {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+
+// Description
+
+.detailsWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: nowrap;
+}
+
+.descriptionContainer {
+  padding: 20px 20px 30px 0;
+  max-width: 650px;
+}
+
+.desTitle {
+  font-family: "Raleway", sans-serif;
+  font-size: 30px;
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 16px;
+}
+
+.desContent {
+  font-family: "Reddit Sans Condensed", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #464646;
+  line-height: 25px;
+}
+
+
+
+// Donors
+.donorsContainer {
+  background-color: white;
+  border-radius: 24px;
+  max-width: 490px;
+}
+
+.donorsTitle {
+  font-size: 30px;
+  font-weight: 600;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 150%;
+  color: #191919;
+  border: 1px solid #191919;
+  padding: 10px 0;
+  border-radius: 24px 24px 0 0;
+  border-bottom: none;
+  }
+
+  .donorsTable {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #191919;
+  border-radius: 0 0 24px 24px;
+}
+
+.donorRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #464646;
+
+  &:last-child {
+  border-bottom: none;
+}
+}
+
+.donorInfo {
+  display: flex;
+  align-items: center;
+  gap: 8.5px;
+  flex: 0 0 120px;
+  // flex: 1;
+  margin-left: 16px;
+}
+
+.donorAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 64px;
+  overflow: hidden;
+  margin: 10px 16px 10xp 0;
+  object-fit: cover;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.donorName {
+  color: #191919;
+  font-size: 17px;
+  font-weight: 500;
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.donorAmount {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+  flex: 0.4;
+  white-space: nowrap;
+  padding: 0 7px;
+  border-left: 1px solid #464646;
+  border-right: 1px solid #464646;
+}
+
+.donorDate {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+  flex: 0.5;
+  white-space: nowrap;
+}
+
+.dLabel {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #464646;
+  font-weight: 400;
+  margin: 0 7px 0 5px;
+}
+
+.dValue {
+  font-family: "Reddit Sans Condensed", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #191919;
+  margin-right: 15px;
+}
+
+
+// Support button
+.dButton {
+  background-color: #191919;
+  color: #FFFFFF;
+  padding: 13px 0;
+  border-radius: 63px;
+  border: none;
+  font-size: 17px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 26px;
+  margin-bottom: 60px;
+}
+
+
+
+// Comments
+.wrapper {
+  max-width: 650px;
+  border: 1px solid #464646;
+  border-radius: 24px;
+  background-color: white;
+  margin-bottom: 86px;
+  border-top: none;
+}
+
+.commentTitle {
+  font-family: "Inter", sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 23px;
+}
+
+.inputRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: white;
+  border: 1px solid #464646;
+  border-radius: 24px;
+}
+
+.inputRow input {
+  flex: 1;
+  padding: 0.5rem;
+}
+
+.avatarMain {
+  width: 48px;
+  height: 48px;
+  border-radius: 64px;
+  margin: 32px 20px 32px 50px;
+}
+
+.avatar {
+  width: 43px;
+  height: 43px;
+  border-radius: 64px;
+  margin: 24px 40px 24px 24px;
+}
+
+.commentItem {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #464646;
+}
+
+.commentItem:last-child {
+  border-bottom: none;
+}
+
+.inputField {
+  padding: 18px 0;
+  border-radius: 24px;
+  background-color: white;
+  font-size: 15px;
+  font-weight: 500;
+  border: 1px solid #191919;
+  height: 48px;
+}
+
+.comment-i {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.comment-author {
+  font-size: 17px;
+  font-weight: 500;
+  color: #191919;
+  margin-bottom: 10px;
+}
+
+.comment-text {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  color: #464646;
+}
+
+.sendButton {
+  background-color: #191919;
+  color: #FFFFFF;
+  border-radius: 100px;
+  font-size: 17px;
+  font-weight: 500;
+  padding: 11px 28px;
+  margin-right: 34px;
+}
+
+
+
+
+@media (min-width: 768px) and (max-width: 1090px) {
+.dreamDetails {
+  padding: 48px 15px 20px;
+  max-width: 900px;
+}
+
+.header {
+  padding: 18px 18px 0;
+}
+
+.dreamImageStyled {
+  max-width: 420px;
+  max-height: 350px;
+  flex-shrink: 0;
+}
+
+
+// InfoCard
+
+.infoCard {
+  padding: 15px;
+}
+
+.infoCard p {
+  margin-bottom: 12px;
+}
+
+.status {
+  font-size: 17px;
+}
+
+.statIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.statValue {
+  font-size: 13px;
+}
+
+.dreamTitle {
+  font-size: 28px;
+}
+
+.cardLabel {
+  font-size: 16px;
+  margin-right: 5px;
+  margin-bottom: 9px;
+  width: 90px;
+}
+
+.cardValue {
+  font-size: 17px;
+  margin-bottom: 9px;
+}
+
+.amountLabel {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.amountValue {
+  font-size: 16px;
+}
+
+.sidebar {
+  margin-top: 20px;
+}
+
+.progressBar {
+  height: 6px;
+  margin: 20px 0 12px;
+}
+
+
+// Description
+
+.detailsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.descriptionSide {
+  order: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.descriptionContainer {
+  padding: 20px 0 20px 0;
+  max-width: 100%;
+}
+
+.desTitle {
+  font-size: 27px;
+  margin-bottom: 16px;
+}
+
+.desContent {
+  font-size: 20px;
+  line-height: 25px;
+}
+
+
+
+// Comments
+.commentsContainer {
+  order: 3;
+}
+
+.wrapper {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.commentTitle {
+  font-size: 24px;
+  margin-bottom: 22px;
+}
+
+.avatarMain {
+  width: 48px;
+  height: 48px;
+  margin: 32px 20px 32px 50px;
+}
+
+.avatar {
+  width: 43px;
+  height: 43px;
+  margin: 24px 40px 24px 24px;
+}
+
+.inputField {
+  padding: 18px 0;
+  font-size: 15px;
+  height: 45px;
+}
+
+.comment-i {
+  gap: 15px;
+}
+
+.comment-author {
+  font-size: 17px;
+  margin-bottom: 10px;
+}
+
+.comment-text {
+  font-size: 16px;
+}
+
+.sendButton {
+  font-size: 16px;
+  padding: 10px 28px;
+  margin-right: 34px;
+}
+
+.sidebar {
+  order: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 490px;
+  margin: 0 auto;
+}
+
+
+
+// Donors
+.donorsContainer {
+  background-color: white;
+  border-radius: 24px;
+  max-width: 490px;
+}
+
+.donorsTitle {
+  font-size: 30px;
+  font-weight: 600;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 150%;
+  color: #191919;
+  border: 1px solid #191919;
+  padding: 10px 0;
+  border-radius: 24px 24px 0 0;
+  border-bottom: none;
+  }
+
+  .donorsTable {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #191919;
+  border-radius: 0 0 24px 24px;
+}
+
+.donorRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #464646;
+
+  &:last-child {
+  border-bottom: none;
+}
+}
+
+.donorInfo {
+  display: flex;
+  align-items: center;
+  gap: 8.5px;
+  flex: 0 0 120px;
+  margin-left: 16px;
+}
+
+.donorAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 64px;
+  overflow: hidden;
+  margin: 10px 16px 10xp 0;
+  object-fit: cover;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.donorName {
+  color: #191919;
+  font-size: 17px;
+  font-weight: 500;
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.donorAmount {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+  flex: 0.4;
+  white-space: nowrap;
+  padding: 0 7px;
+  border-left: 1px solid #464646;
+  border-right: 1px solid #464646;
+}
+
+.donorDate {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+  flex: 0.5;
+  white-space: nowrap;
+}
+
+.dLabel {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #464646;
+  font-weight: 400;
+  margin: 0 7px 0 5px;
+}
+
+.dValue {
+  font-family: "Reddit Sans Condensed", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #191919;
+  margin-right: 15px;
+}
+
+
+// Support button
+.dButton {
+  padding: 13px 0;
+  border-radius: 63px;
+  font-size: 17px;
+  max-width: 430px;
+  margin-top: 26px;
+  margin-bottom: 60px;
+}
+}
+
+
+
+
+@media (max-width: 767px) {
+.dreamDetails {
+  padding: 32px 12px 20px;
+  max-width: 750px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+}
+
+.dreamImageStyled {
+   max-width: 100%;
+  width: 100%;
+  height: auto;
+  border-radius: 24px;
+  flex-shrink: 0;
+  order: 1;
+  margin-bottom: 12px;
+}
+
+
+// InfoCard
+
+.infoCard {
+  padding: 9px;
+  flex-grow: 1;
+  order: 2;
+}
+
+.infoCard p {
+  display: flex;
+  justify-content:space-around;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.status {
+  font-size: 16px;
+  margin-left: auto;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.statIcon {
+  width: 15px;
+  height: 15px;
+}
+
+.topRow p {
+  flex: 0 1 auto;
+}
+
+.statValue {
+  font-size: 14px;
+}
+
+.dreamTitle {
+  font-size: 22px;
+  margin-bottom: 22px;
+}
+
+.cardLabel {
+  font-size: 16px;
+  margin-right: 5px;
+  margin-bottom: 9px;
+  text-align: left;
+  width: 200px;
+}
+
+.cardValue {
+  font-size: 17px;
+  margin-bottom: 9px;
+  text-align: left;
+   flex-grow: 1;
+}
+
+.amountRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.amountItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.amountLabel {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.amountValue {
+  font-size: 16px;
+}
+
+.sidebar {
+  margin-top: 30px;
+}
+
+.progressBar {
+  height: 6px;
+  margin: 26px 0 12px;
+}
+
+.progressFill {
+  height: 100%;
+  width: 0;
+}
+
+.dream-card-link {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+
+// Description
+
+.detailsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.descriptionSide {
+ display: flex;
+ flex-direction: column;
+}
+
+.descriptionContainer {
+  padding: 20px 20px 15px 0;
+  max-width: 100%;
+}
+
+.desTitle {
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+
+.desContent {
+  font-size: 18px;
+  line-height: 25px;
+}
+
+
+
+// Comments
+.wrapper {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.commentTitle {
+  font-size: 23px;
+  margin-bottom: 21px;
+}
+
+.avatarMain {
+  width: 46px;
+  height: 46px;
+  margin: 28px 18px 28px 40px;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  margin: 18px 28px 18px 18px;
+}
+
+.inputField {
+  padding: 18px 0;
+  font-size: 15px;
+  height: 40px;
+}
+
+.comment-i {
+  gap: 15px;
+}
+
+.comment-author {
+  font-size: 16px;
+  margin-bottom: 9px;
+}
+
+.comment-text {
+  font-size: 15px;
+}
+
+.sendButton {
+  font-size: 15px;
+  padding: 9px 23px;
+  margin-right: 28px;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 490px;
+  margin: 0 auto;
+}
+
+// Support button
+.dButton {
+  padding: 13px 0;
+  font-size: 17px;
+  max-width: 430px;
+  margin-top: 26px;
+  margin-bottom: 60px;
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
