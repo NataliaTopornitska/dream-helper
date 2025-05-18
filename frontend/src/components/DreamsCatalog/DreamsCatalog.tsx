@@ -590,16 +590,16 @@ const DreamsCatalog = () => {
             <div key={dream.id} className="dream-card">
               <div className="dream-image">
                 <Link to={`/dreams/${dream.id}`}>
-                <img
-                  src={dream.thumbnail_url || "/home-page/a-dream.png"}
-                  alt={dream.title}
-                  className="dream-img"
-                  onLoad={(e) => (e.target as HTMLImageElement).classList.add("loaded")}
-                  onError={(e) => {
-                    console.log("Image not found for dream:", dream.id);
-                    (e.target as HTMLImageElement).src = "/dream-helper/home-page/a-dream.png";
-                  }}
-                />
+                  <img
+                    src={dream.thumbnail_url || "/home-page/a-dream.png"}
+                    alt={dream.title}
+                    className="dream-img"
+                    onLoad={(e) => (e.target as HTMLImageElement).classList.add("loaded")}
+                    onError={(e) => {
+                      console.log("Image not found for dream:", dream.id);
+                      (e.target as HTMLImageElement).src = "/dream-helper/home-page/a-dream.png";
+                    }}
+                  />
                 </Link>
                 <div className="dream-stats">
                   <div className="stat-item">
@@ -645,12 +645,21 @@ const DreamsCatalog = () => {
                   <span>${goalAmount.toLocaleString('en-US')}</span>
                 </div>
               </div>
+              <div className="dream-actions">
+                {activeTab === 'Completed' ? (
+                  <span className="collected-text">Collected</span>
+                ) : (
+                  <button className="dream-support-btn" onClick={() => setActiveDream(dream)}>
+                    Support
+                  </button>
+                )}
+              </div>
 
-              <button className="dream-support-btn"
+              {/* <button className="dream-support-btn"
                 onClick={() => setActiveDream(dream)}
               >
                 Support
-              </button>
+              </button> */}
             </div>
           );
         })}

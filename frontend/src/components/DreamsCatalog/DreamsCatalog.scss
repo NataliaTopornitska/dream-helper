@@ -304,6 +304,25 @@
   }
 }
 
+.dream-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.collected-text {
+  display: block;
+  font-size: 17px;
+  padding: 16px 0;
+  background-color: #f0f8ff;
+  font-weight: 700;
+  color: rgb(25, 25, 25);
+  text-align: center;
+  width: 100%;
+}
+
+
 
 @media (max-width: 767px) {
   .hero {
