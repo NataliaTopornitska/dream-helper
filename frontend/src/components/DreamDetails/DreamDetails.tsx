@@ -55,7 +55,7 @@ const DreamDetails = () => {
   </div>
   <div className={styles.sidebar}>
     <Donors dreamId={dream.id} />
-    <SupportButton />
+   <SupportButton dream={dream} />
   </div>
 </div>
     </div>

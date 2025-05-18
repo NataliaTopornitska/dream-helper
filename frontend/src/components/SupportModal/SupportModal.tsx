@@ -51,7 +51,7 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, dream }) =
          setTimeout(() => {
       setShowSuccessMessage(false);
       onClose();
-    }, 13000);
+    }, 3000);
   } catch (error) {
     console.error('Error making donation:', error);
   }

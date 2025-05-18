@@ -12,6 +12,7 @@ import fundingoalData from '../../api/funding_goal.json';
 import popularityData from '../../api/popularity.json';
 import typeOptions from '../../api/type.json';
 import { Link } from 'react-router-dom';
+import SupportModal from '../SupportModal/SupportModal';
 
 const DreamsCatalog = () => {
   const [activeTab, setActiveTab] = useState<'Active' | 'Completed'>('Active');
@@ -50,6 +51,7 @@ const DreamsCatalog = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const fundingRanges: FundingRange[] = fundingoalData;
+  const [activeDream, setActiveDream] = useState<Dream | null>(null);
 
   const sortOptions: SortOption[] = popularityData;
   const [selectedPerPage, setSelectedPerPage] = useState<string | number>('Per Page');
@@ -644,13 +646,24 @@ const DreamsCatalog = () => {
                 </div>
               </div>
 
-              <button className="dream-support-btn">Support</button>
+              <button className="dream-support-btn"
+                onClick={() => setActiveDream(dream)}
+              >
+                Support
+              </button>
             </div>
           );
         })}
       </div>
 
       {renderPagination()}
+      {activeDream && (
+        <SupportModal
+          isOpen={true}
+          dream={activeDream}
+          onClose={() => setActiveDream(null)}
+        />
+      )}
     </div>
   );
 };
