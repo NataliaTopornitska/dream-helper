@@ -18,11 +18,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from app.settings import API_PREF
+from app.settings import API_PREF, DEBUG
 
 from dreams.views import stripe_webhook
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from utils.stripe import CancelView, SuccessView
+
+from debug_toolbar.toolbar import debug_toolbar_urls
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -37,4 +40,7 @@ urlpatterns = [
         SpectacularSwaggerView.as_view(url_name="schema"),
         name="swagger-ui",
     ),
-]
+] 
+
+if DEBUG:
+    urlpatterns += debug_toolbar_urls()

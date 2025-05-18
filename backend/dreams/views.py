@@ -22,6 +22,7 @@ from .serializers import (
     CategorySerializer,
     DreamCreateSerializer,
     DreamBaseSerializer,
+    DreamRetrieveSerializer,
     RandomDreamsSerializer,
     DreamPhotoSerializer,
     AddDonationSerializer,
@@ -99,6 +100,21 @@ class DreamViewSet(
     mixins.UpdateModelMixin,
     GenericViewSet,
 ):
+    queryset = (
+        Dream.objects
+        .select_related("owner", "dreamer")
+        .prefetch_related("categories")
+        .annotate(
+            number_donations=Count(
+                "donations", filter=Q(donations__status="Paid")
+            ),
+            total_amount_donations=Sum(
+                "donations__amount", filter=Q(donations__status="Paid")
+            ),
+            number_comments=Count("comments"),
+        )
+    )
+    """
     queryset = Dream.objects.all().annotate(
         number_donations=Count("donations", filter=Q(donations__status="Paid")),
         total_amount_donations=Sum(
@@ -106,6 +122,7 @@ class DreamViewSet(
         ),
         number_comments=Count("comments"),
     )
+    """
     serializer_class = DreamBaseSerializer
     permission_classes = [IsAuthenticated()]
     filterset_class = DreamFilter
@@ -179,8 +196,8 @@ class DreamViewSet(
     def get_serializer_class(self):
         # if self.action == "list":
         #     return DreamBaseSerializer
-        # if self.action == "retrieve":
-        #     return DreamBaseSerializer
+        if self.action == "retrieve":
+            return DreamRetrieveSerializer
         if self.action == "create":
             return DreamCreateSerializer
         if self.action == "get_random_dreams":

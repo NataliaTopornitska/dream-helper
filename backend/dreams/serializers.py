@@ -83,6 +83,21 @@ class DreamBaseSerializer(serializers.ModelSerializer):
         return round(level, 2)
 
 
+class DreamRetrieveSerializer(DreamBaseSerializer):
+    owner = serializers.SerializerMethodField()
+    categories = serializers.SerializerMethodField()
+
+    def get_owner(self, obj):
+        user = obj.owner
+        profile = getattr(user, "userprofile", None)
+        name = getattr(profile, "name", None) if profile else None
+        return name if name else user.email
+
+    def get_categories(self, obj):
+        categories = obj.categories.all()
+        return ", ".join([category.name for category in categories])
+
+
 class DreamCreateSerializer(DreamBaseSerializer):
     dreamer = DreamerProfileCreateSerializer(
         write_only=True, required=False, allow_null=True
@@ -267,7 +282,6 @@ class DreamDonationsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Donation
-        fields = "__all__"
         fields = ("id", "amount", "is_anonymous", "date", "donator_profile", )
 
     def get_donator_profile(self, obj):
@@ -284,7 +298,6 @@ class DreamCommentsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = "__all__"
         fields = ("id", "content", "created_at", "owner_profile")
 
     def get_owner_profile(self, obj):

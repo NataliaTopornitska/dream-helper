@@ -36,6 +36,13 @@ ALLOWED_HOSTS = [
     "host.docker.internal",  # for Docker
 ]
 
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",    # for debug-toolbar
+    "localhost",    # for debug-toolbar
+    # ...
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -45,12 +52,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
     "rest_framework",
     "rest_framework.authtoken",
     "drf_spectacular",
     "easy_thumbnails",
     "django_filters",
     "corsheaders",
+    "debug_toolbar",
+
     "users",
     "dreams",
 ]
@@ -66,6 +76,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 CORS_ALLOWED_ORIGINS = [
