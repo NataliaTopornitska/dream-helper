@@ -105,21 +105,6 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, dream }) =
                 </p>
               )}
             </div>
-            {/* <div className="donation-checkbox-wrapper">
-              <label className="checkbox">
-                <input type="checkbox" />
-                <span className="custom-checkbox" />
-                <span>Make a donation anonymously</span>
-              </label>
-              <span className="anonymous-note">
-                Your donation will automatically be recorded as anonymous because you are not logged into your account. <br />
-                To make your donation non-anonymous, please log in before donating.
-              </span>
-            </div> */}
-            {/* <label className="checkbox">
-              <input type="checkbox" />
-              Make a donation anonymously
-            </label> */}
             <div className="line-belows"></div>
             <h3 className="h3-Amount">Choose Amount</h3>
             <div className="preset-amounts">
