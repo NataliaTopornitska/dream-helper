@@ -14,15 +14,18 @@ type SupportModalProps = {
 const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, dream }) => {
   const [donationAmount, setDonationAmount] = useState<number | string>('');
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const isLoggedIn = Boolean(localStorage.getItem('authToken'));
 
   if (!isOpen) return null;
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
+
     if (value === '') {
       setDonationAmount('');
     } else {
       const parsedValue = parseFloat(value);
+
       if (!isNaN(parsedValue) && parsedValue >= 0) {
         setDonationAmount(parsedValue);
       }
@@ -48,13 +51,13 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, dream }) =
 
       setShowSuccessMessage(true);
 
-         setTimeout(() => {
-      setShowSuccessMessage(false);
-      onClose();
-    }, 3000);
-  } catch (error) {
-    console.error('Error making donation:', error);
-  }
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+        onClose();
+      }, 3000);
+    } catch (error) {
+      console.error('Error making donation:', error);
+    }
   };
 
   return (
@@ -86,10 +89,37 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, dream }) =
               truly magical!
             </p>
             <div className="line-below"></div>
-            <label className="checkbox">
+            <div className="donation-checkbox-wrapper">
+              <label className={`checkbox ${isLoggedIn ? '' : 'unauthenticated'}`}>
+                {!isLoggedIn ? (
+                  <span className="custom-icon" />
+                ) : (
+                  <input type="checkbox" />
+                )}
+                Make a donation anonymously
+              </label>
+
+              {!isLoggedIn && (
+                <p className="anonymous-note">
+                  Your donation will automatically be recorded as anonymous because you are not logged into your account.
+                </p>
+              )}
+            </div>
+            {/* <div className="donation-checkbox-wrapper">
+              <label className="checkbox">
+                <input type="checkbox" />
+                <span className="custom-checkbox" />
+                <span>Make a donation anonymously</span>
+              </label>
+              <span className="anonymous-note">
+                Your donation will automatically be recorded as anonymous because you are not logged into your account. <br />
+                To make your donation non-anonymous, please log in before donating.
+              </span>
+            </div> */}
+            {/* <label className="checkbox">
               <input type="checkbox" />
               Make a donation anonymously
-            </label>
+            </label> */}
             <div className="line-belows"></div>
             <h3 className="h3-Amount">Choose Amount</h3>
             <div className="preset-amounts">

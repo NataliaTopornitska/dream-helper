@@ -7,6 +7,7 @@ interface AuthModalProps {
   onClose: () => void;
   authMode: 'login' | 'register';
   setAuthMode: (mode: 'login' | 'register') => void;
+  onLoginSuccess: () => void;
 }
 
 const AuthModal: React.FC<AuthModalProps> = ({
@@ -33,6 +34,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
         setAuthMode('login');
         onClose();
       }, 4000);
+
       return () => clearTimeout(timer);
     }
   }, [activationMessage, setAuthMode]);
@@ -80,9 +82,11 @@ const AuthModal: React.FC<AuthModalProps> = ({
         setPassword('');
       } else {
         const token = data.access || data.token || data.key;
+
         if (token) {
           localStorage.setItem('authToken', token);
-          window.location.href = '/dashboard';
+          onLoginSuccess();
+          // window.location.href = '/dashboard';
         } else {
           throw new Error('Token not received');
         }

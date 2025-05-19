@@ -65,11 +65,16 @@
   margin: 20px 0 11px;
 }
 
+.donation-checkbox-wrapper {
+  max-width: 600px;
+  text-align: left;
+  color: #848484;
+}
+
 .checkbox {
-  margin: 0 32px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   font-size: 16px;
   line-height: 1;
   vertical-align: middle;
@@ -78,14 +83,31 @@
 .checkbox input {
   width: 20px;
   height: 20px;
-  vertical-align: middle;
   margin: 0;
+  cursor: pointer;
+}
+
+.checkbox.unauthenticated .custom-icon {
+  width: 20px;
+  height: 20px;
+  background-image: url('/dream-helper/home-page/checkbox.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
+
+.anonymous-note {
+  font-size: 9px;
+  color: #191919;
+  font-weight: 200;
+  margin-top: 8px;
+  line-height: 18px;
 }
 
 .modal-content h3 {
   font-size: 22px;
   font-weight: 600;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
  }
 
  .line-belows {
@@ -118,7 +140,7 @@ p.or-text {
   font-weight: 500;
   margin: 1rem 0;
   color: #000000;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .h3-Amount {

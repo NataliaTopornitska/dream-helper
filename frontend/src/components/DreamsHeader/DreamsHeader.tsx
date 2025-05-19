@@ -112,6 +112,10 @@ const DreamsHeader: React.FC = () => {
         onClose={() => setIsAuthModalOpen(false)}
         authMode={authMode}
         setAuthMode={setAuthMode}
+        onLoginSuccess={() => {
+          setIsLoggedIn(true);
+          setIsAuthModalOpen(false);
+        }}
       />
     </header>
   );
