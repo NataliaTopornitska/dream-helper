@@ -211,7 +211,7 @@ class DreamerProfileView(
     queryset = DreamerProfile.objects.all()
     serializer_class = DreamerProfileSerializer
     permission_classes = [
-        IsAdminUser,
+        IsAuthenticated,
     ]
 
     def get_serializer_class(self):
@@ -234,7 +234,7 @@ class CountryView(
     queryset = Country.objects.all()
     serializer_class = CountrySerializer
     permission_classes = [
-        IsAuthenticated,
+        IsAdminUser,
     ]
 
     def get_permissions(self):
@@ -261,18 +261,18 @@ class CityView(
     filterset_class = CityFilter
     filter_backends = (filters.DjangoFilterBackend,)
     permission_classes = [
-        IsAuthenticated,
+        IsAdminUser,
     ]
 
     def get_permissions(self):
         if self.action in [
-            "create",
-        ]:
-            return [IsAuthenticated()]
-        if self.action in [
             "list",
         ]:
             return [AllowAny()]
+        if self.action in [
+            "create",
+        ]:
+            return [IsAuthenticated()]
         return [IsAdminUser()]
 
     def get_serializer_class(self):

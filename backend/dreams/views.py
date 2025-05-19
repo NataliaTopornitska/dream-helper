@@ -2,6 +2,7 @@ import os
 import random
 
 import stripe
+from django.core.exceptions import BadRequest, ObjectDoesNotExist
 from django.db.models import Sum, Count, Q
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -15,12 +16,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
-from .models import Category, Dream, Donation, Comment
+from .models import Category, Dream, Donation, Comment, Follower
 from .pagination import DreamSetPagination
 from .serializers import (
     CategorySerializer,
     DreamCreateSerializer,
     DreamBaseSerializer,
+    DreamRetrieveSerializer,
     RandomDreamsSerializer,
     DreamPhotoSerializer,
     AddDonationSerializer,
@@ -28,6 +30,8 @@ from .serializers import (
     DreamUpdateSerializer,
     AddCommentSerializer,
     CommentSerializer,
+    DreamDonationsSerializer,
+    DreamCommentsSerializer,
 )
 
 from utils.email import send_email_with_template
@@ -88,6 +92,7 @@ class CategoryView(
         return [IsAdminUser()]
 
 
+
 class DreamViewSet(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
@@ -95,6 +100,21 @@ class DreamViewSet(
     mixins.UpdateModelMixin,
     GenericViewSet,
 ):
+    queryset = (
+        Dream.objects
+        .select_related("owner", "dreamer")
+        .prefetch_related("categories")
+        .annotate(
+            number_donations=Count(
+                "donations", filter=Q(donations__status="Paid")
+            ),
+            total_amount_donations=Sum(
+                "donations__amount", filter=Q(donations__status="Paid")
+            ),
+            number_comments=Count("comments"),
+        )
+    )
+    """
     queryset = Dream.objects.all().annotate(
         number_donations=Count("donations", filter=Q(donations__status="Paid")),
         total_amount_donations=Sum(
@@ -102,6 +122,7 @@ class DreamViewSet(
         ),
         number_comments=Count("comments"),
     )
+    """
     serializer_class = DreamBaseSerializer
     permission_classes = [IsAuthenticated()]
     filterset_class = DreamFilter
@@ -175,8 +196,8 @@ class DreamViewSet(
     def get_serializer_class(self):
         # if self.action == "list":
         #     return DreamBaseSerializer
-        # if self.action == "retrieve":
-        #     return DreamBaseSerializer
+        if self.action == "retrieve":
+            return DreamRetrieveSerializer
         if self.action == "create":
             return DreamCreateSerializer
         if self.action == "get_random_dreams":
@@ -332,6 +353,12 @@ class DreamViewSet(
             new_donation.save()
             print(f"{new_donation=}")
 
+            follow = request.data.get("follow", None)
+            if follow:
+                # this user follow to this dream
+                follower = Follower.objects.create(dream=dream, user=user)
+                follower.save()
+
             # add donation in dream  (any status)
             dream.donations.add(new_donation)
             dream.save()
@@ -363,6 +390,43 @@ class DreamViewSet(
         return Response(
             {"detail": "Comment added successfully."}, status=status.HTTP_200_OK
         )
+
+    @action(
+        methods=["get"],
+        detail=True,
+        url_path="all_donations",
+    )
+    def all_donations(self, request, pk=None):
+        try:
+            dream = Dream.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return Response({"detail": "Dream with this ID not found."}, status=404)
+
+        donations = dream.donations.all()
+        donations = dream.donations.filter(status="Paid")
+        if not donations:
+            return Response({"message": "No donations yet."}, status=204)
+
+        serialized_data = DreamDonationsSerializer(donations, many=True)
+        return Response(serialized_data.data, status=200)
+
+    @action(
+        methods=["get"],
+        detail=True,
+        url_path="all_comments",
+    )
+    def all_comments(self, request, pk=None):
+        try:
+            dream = Dream.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return Response({"detail": "Dream with this ID not found."}, status=404)
+
+        comments = dream.comments.all()
+        if not comments:
+            return Response({"message": "No comments yet."}, status=204)
+
+        serialized_data = DreamCommentsSerializer(comments, many=True)
+        return Response(serialized_data.data, status=200)
 
 
 @csrf_exempt

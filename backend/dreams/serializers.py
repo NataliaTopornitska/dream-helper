@@ -6,6 +6,7 @@ from rest_framework.fields import ImageField, DecimalField, FloatField
 
 from users.models import DreamerProfile
 from users.serializers import DreamerProfileCreateSerializer, DreamerProfileSerializer
+from users.serializers import DreamerProfileCreateSerializer, DreamerProfileSerializer, DreamDonatorsSerializer
 
 from users.models import Country, City
 
@@ -80,6 +81,21 @@ class DreamBaseSerializer(serializers.ModelSerializer):
         except Exception:
             level = 0
         return round(level, 2)
+
+
+class DreamRetrieveSerializer(DreamBaseSerializer):
+    owner = serializers.SerializerMethodField()
+    categories = serializers.SerializerMethodField()
+
+    def get_owner(self, obj):
+        user = obj.owner
+        profile = getattr(user, "userprofile", None)
+        name = getattr(profile, "name", None) if profile else None
+        return name if name else user.email
+
+    def get_categories(self, obj):
+        categories = obj.categories.all()
+        return ", ".join([category.name for category in categories])
 
 
 class DreamCreateSerializer(DreamBaseSerializer):
@@ -209,6 +225,7 @@ class AddDonationSerializer(serializers.ModelSerializer):
     amount = serializers.ChoiceField(choices=AMOUNT_CHOICES)
     your_amount = serializers.FloatField(required=False, default=0)
     is_anonymous = serializers.BooleanField(required=False, default=False)
+    follow = serializers.BooleanField(required=False, default=False)
 
     class Meta:
         model = Donation
@@ -217,6 +234,7 @@ class AddDonationSerializer(serializers.ModelSerializer):
             "amount",
             "your_amount",
             "is_anonymous",
+            "follow"
         )
 
     def validate(self, data):
@@ -257,3 +275,35 @@ class AddCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ("content",)
+
+
+class DreamDonationsSerializer(serializers.ModelSerializer):
+    donator_profile = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Donation
+        fields = ("id", "amount", "is_anonymous", "date", "donator_profile", )
+
+    def get_donator_profile(self, obj):
+        if obj.donator and hasattr(obj.donator, "userprofile"):
+            donator_data = DreamDonatorsSerializer(obj.donator.userprofile).data
+            if obj.is_anonymous is False and not obj.donator.userprofile.name:
+                donator_data["name"] = obj.donator.email
+            return donator_data
+        return None
+
+
+class DreamCommentsSerializer(serializers.ModelSerializer):
+    owner_profile = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Comment
+        fields = ("id", "content", "created_at", "owner_profile")
+
+    def get_owner_profile(self, obj):
+        if obj.owner and hasattr(obj.owner, "userprofile"):
+            owner_data = DreamDonatorsSerializer(obj.owner.userprofile).data
+            if not owner_data["name"]:
+                owner_data["name"] = obj.owner.email
+            return owner_data
+        return None

@@ -282,6 +282,16 @@ class UserProfileSerializer(serializers.ModelSerializer):
         )
 
 
+class DreamDonatorsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = (
+            "user",
+            "name",
+            "thumbnail_url",
+        )
+
+
 class UserProfileAvatarSerializer(serializers.ModelSerializer):
     photo_avatar = ImageField()
 

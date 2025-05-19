@@ -24,4 +24,6 @@ backend/users/__pycache__/
 backend/users/migrations/__pycache__/
 backend/utils/__pycache__/
 backup_db.sqlite3
+frontend/
+vite.config.ts
 backup_dreams.json
