@@ -37,14 +37,22 @@
 
 .modal-content input {
   font-family: "Inter", sans-serif;
-  // font-family: "Raleway", sans-serif;
   width: 100%;
   padding: 0.75rem;
   margin: 0.5rem 0 1rem;
   border-radius: 999px;
   border: 1px solid #191919;
-  font-size: 17px;
+  font-size: 16px;
   height: 48px;
+}
+
+.forgot-password-text {
+  font-family: "Inter", sans-serif;
+  text-align: center;
+  color: #847C7C;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 6px;
 }
 
 .signup-btn {
@@ -77,7 +85,7 @@
   background-color: #f0f8ff;
   border-radius: 8px;
   color: black;
-  font-size: 22px;
+  font-size: 26px;
   text-align: center;
   margin-top: 18px;
   border: 1px solid #ccc;

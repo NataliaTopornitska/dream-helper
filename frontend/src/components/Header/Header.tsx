@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Header.scss';
 import { Menu, X } from 'lucide-react';
 import { useIsMobile } from '../../use-mobile';
@@ -10,6 +10,13 @@ const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+
+    setIsLoggedIn(!!token);
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -35,29 +42,37 @@ const Header: React.FC = () => {
                 <nav className="nav">
                   <ul className="nav-list">
                     <li className="nav-item">
-                      <a
-                        href="/dreams"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
+                      <Link to="/dreams" onClick={() => setIsMenuOpen(false)}>
                         Dreams
-                      </a>
+                      </Link>
                     </li>
                     <li className="nav-item">
-                      <a href="#donors" onClick={() => setIsMenuOpen(false)}>
+                      <a href="" onClick={() => setIsMenuOpen(false)}>
                         Top Donors
                       </a>
                     </li>
                   </ul>
                 </nav>
-                <button
-                  className="login-button"
-                  onClick={() => {
-                    setIsAuthModalOpen(true);
-                    setAuthMode('login');
-                  }}
-                >
-                  Log In or Sign Up
-                </button>
+                {isLoggedIn ? (
+                  <Link
+                    to=""
+                    className="profile-link"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Profile
+                  </Link>
+                ) : (
+                  <button
+                    className="login-button"
+                    onClick={() => {
+                      setIsAuthModalOpen(true);
+                      setAuthMode('login');
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Log In or Sign Up
+                  </button>
+                )}
               </div>
             )}
           </>
@@ -73,12 +88,18 @@ const Header: React.FC = () => {
                 </li>
               </ul>
             </nav>
-            <button
-              className="login-button"
-              onClick={() => setIsAuthModalOpen(true)}
-            >
-              Log In or Sign Up
-            </button>
+            {isLoggedIn ? (
+              <Link to="" className="profile-link">
+                Profile
+              </Link>
+            ) : (
+              <button
+                className="login-button"
+                onClick={() => setIsAuthModalOpen(true)}
+              >
+                Log In or Sign Up
+              </button>
+            )}
           </div>
         )}
       </div>

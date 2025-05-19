@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './DreamsHeader.scss';
 import { Menu, X } from 'lucide-react';
 import { useIsMobile } from '../../use-mobile';
@@ -10,6 +10,13 @@ const DreamsHeader: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+
+    setIsLoggedIn(!!token);
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -23,6 +30,7 @@ const DreamsHeader: React.FC = () => {
             DreamHelper
           </Link>
         </h1>
+
         {isMobile ? (
           <>
             <button className="menu-toggle" onClick={toggleMenu}>
@@ -33,14 +41,14 @@ const DreamsHeader: React.FC = () => {
               <div className="mobile-nav">
                 <nav className="nav">
                   <ul className="nav-list">
-                    <li className="nav-items">
-                      <a
-                        href="/dream-helper/#/"
+                    <li className="nav-item">
+                      <Link
+                        to="/"
                         className="dreams-link"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         Home page
-                      </a>
+                      </Link>
                     </li>
                     <li className="nav-item">
                       <a href="" onClick={() => setIsMenuOpen(false)}>
@@ -49,41 +57,56 @@ const DreamsHeader: React.FC = () => {
                     </li>
                   </ul>
                 </nav>
-                <button
-                  className="login-button"
-                  onClick={() => {
-                    setIsAuthModalOpen(true);
-                    setAuthMode('login');
-                  }}
-                >
-                  Log In or Sign Up
-                </button>
+                {isLoggedIn ? (
+                  <Link
+                    to=""
+                    className="profile-link"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Profile
+                  </Link>
+                ) : (
+                  <button
+                    className="login-button"
+                    onClick={() => {
+                      setIsAuthModalOpen(true);
+                      setAuthMode('login');
+                    }}
+                  >
+                    Log In or Sign Up
+                  </button>
+                )}
               </div>
             )}
           </>
         ) : (
-          <>
-            <div className="nav-block">
-              <nav className="nav">
-                <ul className="nav-list">
-                  <li className="nav-item">
-                    <a href="">Dreams</a>
-                  </li>
-                  <li className="nav-item">
-                    <a href="">Top Donors</a>
-                  </li>
-                </ul>
-              </nav>
+          <div className="nav-block">
+            <nav className="nav">
+              <ul className="nav-list">
+                <li className="nav-item">
+                  <Link to="">Dreams</Link>
+                </li>
+                <li className="nav-item">
+                  <a href="">Top Donors</a>
+                </li>
+              </ul>
+            </nav>
+            {isLoggedIn ? (
+              <Link to="" className="profile-link">
+                Profile
+              </Link>
+            ) : (
               <button
                 className="login-button"
                 onClick={() => setIsAuthModalOpen(true)}
               >
                 Log In or Sign Up
               </button>
-            </div>
-          </>
+            )}
+          </div>
         )}
       </div>
+
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
