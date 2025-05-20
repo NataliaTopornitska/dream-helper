@@ -86,7 +86,50 @@ class DreamBaseSerializer(serializers.ModelSerializer):
 class DreamRetrieveSerializer(DreamBaseSerializer):
     owner = serializers.SerializerMethodField()
     categories = serializers.SerializerMethodField()
+    city = serializers.SerializerMethodField()
+    is_collective = serializers.SerializerMethodField()
 
+    class Meta:
+        model = Dream
+        fields = (
+            "id",
+            "owner",
+            "title",
+            "to_another",
+            "dreamer",
+            "city",
+            "categories",
+            "content",
+            "goal",
+            "photo_url",
+            "thumbnail_url",
+            "status",
+            "created_at",
+            "number_donations",
+            "total_amount_donations",
+            "number_comments",
+            "number_views",
+            "level_completed",  # in %
+            "completed_at",
+            "is_collective",
+        )
+
+    def get_city(self, obj):
+        dreamer = obj.dreamer
+        if dreamer:
+            return f"{dreamer.city.name}, {dreamer.city.country.name}"
+        owner = obj.owner
+        profile = getattr(owner, "userprofile", None)
+        return f"{profile.city.name}, {profile.city.country.name}"
+    
+    def get_is_collective(self, obj):
+        dreamer = obj.dreamer
+        if dreamer:
+            return dreamer.is_collective
+        owner = obj.owner
+        profile = getattr(owner, "userprofile", None)
+        return profile.is_collective
+    
     def get_owner(self, obj):
         user = obj.owner
         profile = getattr(user, "userprofile", None)
