@@ -59,7 +59,7 @@ const DreamsHeader: React.FC = () => {
                 </nav>
                 {isLoggedIn ? (
                   <Link
-                    to=""
+                    to="/profile"
                     className="profile-link"
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -83,16 +83,12 @@ const DreamsHeader: React.FC = () => {
           <div className="nav-block">
             <nav className="nav">
               <ul className="nav-list">
-                <li className="nav-item">
-                  <Link to="">Dreams</Link>
-                </li>
-                <li className="nav-item">
-                  <a href="">Top Donors</a>
-                </li>
+                <li className="nav-item">Dreams</li>
+                <li className="nav-item">Top Donors</li>
               </ul>
             </nav>
             {isLoggedIn ? (
-              <Link to="" className="profile-link">
+              <Link to="/profile" className="profile-link">
                 Profile
               </Link>
             ) : (

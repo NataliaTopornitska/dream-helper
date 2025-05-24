@@ -4,10 +4,10 @@ const InfoCard = ({ dream }) => {
   return (
     <div className={styles.infoCard}>
       <div className={styles.topRow}>
-       <p>
-        <span className={styles.cardLabel}>Owner Name</span>
-        <span className={styles.cardValue}>{dream.owner}</span>
-      </p>
+        <p>
+          <span className={styles.cardLabel}>Owner Name</span>
+          <span className={styles.cardValue}>{dream.owner}</span>
+        </p>
         <div className={styles.statItem}>
           <img
             src="/dream-helper/home-page/eye.svg"
@@ -19,11 +19,11 @@ const InfoCard = ({ dream }) => {
       </div>
       <p>
         <span className={styles.cardLabel}>From</span>
-        <span className={styles.cardValue}>{dream.from}</span>
+        <span className={styles.cardValue}>{dream.city}</span>
       </p>
       <p>
         <span className={styles.cardLabel}>Category</span>
-        <span className={styles.cardValue}>{dream.categories.join(', ')}</span>
+        <span className={styles.cardValue}>{dream.categories}</span>
       </p>
       <p>
         <span className={styles.cardLabel}>Type</span>

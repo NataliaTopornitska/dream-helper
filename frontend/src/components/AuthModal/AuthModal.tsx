@@ -42,9 +42,9 @@ const AuthModal: React.FC<AuthModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       getDreams()
-        .then((res) => res.json())
-        .then((data) => console.log('Dreams:', data))
-        .catch((err) => console.error('Error fetching dreams:', err));
+        .then(res => res.json())
+        .then(data => console.log('Dreams:', data))
+        .catch(err => console.error('Error fetching dreams:', err));
     }
   }, [isOpen]);
 
@@ -55,6 +55,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
 
     if (authMode === 'register' && (!credential || !/\S+@\S+\.\S+/.test(credential))) {
       setEmailError('Please enter a valid email');
+
       return;
     }
 
@@ -72,11 +73,12 @@ const AuthModal: React.FC<AuthModalProps> = ({
       }
 
       const data = await response.json();
+
       console.log(data);
 
       if (authMode === 'register') {
         setActivationMessage(
-          'An activation code has been sent to your email. Please activate your account within 1 hour to log in.'
+          'An activation code has been sent to your email. Please activate your account within 1 hour to log in.',
         );
         setCredential('');
         setPassword('');
@@ -86,7 +88,6 @@ const AuthModal: React.FC<AuthModalProps> = ({
         if (token) {
           localStorage.setItem('authToken', token);
           onLoginSuccess();
-          // window.location.href = '/dashboard';
         } else {
           throw new Error('Token not received');
         }
@@ -100,7 +101,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-content" onClick={e => e.stopPropagation()}>
         <h2>{authMode === 'register' ? 'Sign Up' : 'Log In'}</h2>
 
         {activationMessage ? (
@@ -114,7 +115,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
               <input
                 type="email"
                 value={credential}
-                onChange={(e) => setCredential(e.target.value)}
+                onChange={e => setCredential(e.target.value)}
                 placeholder="Enter your email address"
                 required
               />
@@ -124,7 +125,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
               <input
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 required
               />
@@ -142,7 +143,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
                   Have an account?{' '}
                   <a
                     href="#"
-                    onClick={(e) => {
+                    onClick={e => {
                       e.preventDefault();
                       setAuthMode('login');
                     }}
@@ -154,7 +155,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
                 <span>
                   <a
                     href="#"
-                    onClick={(e) => {
+                    onClick={e => {
                       e.preventDefault();
                       setAuthMode('register');
                     }}

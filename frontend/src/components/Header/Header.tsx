@@ -55,7 +55,7 @@ const Header: React.FC = () => {
                 </nav>
                 {isLoggedIn ? (
                   <Link
-                    to=""
+                    to="/profile"
                     className="profile-link"
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -89,7 +89,7 @@ const Header: React.FC = () => {
               </ul>
             </nav>
             {isLoggedIn ? (
-              <Link to="" className="profile-link">
+              <Link to="/profile" className="profile-link">
                 Profile
               </Link>
             ) : (

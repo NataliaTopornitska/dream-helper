@@ -654,12 +654,6 @@ const DreamsCatalog = () => {
                   </button>
                 )}
               </div>
-
-              {/* <button className="dream-support-btn"
-                onClick={() => setActiveDream(dream)}
-              >
-                Support
-              </button> */}
             </div>
           );
         })}

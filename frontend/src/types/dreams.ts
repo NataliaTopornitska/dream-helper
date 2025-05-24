@@ -20,14 +20,14 @@ export interface City {
 
 export interface Dream {
   id: number;
-  // owner: string;
-  owner: number;
+  owner: string;
+  // owner: number;
   title: string;
   to_another: boolean;
   dreamer: number;
-  // city: string;
-  categories: number[];
-  //  categories: string;
+  city: string;
+  // categories: number[];
+  categories: string;
   content: string;
   goal: string;
   photo_url: string | null;
@@ -40,7 +40,7 @@ export interface Dream {
   number_views: number;
   level_completed: number;
   completed_at: string | null;
-  // is_colective: boolean;
+  is_colective: boolean;
 }
 
 export interface DreamResponse {

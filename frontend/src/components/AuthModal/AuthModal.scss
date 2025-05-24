@@ -95,3 +95,15 @@
 .activation-message p {
   margin: 0;
 }
+
+
+// Log out
+.profileContainer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+}
+
+.profileContainer button {
+  font-size: 22px;
+}
