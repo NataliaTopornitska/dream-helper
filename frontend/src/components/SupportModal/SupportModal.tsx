@@ -41,7 +41,6 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, dream }) =
         your_amount: donationAmount,
         is_anonymous: isAnonymous,
         follow: false,
-        // follow: followValue,
       };
 
       const response = await fetch(url, {
@@ -82,7 +81,9 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, dream }) =
         <div className="line-below"></div>
 
         <div className="donation-checkbox-wrapper">
-          <label className={`checkbox ${isLoggedIn ? '' : 'unauthenticated'}`}>
+          <label
+            className={`checkbox ${isLoggedIn ? 'label-authenticated' : 'unauthenticated'}`}
+          >
             {!isLoggedIn ? (
               <span className="custom-icon" />
             ) : (
