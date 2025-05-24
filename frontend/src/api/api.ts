@@ -5,7 +5,7 @@ export const authFetch = (url: string, options: RequestInit = {}) => {
     ...options,
     headers: {
       ...(options.headers || {}),
-      'Authorization': token ? `Bearer ${token}` : '',
+      'Authorization': token ? `Token ${token}` : '',
       'Content-Type': 'application/json',
     },
   });

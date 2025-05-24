@@ -84,10 +84,16 @@ const AuthModal: React.FC<AuthModalProps> = ({
         setPassword('');
       } else {
         const token = data.access || data.token || data.key;
+        const username = data.username || data.email || '';
 
         if (token) {
           localStorage.setItem('authToken', token);
+          localStorage.setItem('username', username);
           onLoginSuccess();
+
+          setTimeout(() => {
+            onClose();
+          }, 3000);
         } else {
           throw new Error('Token not received');
         }
