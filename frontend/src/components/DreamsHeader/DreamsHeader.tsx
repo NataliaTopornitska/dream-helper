@@ -85,7 +85,9 @@ const DreamsHeader: React.FC = () => {
           <div className="nav-block">
             <nav className="nav">
               <ul className="nav-list">
-                <li className="nav-item">Dreams</li>
+                <li className="nav-item">
+                  <Link to="/dreams">Dreams</Link>
+                </li>
                 <li className="nav-item">Top Donors</li>
               </ul>
             </nav>

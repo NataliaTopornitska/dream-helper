@@ -77,10 +77,8 @@ const Comments = ({ dreamId }: CommentsProps) => {
         return;
       }
 
-      // Очищаємо інпут
       setNewComment('');
 
-      // Заново завантажуємо коментарі
       setLoading(true);
       const fetchResponse = await fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams/${dreamId}/all_comments/`);
       const allComments = await fetchResponse.json();
@@ -122,11 +120,12 @@ const Comments = ({ dreamId }: CommentsProps) => {
           </button>
         </div>
 
-        <div className={styles.commentsList}>
+        <div
+          className={`${styles.commentsList} ${comments.length > 3 ? styles.scrollable : ''}`}
+        >
           {loading ? (
             <p>Loading comments...</p>
           ) : comments.length === 0 ? (
-            // Якщо хочеш, можна залишити пусто або написати щось інше
             null
           ) : (
             comments.map(comment => (
@@ -136,9 +135,13 @@ const Comments = ({ dreamId }: CommentsProps) => {
                   alt="avatar"
                   className={styles.avatar}
                 />
-                <div className="comment-i">
+                  {/* <div className={styles.commentI}>
                   <strong className="comment-author">{comment.owner_profile.name}</strong>
                   <p className="comment-text">{comment.content}</p>
+                </div> */}
+                <div className={styles.commentI}>
+                  <strong className={styles.commentAuthor}>{comment.owner_profile.name}</strong>
+                  <p className={styles.commentText}>{comment.content}</p>
                 </div>
               </div>
             ))
