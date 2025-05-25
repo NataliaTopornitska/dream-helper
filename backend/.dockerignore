@@ -1,0 +1,23 @@
+# Файли Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Віртуальне середовище (venv)
+venv/
+.env
+
+# Логи та тимчасові файли
+*.log
+db.sqlite3
+media/
+static/
+
+# Git-репозиторій
+.git/
+.gitignore
+
+# Файли IDE та редакторів
+.vscode/
+.idea/
