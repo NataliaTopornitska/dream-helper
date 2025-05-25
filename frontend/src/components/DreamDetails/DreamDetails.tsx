@@ -31,8 +31,8 @@ const DreamDetails = () => {
     <div className={styles.dreamDetails}>
       <h1 className={styles.dreamTitle}>{dream.title}</h1>
       <div className={styles.header}>
-  <img
-  src={dream.photo_url || dream.thumbnail_url}
+        <img
+        src={dream.photo_url || dream.thumbnail_url}
   alt={dream.title}
   className={`${styles.dreamImage} ${styles.dreamImageStyled}`}
   onError={(e) => {

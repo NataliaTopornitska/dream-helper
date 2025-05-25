@@ -11,11 +11,14 @@ const Header: React.FC = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState<string | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
+    const storedUsername = localStorage.getItem('username');
 
     setIsLoggedIn(!!token);
+    setUsername(storedUsername);
   }, []);
 
   const toggleMenu = () => {
@@ -54,13 +57,12 @@ const Header: React.FC = () => {
                   </ul>
                 </nav>
                 {isLoggedIn ? (
-                  <Link
-                    to=""
-                    className="profile-link"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Profile
-                  </Link>
+                      <div className="profile-link-wrapper" onClick={() => setIsMenuOpen(false)}>
+                    <Link to="/profile" className="profile-link">
+                      Profile
+                    </Link>
+                    {username && <div className="username-display">{username}</div>}
+                  </div>
                 ) : (
                   <button
                     className="login-button"
@@ -89,9 +91,12 @@ const Header: React.FC = () => {
               </ul>
             </nav>
             {isLoggedIn ? (
-              <Link to="" className="profile-link">
-                Profile
-              </Link>
+              <div className="profile-link-wrapper" onClick={() => setIsMenuOpen(false)}>
+                <Link to="/profile" className="profile-link">
+                  Profile
+                </Link>
+                {username && <div className="username-display">{username}</div>}
+              </div>
             ) : (
               <button
                 className="login-button"
@@ -111,6 +116,7 @@ const Header: React.FC = () => {
         setAuthMode={setAuthMode}
         onLoginSuccess={() => {
           setIsLoggedIn(true);
+          setUsername(localStorage.getItem('username'));
           setIsAuthModalOpen(false);
         }}
       />

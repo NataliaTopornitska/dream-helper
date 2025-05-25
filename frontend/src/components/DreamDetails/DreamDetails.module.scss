@@ -87,7 +87,7 @@
   margin-right: 5px;
   margin-bottom: 10px;
   text-align: left;
-  width: 170px;
+  width: 160px;
 }
 
 .cardValue {
@@ -125,9 +125,6 @@
   font-weight: 500;
 }
 
-.sidebar {
-  margin-top: 40px;
-}
 
 .progressBar {
   height: 6px;
@@ -223,12 +220,17 @@
 }
 }
 
+.sidebar {
+  margin-top: 40px;
+   max-width: 490px;
+
+}
+
 .donorInfo {
   display: flex;
   align-items: center;
   gap: 8.5px;
   flex: 0 0 120px;
-  // flex: 1;
   margin-left: 16px;
 }
 
@@ -306,8 +308,12 @@
   font-weight: 500;
   cursor: pointer;
   width: 100%;
-  margin-top: 26px;
-  margin-bottom: 60px;
+  max-width: 490px;
+  margin: 26px auto 60px;
+  display: block;
+  min-width: 360px;
+  // margin-top: 26px;
+  // margin-bottom: 60px;
 }
 
 
@@ -377,23 +383,34 @@
   height: 48px;
 }
 
-.comment-i {
+.commentI {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 9px;
+  padding: 15px;
 }
 
-.comment-author {
+.commentAuthor {
   font-size: 17px;
-  font-weight: 500;
+  font-weight: 600;
   color: #191919;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
-.comment-text {
+.commentText {
   font-family: "Inter", sans-serif;
   font-size: 16px;
   color: #464646;
+}
+
+.commentsList {
+  overflow-y: visible;
+  max-height: none;
+}
+
+.commentsList.scrollable {
+  max-height: 285px;
+  overflow-y: auto;
 }
 
 .sendButton {
@@ -405,6 +422,10 @@
   padding: 11px 28px;
   margin-right: 34px;
 }
+
+
+
+
 
 
 
@@ -476,6 +497,8 @@
 
 .sidebar {
   margin-top: 20px;
+  max-width: 490px;
+  width: 100%;
 }
 
 .progressBar {
@@ -548,16 +571,16 @@
   height: 45px;
 }
 
-.comment-i {
-  gap: 15px;
+.commentI {
+  gap: 4px;
 }
 
-.comment-author {
+.commentAuthor {
   font-size: 17px;
   margin-bottom: 10px;
 }
 
-.comment-text {
+.commentText {
   font-size: 16px;
 }
 
@@ -571,10 +594,10 @@
   order: 2;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
   max-width: 490px;
-  margin: 0 auto;
+  margin: 0;
 }
 
 
@@ -584,6 +607,7 @@
   background-color: white;
   border-radius: 24px;
   max-width: 490px;
+  width: 100%;
 }
 
 .donorsTitle {
@@ -694,9 +718,11 @@
   padding: 13px 0;
   border-radius: 63px;
   font-size: 17px;
-  max-width: 430px;
+  width: 100%;
+  max-width: 490px;
   margin-top: 26px;
   margin-bottom: 60px;
+  box-sizing: border-box;
 }
 }
 
@@ -896,16 +922,16 @@
   height: 40px;
 }
 
-.comment-i {
-  gap: 15px;
+.commentI {
+  gap: 4px;
 }
 
-.comment-author {
+.commentAuthor {
   font-size: 16px;
   margin-bottom: 9px;
 }
 
-.comment-text {
+.commentText {
   font-size: 15px;
 }
 

@@ -12,8 +12,8 @@ type SupportModalProps = {
 };
 
 const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, dream }) => {
-  const [donationAmount, setDonationAmount] = useState<number | string>('');
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [donationAmount, setDonationAmount] = useState<number | null>(null);
+  const [isAnonymous, setIsAnonymous] = useState(false);
   const isLoggedIn = Boolean(localStorage.getItem('authToken'));
 
   if (!isOpen) return null;
@@ -22,7 +22,7 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, dream }) =
     const value = event.target.value;
 
     if (value === '') {
-      setDonationAmount('');
+      setDonationAmount(null);
     } else {
       const parsedValue = parseFloat(value);
 
@@ -34,27 +34,26 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, dream }) =
 
   const handleSupportClick = async () => {
     try {
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/v1/dreamhelper/dreams/${dream.id}/make_donation/`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ amount: donationAmount }),
-        }
-      );
+      const url = `http://127.0.0.1:8000/api/v1/dreamhelper/dreams/${dream.id}/make_donation/`;
+
+      const body = {
+        amount: null,
+        your_amount: donationAmount,
+        is_anonymous: isAnonymous,
+        follow: false,
+      };
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
 
       if (!response.ok) {
         throw new Error('Donation request failed');
       }
 
-      setShowSuccessMessage(true);
-
-      setTimeout(() => {
-        setShowSuccessMessage(false);
-        onClose();
-      }, 3000);
+      window.location.href = url;
     } catch (error) {
       console.error('Error making donation:', error);
     }
@@ -67,72 +66,73 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, dream }) =
           ×
         </button>
 
-        {showSuccessMessage ? (
-          <>
-            <h2 className="support-title">Support</h2>
-            <div className="success-message">
-              <p>Thank you for your generosity!</p>
-            </div>
-          </>
-        ) : (
-          <>
-            <h2>Support</h2>
-            <div className="line-above"></div>
-            <img
-              src="/dream-helper/home-page/help-interface.png"
-              alt="Support"
-              className="modal-img"
-            />
-            <p>
-              Thank you! Every contribution, even the smallest one, is a step
-              closer to making a dream come true. Together, we create something
-              truly magical!
+        <h2>Support</h2>
+        <div className="line-above"></div>
+        <img
+          src="/dream-helper/home-page/help-interface.png"
+          alt="Support"
+          className="modal-img"
+        />
+        <p>
+          Thank you! Every contribution, even the smallest one, is a step
+          closer to making a dream come true. Together, we create something
+          truly magical!
+        </p>
+        <div className="line-below"></div>
+
+        <div className="donation-checkbox-wrapper">
+          <label
+            className={`checkbox ${isLoggedIn ? 'label-authenticated' : 'unauthenticated'}`}
+          >
+            {!isLoggedIn ? (
+              <span className="custom-icon" />
+            ) : (
+              <input
+                type="checkbox"
+                checked={isAnonymous}
+                onChange={() => setIsAnonymous(!isAnonymous)}
+              />
+            )}
+            Make a donation anonymously
+          </label>
+
+          {!isLoggedIn && (
+            <p className="anonymous-note">
+              Your donation will automatically be recorded as anonymous because you are not logged into your account.
             </p>
-            <div className="line-below"></div>
-            <div className="donation-checkbox-wrapper">
-              <label className={`checkbox ${isLoggedIn ? '' : 'unauthenticated'}`}>
-                {!isLoggedIn ? (
-                  <span className="custom-icon" />
-                ) : (
-                  <input type="checkbox" />
-                )}
-                Make a donation anonymously
-              </label>
+          )}
+        </div>
 
-              {!isLoggedIn && (
-                <p className="anonymous-note">
-                  Your donation will automatically be recorded as anonymous because you are not logged into your account.
-                </p>
-              )}
-            </div>
-            <div className="line-belows"></div>
-            <h3 className="h3-Amount">Choose Amount</h3>
-            <div className="preset-amounts">
-              <button onClick={() => setDonationAmount(5)}>$5</button>
-              <button onClick={() => setDonationAmount(15)}>$15</button>
-              <button onClick={() => setDonationAmount(30)}>$30</button>
-            </div>
+        <div className="line-belows"></div>
+        <h3 className="h3-Amount">Choose Amount</h3>
+        <div className="preset-amounts">
+          <button onClick={() => setDonationAmount(5)}>$5</button>
+          <button onClick={() => setDonationAmount(15)}>$15</button>
+          <button onClick={() => setDonationAmount(30)}>$30</button>
+        </div>
 
-            <p className="or-text">or</p>
+        <p className="or-text">or</p>
 
-            <h3>Your Own Amount</h3>
-            <input
-              type="number"
-              placeholder="0$"
-              className="amount-input"
-              value={donationAmount}
-              onChange={handleAmountChange}
-            />
+        <h3>Your Own Amount</h3>
+        <input
+          type="number"
+          placeholder="0$"
+          className="amount-input"
+          value={donationAmount === null ? '' : donationAmount}
+          onChange={handleAmountChange}
+          min={0}
+        />
 
-            <button className="support-submit" onClick={handleSupportClick}>
-              Support
-            </button>
-          </>
-        )}
+        <button
+          className="support-submit"
+          onClick={handleSupportClick}
+          disabled={donationAmount === null}
+        >
+          Support
+        </button>
       </div>
     </div>
   );
 };
 
 export default SupportModal;
-

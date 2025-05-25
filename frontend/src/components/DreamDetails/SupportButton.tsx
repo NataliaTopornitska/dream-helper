@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import styles from './DreamDetails.module.scss';
 import SupportModal from '../SupportModal/SupportModal';
-import { Dream } from '../../types';
 
 type SupportButtonProps = {
   dream: Dream;
