@@ -92,8 +92,8 @@ class DreamFilter(django_filters.FilterSet):
 
 
 #    @extend_schema_field(serializers.IntegerField())
-    def filter_country(self, queryset, name, value):
         # get pk of country
+    def filter_country(self, queryset, name: str, value: int | str):
         country_pk = value.pk if hasattr(value, "pk") else value
 
         # annotate country for dreamer
@@ -111,11 +111,11 @@ class DreamFilter(django_filters.FilterSet):
         )
 
 #    @extend_schema_field(serializers.IntegerField())
-    def filter_city(self, queryset, name, value):
+    def filter_city(self, queryset,  name: str, value: int | str):
         # get pk of city
         city_pk = value.pk if hasattr(value, "pk") else value
 
-        # annotate city for dreamer
+        # annotate city for dreamer5666666666
         # & city for owner (in his profile)
         queryset = queryset.annotate(
             dreamer_city_id=F("dreamer__city_id"),

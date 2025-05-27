@@ -9,6 +9,7 @@ from rest_framework.settings import api_settings
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
+from drf_spectacular.utils import extend_schema, OpenApiResponse
 
 from users.models import (
     User,
@@ -35,6 +36,7 @@ from users.serializers import (
     CountrySerializer,
     CitySerializer,
     CityUpdateSerializer,
+    LogoutSerializer,
 )
 
 from utils.storage import (
@@ -48,6 +50,12 @@ from .filters import CityFilter
 from django_filters import rest_framework as filters
 
 
+@extend_schema(
+    summary="Register a new user",
+    description="Registers a new user with email & password. " \
+    "After registration, the Users receive an email to confirm their email address "
+    "and activate their account. An empty User Profile is creating.",
+)
 class CreateUserView(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
@@ -68,6 +76,11 @@ def activate_user(request, pk, activationtoken):
     return HttpResponse("Your Account Has Ben Activated!")
 
 
+@extend_schema(
+    summary="User Login",
+    description="Creates the authorization Token and login user.",
+    responses={200: OpenApiResponse(description="You login successfully.")}
+)
 class LoginUserView(ObtainAuthToken):
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
     serializer_class = AuthTokenSerializer
@@ -82,9 +95,15 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
         return self.request.user
 
 
+@extend_schema(
+    summary="User Logout",
+    description="Removes the authorization Token and logs out.",
+    responses={200: OpenApiResponse(description="You logout successfully.")}
+)
 class LogoutUserView(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
+    serializer_class = LogoutSerializer
 
     def post(self, request):
         # Delete access token
@@ -92,6 +111,10 @@ class LogoutUserView(APIView):
         return Response({"message": "You logout successfully."}, status=200)
 
 
+@extend_schema(
+    summary="Get User's Profile",
+    description="Get the current User's Profile. Error 401 - if the account of User is not activated.",
+)   
 class UserProfileView(generics.RetrieveUpdateAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileCreateSerializer
@@ -114,6 +137,10 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
         return UserProfileSerializer
 
 
+@extend_schema(
+    summary="Upload avatar",
+    description="Add avatar to current User's Profile. Error 401 - if the account of User is not activated.",
+) 
 class UploadAvatarView(APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = UserProfileAvatarSerializer
@@ -200,6 +227,13 @@ class SubscriberView(
             return SubscriberCreateSerializer
         return self.serializer_class
 
+    @extend_schema(
+        summary="List Subscribers",
+        description="Get a list of Subscribers (users who have subscribed to news).",
+    )   
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)  
+        
 
 class DreamerProfileView(
     mixins.CreateModelMixin,
@@ -222,6 +256,13 @@ class DreamerProfileView(
         ]:
             return DreamerProfileCreateSerializer
         return self.serializer_class
+    
+    @extend_schema(
+        summary="List Dreamers",
+        description="Get a list of Dreamers (Dreamers are not in Users, but some User created a Dream for this person).",
+    )   
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs) 
 
 
 class CountryView(
@@ -248,6 +289,13 @@ class CountryView(
             return [IsAuthenticated()]
         return [IsAdminUser()]
 
+    @extend_schema(
+        summary="List Countries",
+        description="Get a list of Countries (Select all countries of registered Users and Dreamers).",
+    )   
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs) 
+    
 
 class CityView(
     mixins.CreateModelMixin,
@@ -282,3 +330,10 @@ class CityView(
         ]:
             return CityUpdateSerializer
         return self.serializer_class
+
+    @extend_schema(
+        summary="List Cities",
+        description="Get a list of Cities (Select all cities of registered Users and Dreamers).",
+    )   
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs) 

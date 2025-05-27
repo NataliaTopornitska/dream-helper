@@ -84,6 +84,12 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
 ]
 
+CORS_ALLOW_HEADERS = [
+    "authorization",
+    "content-type",
+]
+
+
 ROOT_URLCONF = "app.urls"
 
 TEMPLATES = [
@@ -174,6 +180,11 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "This is the documentation for the Dream Helper web application API. Dream Helper is a charity page. It is a network that units of users who need help and those who want to help those in need.",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
+    "COMPONENT_SPLIT_REQUEST": True,
+    "ENUM_NAME_OVERRIDES": {
+        "dreams.models.Dream.status": "DreamStatusEnum",
+        "dreams.models.Donation.status": "DonationStatusEnumCustom",
+    }
 }
 
 # for Web

@@ -1,8 +1,22 @@
 from django.db import models
+from enum import Enum
 
 from users.models import User
 
 from users.models import DreamerProfile
+
+
+
+class DreamStatusEnum(str, Enum):
+    Application = "Application"
+    Active = "Active"
+    Completed = "Completed"
+
+
+class DonationStatusEnumCustom(str, Enum):
+    Prepared = "Prepared"
+    Paid = "Paid"
+    Canceled = "Canceled"
 
 
 class Category(models.Model):
@@ -33,11 +47,13 @@ class Comment(models.Model):
 
 
 class Dream(models.Model):
+    """
     STATUS_DREAM = (
         ("Application", "Application"),
         ("Active", "Active"),
         ("Completed", "Completed"),
-    )
+    
+    )"""
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=45)
     to_another = models.BooleanField(default=False)
@@ -52,7 +68,9 @@ class Dream(models.Model):
     photo_url = models.URLField(null=True, blank=True)
     thumbnail_url = models.URLField(null=True, blank=True)  # miniature
     status = models.CharField(
-        max_length=12, choices=STATUS_DREAM, default="Application"
+        max_length=12, 
+        choices=[(x.value, x.name) for x in DreamStatusEnum], 
+        default="Application"
     )
     created_at = models.DateTimeField(auto_now_add=True)
     completed_at = models.DateTimeField(null=True, blank=True)
@@ -71,17 +89,22 @@ class Dream(models.Model):
 
 
 class Donation(models.Model):
+    """
     STATUS_DONATION = (
         ("Prepared", "Prepared"),
         ("Paid", "Paid"),
         ("Canceled", "Canceled"),
-    )
+    )"""
     dream = models.ForeignKey(Dream, on_delete=models.CASCADE, related_name="donations")
     donator = models.ForeignKey(
         User, on_delete=models.CASCADE, blank=True, null=True, related_name="donations"
     )  # may be anonymouse donation
     amount = models.DecimalField(decimal_places=2, max_digits=10)
-    status = models.CharField(max_length=8, choices=STATUS_DONATION, default="Pending")
+    status = models.CharField(
+        max_length=8, 
+        choices=[(x.value, x.name) for x in DonationStatusEnumCustom], 
+        default="Prepared"
+    )
     url_payment = models.URLField(max_length=400, null=True, blank=True)
     is_anonymous = models.BooleanField(
         default=False
@@ -89,6 +112,7 @@ class Donation(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        ordering = ["-date"]
         indexes = [
             models.Index(fields=["dream"]),
         ]

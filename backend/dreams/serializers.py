@@ -59,19 +59,19 @@ class DreamBaseSerializer(serializers.ModelSerializer):
             "completed_at",
         )
 
-    def get_number_donations(self, obj):
+    def get_number_donations(self, obj) -> int:
         return obj.donations.filter(status="Paid").count()  # donations - related_name
 
-    def get_number_comments(self, obj):
+    def get_number_comments(self, obj) -> int:
         return obj.comments.count()  # comments - related_name
 
-    def get_total_amount_donations(self, obj):
+    def get_total_amount_donations(self, obj) -> float:
         return (
             obj.donations.filter(status="Paid").aggregate(total=Sum("amount"))["total"]
             or 0
         )
 
-    def get_level_completed(self, obj):
+    def get_level_completed(self, obj) -> float:
         goal = obj.goal
         total = self.get_total_amount_donations(obj)
         if not goal:
@@ -114,7 +114,7 @@ class DreamRetrieveSerializer(DreamBaseSerializer):
             "is_collective",
         )
 
-    def get_city(self, obj):
+    def get_city(self, obj) -> str:
         dreamer = obj.dreamer
         if dreamer:
             return f"{dreamer.city.name}, {dreamer.city.country.name}"
@@ -122,7 +122,7 @@ class DreamRetrieveSerializer(DreamBaseSerializer):
         profile = getattr(owner, "userprofile", None)
         return f"{profile.city.name}, {profile.city.country.name}"
     
-    def get_is_collective(self, obj):
+    def get_is_collective(self, obj) -> bool:
         dreamer = obj.dreamer
         if dreamer:
             return dreamer.is_collective
@@ -130,13 +130,13 @@ class DreamRetrieveSerializer(DreamBaseSerializer):
         profile = getattr(owner, "userprofile", None)
         return profile.is_collective
     
-    def get_owner(self, obj):
+    def get_owner(self, obj) -> str:
         user = obj.owner
         profile = getattr(user, "userprofile", None)
         name = getattr(profile, "name", None) if profile else None
         return name if name else user.email
 
-    def get_categories(self, obj):
+    def get_categories(self, obj) -> str:
         categories = obj.categories.all()
         return ", ".join([category.name for category in categories])
 
@@ -350,3 +350,10 @@ class DreamCommentsSerializer(serializers.ModelSerializer):
                 owner_data["name"] = obj.owner.email
             return owner_data
         return None
+
+
+class DreamStatisticsSerializer(serializers.Serializer):
+    total_dreams = serializers.IntegerField()
+    people = serializers.IntegerField()
+    anonymous_donations = serializers.FloatField()
+    total_donations = serializers.FloatField()
