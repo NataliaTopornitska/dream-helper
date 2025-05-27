@@ -51,9 +51,12 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, dream }) =
 
       if (!response.ok) {
         throw new Error('Donation request failed');
-      }
+      } 
 
-      window.location.href = url;
+      const data = await response.json();  // <- вот здесь получаем session_url //////////////////////////
+
+      window.location.href = data.session_url;  // <- вот правильный редирект  //////////////////////////////
+
     } catch (error) {
       console.error('Error making donation:', error);
     }

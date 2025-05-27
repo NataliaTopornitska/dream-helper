@@ -57,6 +57,7 @@ from app.settings import (
     DEFAULT_FROM_EMAIL,
     API_PREF,
     ADMIN_EMAIL,
+    URL_DREAM,
 )
 
 from utils.stripe import (
@@ -363,7 +364,8 @@ class DreamViewSet(
             dream.donations.add(new_donation)
             dream.save()
 
-            return redirect(checkout_session.url)
+            return Response({"session_url": checkout_session.url})
+            # return redirect(checkout_session.url)
 
         except Dream.DoesNotExist:
             return Response({"error": "Dream not found"}, status=404)
@@ -403,7 +405,7 @@ class DreamViewSet(
             return Response({"detail": "Dream with this ID not found."}, status=404)
 
         donations = dream.donations.all()
-        donations = dream.donations.filter(status="Paid")
+        donations = dream.donations.filter(status="Paid").order_by("-date")
         if not donations:
             return Response({"message": "No donations yet."}, status=204)
 
@@ -421,7 +423,7 @@ class DreamViewSet(
         except ObjectDoesNotExist:
             return Response({"detail": "Dream with this ID not found."}, status=404)
 
-        comments = dream.comments.all()
+        comments = dream.comments.all().order_by("-created_at")
         if not comments:
             return Response({"message": "No comments yet."}, status=204)
 
@@ -471,7 +473,7 @@ def stripe_webhook(request):
         print("donation_id=", donation_id)
 
         dream = Dream.objects.filter(stripe_product_id=stripe_product_id).first()
-        dream_link = f"{DOMAIN}/{API_PREF}/dreamhelper/dreams/{dream.id}"
+        dream_link = f"{URL_DREAM}{dream.id}"
         # send a thank_you EMAIL to a donator
         if customer_email:
             context = {
