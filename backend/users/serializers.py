@@ -267,19 +267,31 @@ class UserProfileCreateSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    location = serializers.SerializerMethodField()
+    email = serializers.ReadOnlyField(source="user.email")
+    name = serializers.SerializerMethodField()
+
     class Meta:
         model = UserProfile
         fields = (
             "user",
             "name",
+            "email",
+            "location",
             "phone_number",
-            "city",
             "direction",
             "is_collective",
             "created_at",
             "avatar_url",
-            "thumbnail_url",
         )
+
+    def get_name(self, obj) -> str:
+        user = obj.user
+        name = getattr(obj, "name", None) if obj else None
+        return name if name else user.email
+
+    def get_location(self, obj) -> str:
+        return f"{obj.city.name}, {obj.city.country.name}"
 
 
 class DreamDonatorsSerializer(serializers.ModelSerializer):
