@@ -15,9 +15,11 @@ const AuthModal: React.FC<AuthModalProps> = ({
   onClose,
   authMode,
   setAuthMode,
+  onLoginSuccess,
 }) => {
   const [credential, setCredential] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [activationMessage, setActivationMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,29 +35,28 @@ const AuthModal: React.FC<AuthModalProps> = ({
         setActivationMessage('');
         setAuthMode('login');
         onClose();
-      }, 4000);
+      }, 3000);
 
       return () => clearTimeout(timer);
     }
-  }, [activationMessage, setAuthMode]);
+  }, [activationMessage, setAuthMode, onClose]);
 
   useEffect(() => {
-    if (isOpen) {
-      getDreams()
-        .then(res => res.json())
-        .then(data => console.log('Dreams:', data))
-        .catch(err => console.error('Error fetching dreams:', err));
+    if (!isOpen) {
+      setCredential('');
+      setPassword('');
+      setEmailError('');
+      setActivationMessage('');
+      setIsSubmitting(false);
+      setShowPassword(false);
     }
   }, [isOpen]);
-
-  if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (authMode === 'register' && (!credential || !/\S+@\S+\.\S+/.test(credential))) {
       setEmailError('Please enter a valid email');
-
       return;
     }
 
@@ -73,15 +74,12 @@ const AuthModal: React.FC<AuthModalProps> = ({
       }
 
       const data = await response.json();
-
       console.log(data);
 
       if (authMode === 'register') {
         setActivationMessage(
-          'An activation code has been sent to your email. Please activate your account within 1 hour to log in.',
+          'An activation code has been sent to your email. Please activate your account within 1 hour to log in.'
         );
-        setCredential('');
-        setPassword('');
       } else {
         const token = data.access || data.token || data.key;
         const username = data.username || data.email || '';
@@ -91,19 +89,27 @@ const AuthModal: React.FC<AuthModalProps> = ({
           localStorage.setItem('username', username);
           onLoginSuccess();
 
-          setTimeout(() => {
-            onClose();
-          }, 3000);
+          setActivationMessage('Login successful! Redirecting...');
         } else {
           throw new Error('Token not received');
         }
       }
+
+      setCredential('');
+      setPassword('');
     } catch (error) {
       console.error('Error:', error);
+      setActivationMessage(
+        authMode === 'login'
+          ? 'Login failed. Please try again.'
+          : 'Registration failed. Please try again.'
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  if (!isOpen) return null;
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
@@ -111,7 +117,11 @@ const AuthModal: React.FC<AuthModalProps> = ({
         <h2>{authMode === 'register' ? 'Sign Up' : 'Log In'}</h2>
 
         {activationMessage ? (
-          <div className="activation-message">
+          <div
+            className={`activation-message ${
+              activationMessage.toLowerCase().includes('failed') ? 'error' : 'success'
+            }`}
+          >
             <p>{activationMessage}</p>
           </div>
         ) : (
@@ -128,13 +138,22 @@ const AuthModal: React.FC<AuthModalProps> = ({
               {emailError && <div className="error">{emailError}</div>}
 
               <label>Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                required
-              />
+              <div className="password-input-wrapper">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  required
+                />
+                <img
+                  src={showPassword ? '/dream-helper/home-page/eye-form.svg' : '/dream-helper/home-page/eye-off.svg'}
+                  alt="Toggle visibility"
+                  className="eye-icon"
+                  onClick={() => setShowPassword(prev => !prev)}
+                />
+              </div>
+
               {authMode === 'login' && (
                 <div className="forgot-password-text">Forgot password?</div>
               )}
