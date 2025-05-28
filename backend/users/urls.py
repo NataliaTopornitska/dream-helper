@@ -13,6 +13,7 @@ from users.views import (
     UploadAvatarView,
     CountryView,
     CityView,
+    UserMyDreamsView,
 )
 
 app_name = "users"
@@ -23,6 +24,7 @@ router.register(r"dreamers", DreamerProfileView, basename="dreamers")
 router.register(r"countries", CountryView, basename="countries")
 router.register(r"cities", CityView, basename="cities")
 
+
 urlpatterns = [
     path("register/", CreateUserView.as_view(), name="create"),
     path("activate/<int:pk>/<str:activationtoken>", activate_user, name="activate"),
@@ -31,6 +33,7 @@ urlpatterns = [
     path("logout/", LogoutUserView.as_view(), name="logout"),
     path("profile/", UserProfileView.as_view(), name="profile"),
     path("profile/upload_avatar/", UploadAvatarView.as_view(), name="upload_avatar"),
+    path("profile/my_dreams/", UserMyDreamsView.as_view(), name="my_dreams"),
 ]
 
 urlpatterns += router.urls

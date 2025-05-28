@@ -607,7 +607,7 @@ class DonationViewSet(
 
 @extend_schema(
 summary="Get site statistics",
-description="Get a list of statistic data for home page." 
+description="Get a list of statistic data for home." 
 )
 class DreamStatisticsView(APIView):
     permission_classes = [AllowAny]

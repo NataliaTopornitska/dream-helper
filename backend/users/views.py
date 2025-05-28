@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
+from rest_framework.decorators import action
 from rest_framework.viewsets import GenericViewSet
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 
@@ -37,6 +38,7 @@ from users.serializers import (
     CitySerializer,
     CityUpdateSerializer,
     LogoutSerializer,
+    UserMyDreamsSerializer,
 )
 
 from utils.storage import (
@@ -135,6 +137,31 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
         if self.request.method in ("POST", "PUT"):  # or "PUT", is update()
             return UserProfileCreateSerializer
         return UserProfileSerializer
+
+
+@extend_schema(
+    summary="Get My Dreams",
+    description="Get list of user Dreams (User is owner). Error 401 - if the account of User is not activated.",
+    methods=["GET"], 
+) 
+class UserMyDreamsView(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserMyDreamsSerializer
+
+    def get(self, request):
+        """Get a list Dreams for active user-owner"""
+        user = request.user
+        if not user.is_active:
+            return Response(
+                {
+                    "error": "We are very sorry, but your account is not activated. First you need to activate the link from the letter you received to your email."
+                },
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+        
+        dreams = user.dreams.all()  # get all user dreams
+        serializer = self.serializer_class(dreams, many=True)
+        return Response(serializer.data)
 
 
 @extend_schema(

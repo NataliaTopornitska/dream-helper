@@ -1,6 +1,7 @@
 import os
 
 from django.contrib.auth import get_user_model
+from django.db.models import Sum
 from rest_framework import serializers
 
 from app import settings
@@ -15,6 +16,7 @@ from users.models import (
     UserProfile,
     Subscriber,
 )
+from dreams.models import Dream
 from utils.email import send_email_with_template
 
 
@@ -425,3 +427,35 @@ class DreamerProfileCreateSerializer(serializers.ModelSerializer):
 
 class LogoutSerializer(serializers.Serializer):
     pass
+
+
+class UserMyDreamsSerializer(serializers.ModelSerializer):
+    thumbnail_url = serializers.URLField(read_only=True)
+    total_amount_donations = serializers.SerializerMethodField()  #  total amount
+    dreamer = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Dream
+        fields = (
+            "id",
+            "title",
+            "to_another",
+            "dreamer",
+            "content",
+            "goal",
+            "thumbnail_url",
+            "status",
+            "created_at",
+            "total_amount_donations",
+            "number_views",
+            "completed_at",
+        )
+
+    def get_total_amount_donations(self, obj) -> float:
+        return (
+            obj.donations.filter(status="Paid").aggregate(total=Sum("amount"))["total"]
+            or 0
+        )
+    
+    def get_dreamer(self, obj) -> str:
+        return obj.dreamer.name if obj.dreamer and hasattr(obj.dreamer, "name") else None

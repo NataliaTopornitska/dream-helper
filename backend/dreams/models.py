@@ -47,14 +47,7 @@ class Comment(models.Model):
 
 
 class Dream(models.Model):
-    """
-    STATUS_DREAM = (
-        ("Application", "Application"),
-        ("Active", "Active"),
-        ("Completed", "Completed"),
-    
-    )"""
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="dreams")
     title = models.CharField(max_length=45)
     to_another = models.BooleanField(default=False)
     dreamer = models.ForeignKey(
