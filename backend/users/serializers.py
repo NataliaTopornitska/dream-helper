@@ -293,7 +293,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
         return name if name else user.email
 
     def get_location(self, obj) -> str:
-        return f"{obj.city.name}, {obj.city.country.name}"
+        if obj.city:
+            return f"{obj.city.name}, {obj.city.country.name}"
+        return "location: not specified"
 
 
 class DreamDonatorsSerializer(serializers.ModelSerializer):
