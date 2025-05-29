@@ -323,6 +323,7 @@ class DreamViewSet(
     )
     def make_donation(self, request, pk=None):
         print(f"REQUEST DATA: {request.data}")
+        print(f"!!!!! REQUEST USER: {request.user}")
         amount = request.data.get("amount")
         print(f"Received amount: {amount}")
 
@@ -372,7 +373,9 @@ class DreamViewSet(
 
             if user.is_authenticated:
                 new_donation.donator = user  # if user is authenticated
-                user.is_donator = True    # select user as a donator
+                if not user.is_donator:
+                    user.is_donator = True    # select user as a donator
+                    user.save()
             else:
                 new_donation.donator = None
                 new_donation.is_anonymous = True
@@ -394,7 +397,6 @@ class DreamViewSet(
             # add donation in dream  (any status)
             dream.donations.add(new_donation)
             dream.save()
-            user.save()
 
             return Response({"session_url": checkout_session.url})
             # return redirect(checkout_session.url)
@@ -600,7 +602,7 @@ class DonationViewSet(
     serializer_class = DonationSerializer
 
     @extend_schema(
-    summary="Get list donnations",
+    summary="Get list donations",
     description="Get a list of donations." 
     )
     def list(self, request, *args, **kwargs):

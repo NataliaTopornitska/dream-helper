@@ -295,7 +295,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     def get_location(self, obj) -> str:
         if obj.city:
             return f"{obj.city.name}, {obj.city.country.name}"
-        return "location: not specified"
+        return "not specified"
 
 
 class DreamDonatorsSerializer(serializers.ModelSerializer):
