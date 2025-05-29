@@ -42,6 +42,7 @@ from users.serializers import (
     LogoutSerializer,
     UserMyDreamsSerializer,
     UserMyDonationsSerializer,
+    UserPreparedDonationsSerializer,
 )
 
 from utils.storage import (
@@ -144,7 +145,7 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
 
 @extend_schema(
     summary="Get My Dreams",
-    description="Get a list of user Dreams (User is owner). Error 401 - if the account of User is not activated.",
+    description="Get a list of user Dreams (User is owner).",
     methods=["GET"], 
 ) 
 class UserMyDreamsView(APIView):
@@ -154,14 +155,7 @@ class UserMyDreamsView(APIView):
     def get(self, request):
         """Get a list Dreams for active user-owner"""
         user = request.user
-        if not user.is_active:
-            return Response(
-                {
-                    "error": "We are very sorry, but your account is not activated. First you need to activate the link from the letter you received to your email."
-                },
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
-        
+
         dreams = user.dreams.all().order_by("-created_at")  # get all user dreams
         serializer = self.serializer_class(dreams, many=True)
         return Response(serializer.data)
@@ -169,7 +163,7 @@ class UserMyDreamsView(APIView):
 
 @extend_schema(
     summary="Get My Donations",
-    description="Get a list of Dreams where the current User is a donor (with information about his donations).  Error 401 - if the account of User is not activated.",
+    description="Get a list of Dreams where the current User is a donor (with information about his donations).",
     methods=["GET"], 
 ) 
 class UserMyDonationsView(APIView):
@@ -179,18 +173,30 @@ class UserMyDonationsView(APIView):
     def get(self, request):
         """Get a list Dreams where the current User is donor."""
         user = request.user
-        if not user.is_active:
-            return Response(
-                {
-                    "error": "We are very sorry, but your account is not activated. First you need to activate the link from the letter you received to your email."
-                },
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
         if user.is_donator:
             dreams = Dream.objects.filter(donations__donator=user, donations__status="Paid").distinct().order_by("-created_at")
             serializer = self.serializer_class(dreams, many=True, context={"request": request})
             return Response(serializer.data)
         return Response({"message": "You haven't made any donations yet."}, status=status.HTTP_204_NO_CONTENT)
+
+
+@extend_schema(
+    summary="Get Prepared Donations",
+    description="Get a list of user's prepared donations that have not yet been paid (with the ability to cancel/continue the payment process).",
+    methods=["GET", "POST", "PATCH"], 
+) 
+class UserPreparedDonationsView(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserPreparedDonationsSerializer
+
+    def get(self, request):
+        """Get a list of user's prepared donations that have not yet been paid."""
+        user = request.user
+        if user.is_donator:
+            prepared_donations = Donation.objects.filter(donator=user, status="Prepared").order_by("-date")
+            serializer = self.serializer_class(prepared_donations, many=True, context={"request": request})
+            return Response(serializer.data)
+        return Response({"message": "You haven't any prepared donations."}, status=status.HTTP_204_NO_CONTENT)
 
 
 @extend_schema(

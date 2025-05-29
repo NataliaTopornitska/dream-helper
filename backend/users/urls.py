@@ -15,6 +15,7 @@ from users.views import (
     CityView,
     UserMyDreamsView,
     UserMyDonationsView,
+    UserPreparedDonationsView,
 )
 
 app_name = "users"
@@ -36,6 +37,7 @@ urlpatterns = [
     path("profile/upload_avatar/", UploadAvatarView.as_view(), name="upload_avatar"),
     path("profile/my_dreams/", UserMyDreamsView.as_view(), name="my_dreams"),
     path("profile/my_donations/", UserMyDonationsView.as_view(), name="my_donations"),
+    path("profile/prepared_donations/", UserPreparedDonationsView.as_view(), name="prepared_donations"),
 ]
 
 urlpatterns += router.urls

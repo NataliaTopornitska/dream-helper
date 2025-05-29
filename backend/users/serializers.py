@@ -471,3 +471,16 @@ class UserMyDonationsSerializer(UserMyDreamsSerializer):
         user = self.context.get("request").user
         donations = Donation.objects.values("amount").filter(donator=user, dream=obj)
         return sum(item["amount"] for item in donations)
+
+
+class UserPreparedDonationsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Donation
+        fields = (
+            "id",
+            "date",
+            "amount",
+            "dream",
+            "url_payment",
+            "is_anonymous",
+        )
