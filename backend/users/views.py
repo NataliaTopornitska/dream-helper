@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.db.models import Max
 from rest_framework import generics, mixins, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.serializers import AuthTokenSerializer
@@ -21,6 +22,7 @@ from users.models import (
     Country,
     City,
 )
+from dreams.models import Dream, Donation
 
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 
@@ -39,6 +41,7 @@ from users.serializers import (
     CityUpdateSerializer,
     LogoutSerializer,
     UserMyDreamsSerializer,
+    UserMyDonationsSerializer,
 )
 
 from utils.storage import (
@@ -141,7 +144,7 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
 
 @extend_schema(
     summary="Get My Dreams",
-    description="Get list of user Dreams (User is owner). Error 401 - if the account of User is not activated.",
+    description="Get a list of user Dreams (User is owner). Error 401 - if the account of User is not activated.",
     methods=["GET"], 
 ) 
 class UserMyDreamsView(APIView):
@@ -159,9 +162,35 @@ class UserMyDreamsView(APIView):
                 status=status.HTTP_401_UNAUTHORIZED,
             )
         
-        dreams = user.dreams.all()  # get all user dreams
+        dreams = user.dreams.all().order_by("-created_at")  # get all user dreams
         serializer = self.serializer_class(dreams, many=True)
         return Response(serializer.data)
+
+
+@extend_schema(
+    summary="Get My Donations",
+    description="Get a list of Dreams where the current User is a donor (with information about his donations).  Error 401 - if the account of User is not activated.",
+    methods=["GET"], 
+) 
+class UserMyDonationsView(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserMyDonationsSerializer
+
+    def get(self, request):
+        """Get a list Dreams where the current User is donor."""
+        user = request.user
+        if not user.is_active:
+            return Response(
+                {
+                    "error": "We are very sorry, but your account is not activated. First you need to activate the link from the letter you received to your email."
+                },
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+        if user.is_donator:
+            dreams = Dream.objects.filter(donations__donator=user, donations__status="Paid").distinct().order_by("-created_at")
+            serializer = self.serializer_class(dreams, many=True, context={"request": request})
+            return Response(serializer.data)
+        return Response({"message": "You haven't made any donations yet."}, status=status.HTTP_204_NO_CONTENT)
 
 
 @extend_schema(

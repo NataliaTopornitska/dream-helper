@@ -16,7 +16,7 @@ from users.models import (
     UserProfile,
     Subscriber,
 )
-from dreams.models import Dream
+from dreams.models import Dream, Donation
 from utils.email import send_email_with_template
 
 
@@ -436,7 +436,7 @@ class UserMyDreamsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Dream
-        fields = (
+        fields = [
             "id",
             "title",
             "to_another",
@@ -449,7 +449,7 @@ class UserMyDreamsSerializer(serializers.ModelSerializer):
             "total_amount_donations",
             "number_views",
             "completed_at",
-        )
+        ]
 
     def get_total_amount_donations(self, obj) -> float:
         return (
@@ -459,3 +459,15 @@ class UserMyDreamsSerializer(serializers.ModelSerializer):
     
     def get_dreamer(self, obj) -> str:
         return obj.dreamer.name if obj.dreamer and hasattr(obj.dreamer, "name") else None
+
+
+class UserMyDonationsSerializer(UserMyDreamsSerializer):
+    user_amount = serializers.SerializerMethodField()
+
+    class Meta(UserMyDreamsSerializer.Meta):
+        fields = UserMyDreamsSerializer.Meta.fields + ["user_amount"]
+
+    def get_user_amount(self, obj) -> float:
+        user = self.context.get("request").user
+        donations = Donation.objects.values("amount").filter(donator=user, dream=obj)
+        return sum(item["amount"] for item in donations)

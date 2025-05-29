@@ -46,6 +46,8 @@ class UserAdmin(DjangoUserAdmin):
         "email",
         "is_staff",
         "is_active",
+        "is_owner",
+        "is_donator",
     )
     search_fields = ("email",)
     ordering = ("email",)

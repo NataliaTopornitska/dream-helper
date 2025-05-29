@@ -347,7 +347,7 @@ class DreamViewSet(
             # get or create (if is the first) Product Stripe for dream
             stripe_product_id = get_or_create_product_for_dream(dream)
 
-            # Create object Donation with status Pending
+            # Create object Donation with status Prepared
             new_donation = Donation.objects.create(dream=dream, amount=amount)
 
             # create Price (dynamic price)
@@ -363,7 +363,7 @@ class DreamViewSet(
             )
             print(f"Stripe Session metadata: {checkout_session.metadata}")
 
-            # Create object Donation with status Pending
+            # Create object Donation with status Prepared
             new_donation.url_payment = checkout_session.url
 
             user = request.user
@@ -372,6 +372,7 @@ class DreamViewSet(
 
             if user.is_authenticated:
                 new_donation.donator = user  # if user is authenticated
+                user.is_donator = True    # select user as a donator
             else:
                 new_donation.donator = None
                 new_donation.is_anonymous = True
@@ -393,6 +394,7 @@ class DreamViewSet(
             # add donation in dream  (any status)
             dream.donations.add(new_donation)
             dream.save()
+            user.save()
 
             return Response({"session_url": checkout_session.url})
             # return redirect(checkout_session.url)
