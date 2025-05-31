@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './AuthModal.scss';
-import { login, register, getDreams } from '../../api/api';
+import { login, register } from '../../api/api';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -76,23 +76,20 @@ const AuthModal: React.FC<AuthModalProps> = ({
       const data = await response.json();
       console.log(data);
 
+      const token = data.access || data.token || data.key;
+
       if (authMode === 'register') {
         setActivationMessage(
           'An activation code has been sent to your email. Please activate your account within 1 hour to log in.'
         );
+      } else if (token) {
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('username', credential); // Save email entered by user
+        onLoginSuccess();
+
+        setActivationMessage('Login successful! Redirecting...');
       } else {
-        const token = data.access || data.token || data.key;
-        const username = data.username || data.email || '';
-
-        if (token) {
-          localStorage.setItem('authToken', token);
-          localStorage.setItem('username', username);
-          onLoginSuccess();
-
-          setActivationMessage('Login successful! Redirecting...');
-        } else {
-          throw new Error('Token not received');
-        }
+        throw new Error('Token not received');
       }
 
       setCredential('');
@@ -166,25 +163,13 @@ const AuthModal: React.FC<AuthModalProps> = ({
               {authMode === 'register' ? (
                 <span>
                   Have an account?{' '}
-                  <a
-                    href="#"
-                    onClick={e => {
-                      e.preventDefault();
-                      setAuthMode('login');
-                    }}
-                  >
+                  <a href="#" onClick={e => { e.preventDefault(); setAuthMode('login'); }}>
                     Log In
                   </a>
                 </span>
               ) : (
                 <span>
-                  <a
-                    href="#"
-                    onClick={e => {
-                      e.preventDefault();
-                      setAuthMode('register');
-                    }}
-                  >
+                  <a href="#" onClick={e => { e.preventDefault(); setAuthMode('register'); }}>
                     Create an account
                   </a>
                 </span>

@@ -61,7 +61,7 @@ const Header: React.FC = () => {
                     <Link to="/profile" className="profile-link">
                       Profile
                     </Link>
-                    {username && <div className="username-display">{username}</div>}
+                    {/* {username && <div className="username-display">{username}</div>} */}
                   </div>
                 ) : (
                   <button
@@ -95,7 +95,7 @@ const Header: React.FC = () => {
                 <Link to="/profile" className="profile-link">
                   Profile
                 </Link>
-                {username && <div className="username-display">{username}</div>}
+                {/* {username && <div className="username-display">{username}</div>} */}
               </div>
             ) : (
               <button

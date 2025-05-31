@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Hero.scss';
 import { Link } from 'react-router-dom';
 
 const Hero: React.FC = () => {
+  const [username, setUsername] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    setUsername(storedUsername);
+  }, []);
+
   return (
     <section className="hero">
       <div className="hero-wave-bg"></div>
       <div className="hero-container">
+        {username && (
+          <div className="hero-username" style={{ position: 'absolute', top: 10, right: 10, fontWeight: 'bold' }}>
+            {username}
+          </div>
+        )}
         <div className="hero-content">
           <h2 className="hero-title">Turning Dreams into Reality Together!</h2>
           <p className="hero-text">

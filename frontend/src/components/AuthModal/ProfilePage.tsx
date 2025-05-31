@@ -6,6 +6,7 @@ const ProfilePage = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('username');
     navigate('/');
   };
 
@@ -17,4 +18,3 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
-
