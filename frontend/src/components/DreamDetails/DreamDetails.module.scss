@@ -996,19 +996,15 @@
 }
 
 .avatarMain {
-  margin: 28px 18px 28px 0;
+   width: 46px;
+  height: 46px;
+  margin: 28px 18px 28px 4px;
 }
 
 .sendButton {
   font-size: 15px;
   padding: 9px 20px;
   margin-right: clamp(5px, 1vw, 28px);
-}
-
-.avatarMain {
-  width: 46px;
-  height: 46px;
-  margin: 28px 18px 28px 40px;
 }
 
 .avatar {

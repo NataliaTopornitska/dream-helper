@@ -115,7 +115,7 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, dream }) =
 
         <p className="or-text">or</p>
 
-        <h3>Your Own Amount</h3>
+        <h3 className='own-h3'>Your Own Amount</h3>
         <input
           type="number"
           placeholder="0$"

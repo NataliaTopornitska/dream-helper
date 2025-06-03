@@ -57,21 +57,103 @@ const DreamsCatalog = () => {
   const [selectedPerPage, setSelectedPerPage] = useState<string | number>('Per Page');
   const currentPageNumber = currentPage || 1;
   const totalPages = pagination.num_pages;
+  const [currentUser, setCurrentUser] = useState<{ id: number; email: string; is_staff: boolean; is_active: boolean } | null>(null);
+
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      const token = localStorage.getItem('authToken');
+      if (!token) return;
+
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/v1/users/me/', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Token ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch user');
+        }
+
+        const data = await response.json();
+        setCurrentUser(data);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+
+  useEffect(() => {
+  if (
+    activeTab === "Application" &&
+    currentUser &&
+    currentUser.id === 1 &&
+    currentUser.email === "az@a.com" &&
+    currentUser.is_staff &&
+    currentUser.is_active
+  ) {
+
+    const applicationDreams = dreams.filter((dream: any) => dream.status === "Application");
+
+    setFilteredDreams(applicationDreams);
+    setPagination({
+      ...pagination,
+      count: applicationDreams.length,
+      num_pages: Math.ceil(applicationDreams.length / dreamsPerPage),
+    });
+  }
+}, [activeTab, dreams, currentUser]);
+
+
+
+  // const fetchDreams = async () => {
+  //   const response = await fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams/?status=${activeTab}`);
+  //   const data = await response.json();
+
+  //   console.log("API Response:", data);
+
+  //   setDreams(data.results);
+  //   setFilteredDreams(data.results);
+
+  //   setPagination({
+  //     next: data.next || "",
+  //     previous: data.previous || "",
+  //     count: data.count,
+  //     num_pages: data.num_pages
+  //   });
+  // };
+
 
   const fetchDreams = async () => {
-    const response = await fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams/?status=${activeTab}`);
-    const data = await response.json();
+    const token = localStorage.getItem('authToken');
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    };
 
+    if (token) {
+      headers['Authorization'] = `Token ${token}`; // або Bearer, залежно від типу
+    }
+
+    const response = await fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams/?status=${activeTab}`, {
+      method: 'GET',
+      headers: headers,
+    });
+
+    const data = await response.json();
     console.log("API Response:", data);
 
     setDreams(data.results);
     setFilteredDreams(data.results);
-
     setPagination({
       next: data.next || "",
       previous: data.previous || "",
       count: data.count,
-      num_pages: data.num_pages
+      num_pages: data.num_pages,
     });
   };
 
@@ -320,12 +402,25 @@ const getCurrentDreams = () => {
           Fulfilled Dreams
         </button>
 
-        <button
+        {/* <button
           className={`tab ${activeTab === 'Application' ? 'Active' : ''}`}
           onClick={() => setActiveTab('Application')}
         >
           Application Dreams
-        </button>
+        </button> */}
+
+        {currentUser &&
+          currentUser.id === 1 &&
+          currentUser.email === "az@a.com" &&
+          currentUser.is_staff &&
+          currentUser.is_active && (
+          <button
+            className={`tab ${activeTab === 'Application' ? 'Active' : ''}`}
+            onClick={() => setActiveTab('Application')}
+          >
+           Application Dreams
+          </button>
+        )}
       </div>
 
       <div ref={wrapperRef} className="filter-controls">
