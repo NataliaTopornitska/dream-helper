@@ -1,20 +1,17 @@
 .hero {
   position: relative;
-  padding: 0 0 20px;
-  // padding: 40px 0 20px;
+  padding: 40px 0 20px;
   overflow: hidden;
   color: #191919;
 
   &-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px 0;
-    // padding: 40px 20px 0;
+    padding: 40px 20px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding-top: 60px;
-    position: relative;
   }
 
   &-content {
@@ -144,14 +141,4 @@
 }
 
 
-// Email
-.hero-username {
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-weight: 600;
-  color: rgb(65, 63, 63);
-  font-size: 17px;
-  padding: 10px 0;
-  margin-bottom: 50px;
-}
+

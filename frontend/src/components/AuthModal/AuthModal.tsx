@@ -84,7 +84,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
         );
       } else if (token) {
         localStorage.setItem('authToken', token);
-        localStorage.setItem('username', credential); // Save email entered by user
+        localStorage.setItem('username', credential);
         onLoginSuccess();
 
         setActivationMessage('Login successful! Redirecting...');

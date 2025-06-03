@@ -278,7 +278,7 @@
 
 .no-dreams {
   text-align: center;
-  padding: 100px 20px;
+  padding: 60px 20px 100px;
 
   .no-dreams-image {
     max-width: 300px;
@@ -572,5 +572,29 @@
 
   .dream-card {
     min-width: 100%;
+  }
+}
+
+
+
+
+
+.tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  button {
+    padding: 8px 16px;
+    border: none;
+    background: #f0f0f0;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+
+    &.active {
+      background: #007bff;
+      color: white;
+    }
   }
 }

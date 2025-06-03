@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 import SupportModal from '../SupportModal/SupportModal';
 
 const DreamsCatalog = () => {
-  const [activeTab, setActiveTab] = useState<'Active' | 'Completed'>('Active');
+  const [activeTab, setActiveTab] = useState<'Active' | 'Completed' | 'Application'>('Active');
   const [dreams, setDreams] = useState<Dream[]>([]);
   const [filteredDreams, setFilteredDreams] = useState<Dream[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -227,7 +227,13 @@ const DreamsCatalog = () => {
     fetchCities("");
     setSelectedPerPage('Per Page');
     setDreamsPerPage(8);
-    setCurrentPage(1);
+  };
+
+const getCurrentDreams = () => {
+    const startIndex = (currentPage - 1) * dreamsPerPage;
+    const endIndex = startIndex + dreamsPerPage;
+
+    return filteredDreams.slice(startIndex, endIndex);
   };
 
   const handlePageChange = (pageUrl: string) => {
@@ -296,6 +302,8 @@ const DreamsCatalog = () => {
     return text.slice(0, maxLength) + '...';
   };
 
+  const currentDreams = getCurrentDreams();
+
   return (
     <div className="dreams-catalog">
       <div className="filter-tabs">
@@ -310,6 +318,13 @@ const DreamsCatalog = () => {
           onClick={() => setActiveTab('Completed')}
         >
           Fulfilled Dreams
+        </button>
+
+        <button
+          className={`tab ${activeTab === 'Application' ? 'Active' : ''}`}
+          onClick={() => setActiveTab('Application')}
+        >
+          Application Dreams
         </button>
       </div>
 
@@ -545,19 +560,6 @@ const DreamsCatalog = () => {
                     setDreamsPerPage(newPageSize);
                     setIsDreamsPerPageDropdownOpen(false);
                     setCurrentPage(1);
-
-                    fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams?page_size=${newPageSize}`)
-                      .then(response => response.json())
-                      .then(data => {
-                        setFilteredDreams(data.results);
-                        setPagination({
-                          next: data.next,
-                          previous: data.previous,
-                          count: data.count,
-                          num_pages: data.num_pages
-                        });
-                      })
-                      .catch(error => console.error("Ошибка запроса:", error));
                   }}
                 >
                   {size}
@@ -580,8 +582,23 @@ const DreamsCatalog = () => {
         </button>
       </div>
 
+        {currentDreams.length === 0 ? (
+        <div className="no-dreams">
+          <img
+            src="/dream-helper/dreams-page/none.png"
+            alt="No dreams"
+            className="no-dreams-image"
+          />
+          <p className="no-dreams-title">No dreams found just yet</p>
+          <p className="no-dreams-subtitle">
+            But every big dream starts with a small step. Maybe yours will be the first?
+          </p>
+        </div>
+      ) : (
+      <>
       <div className="dreams-grid">
-        {filteredDreams.map(dream => {
+          {getCurrentDreams().map(dream => {
+        {/* {filteredDreams.map(dream => { */}
           const goalAmount = parseInt(dream.goal) || 1;
           const collected = dream.total_amount_donations;
           const progressPercent = Math.min((collected / goalAmount) * 100, 100);
@@ -667,6 +684,8 @@ const DreamsCatalog = () => {
           onClose={() => setActiveDream(null)}
         />
       )}
+         </>
+    )}
     </div>
   );
 };
