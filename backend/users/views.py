@@ -117,10 +117,10 @@ class LogoutUserView(APIView):
         return Response({"message": "You logout successfully."}, status=200)
 
 
-@extend_schema(
-    summary="Get User's Profile",
-    description="Get the current User's Profile. Error 401 - if the account of User is not activated.",
-)   
+# @extend_schema(
+#    summary="Get User's Profile",
+#    description="Get the current User's Profile. Error 401 - if the account of User is not activated.",
+#)   
 class UserProfileView(generics.RetrieveUpdateAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileCreateSerializer
@@ -138,7 +138,7 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
         return self.request.user.userprofile
 
     def get_serializer_class(self):
-        if self.request.method in ("POST", "PUT"):  # or "PUT", is update()
+        if self.request.method in ("POST", "PUT", "PATCH"):
             return UserProfileCreateSerializer
         return UserProfileSerializer
 
