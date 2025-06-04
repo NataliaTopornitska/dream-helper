@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import styles from './DreamDetails.module.scss';
 import InfoCard from './InfoCard';
@@ -9,6 +9,7 @@ import SupportButton from './SupportButton';
 
 const DreamDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [dream, setDream] = useState<any>(null);
 
   useEffect(() => {
@@ -29,35 +30,49 @@ const DreamDetails = () => {
 
   return (
     <div className={styles.dreamDetails}>
+      <button
+        className={styles.backButton}
+        onClick={() => navigate(-1)}
+        aria-label="Go back"
+        type="button"
+      >
+        <img
+          src="/dream-helper/dream-details/back.png"
+          alt="Back"
+          className={styles.backIcon}
+        />
+      </button>
+
       <h1 className={styles.dreamTitle}>{dream.title}</h1>
+
       <div className={styles.header}>
         <img
-        src={dream.photo_url || dream.thumbnail_url}
-  alt={dream.title}
-  className={`${styles.dreamImage} ${styles.dreamImageStyled}`}
-  onError={(e) => {
-    const target = e.currentTarget as HTMLImageElement;
-    target.onerror = null;
-    target.src = '/dream-helper/dream-details/details-d.png';
-  }}
-/>
-
+          src={dream.photo_url || dream.thumbnail_url}
+          alt={dream.title}
+          className={`${styles.dreamImage} ${styles.dreamImageStyled}`}
+          onError={(e) => {
+            const target = e.currentTarget as HTMLImageElement;
+            target.onerror = null;
+            target.src = '/dream-helper/dream-details/details-d.png';
+          }}
+        />
         <InfoCard dream={dream} />
       </div>
-<div className={styles.detailsWrapper}>
-  <div className={styles.descriptionSide}>
-    <div className={styles.descriptionContainer}>
-      <Description content={dream.content} />
-    </div>
-    <div className={styles.commentsContainer}>
-      <Comments dreamId={dream.id} />
-    </div>
-  </div>
-  <div className={styles.sidebar}>
-    <Donors dreamId={dream.id} />
-   <SupportButton dream={dream} />
-  </div>
-</div>
+
+      <div className={styles.detailsWrapper}>
+        <div className={styles.descriptionSide}>
+          <div className={styles.descriptionContainer}>
+            <Description content={dream.content} />
+          </div>
+          <div className={styles.commentsContainer}>
+            <Comments dreamId={dream.id} />
+          </div>
+        </div>
+        <div className={styles.sidebar}>
+          <Donors dreamId={dream.id} />
+          <SupportButton dream={dream} />
+        </div>
+      </div>
     </div>
   );
 };

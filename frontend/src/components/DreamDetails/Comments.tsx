@@ -135,10 +135,6 @@ const Comments = ({ dreamId }: CommentsProps) => {
                   alt="avatar"
                   className={styles.avatar}
                 />
-                  {/* <div className={styles.commentI}>
-                  <strong className="comment-author">{comment.owner_profile.name}</strong>
-                  <p className="comment-text">{comment.content}</p>
-                </div> */}
                 <div className={styles.commentI}>
                   <strong className={styles.commentAuthor}>{comment.owner_profile.name}</strong>
                   <p className={styles.commentText}>{comment.content}</p>

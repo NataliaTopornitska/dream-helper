@@ -1,5 +1,5 @@
 .dreamDetails {
-  padding: 52px 20px 20px;
+  padding: 10px 20px 20px;
   color: #191919;
   max-width: 1200px;
   margin: 0 auto;
@@ -35,6 +35,27 @@
   align-items: center;
   margin-bottom: 16px;
 }
+
+// Back-button
+.backButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 30px;
+  display: inline-flex;
+  align-items: center;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.backIcon {
+  width: 24px;
+  height: 24px;
+}
+
 
 .topRow {
   display: flex;
@@ -105,6 +126,13 @@
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+
+  .amountItemCentered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+  }
 }
 
 .amountItem {
@@ -206,6 +234,9 @@
   flex-direction: column;
   border: 1px solid #191919;
   border-radius: 0 0 24px 24px;
+
+  max-height: 420px;
+  overflow-y: auto;
 }
 
 .donorRow {
@@ -608,6 +639,8 @@
   border-radius: 24px;
   max-width: 490px;
   width: 100%;
+
+  margin: 0 auto;
 }
 
 .donorsTitle {
@@ -893,21 +926,85 @@
 
 
 
+// Donors
+.donorsContainer {
+  background-color: white;
+  border-radius: 24px;
+  max-width: 490px;
+  width: 90%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.donorsTable {
+  overflow-x: hidden;
+}
+
+.donorName {
+  font-size: clamp(13px, 1vw, 16px);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.dValue {
+ font-size: clamp(14px, 1vw, 17px);
+}
+
+.donorAmount {
+  gap: 1px;
+  padding: 0 1px 0 7px;
+}
+
+.dLabel {
+  margin: 0 2px 0 5px;
+}
+
+
+// Support button
+.dButton {
+  padding: 13px 0;
+  font-size: 17px;
+  max-width: 400px;
+  margin: 26px 20px 60px 20px;
+}
+
+
 // Comments
 .wrapper {
-  width: 100%;
-  margin-bottom: 15px;
-}
+    width: 100vw;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+    margin-bottom: 40px;
+  }
 
 .commentTitle {
   font-size: 23px;
   margin-bottom: 21px;
 }
 
+.inputRow {
+  gap: 16px;
+}
+
 .avatarMain {
-  width: 46px;
+   width: 46px;
   height: 46px;
-  margin: 28px 18px 28px 40px;
+  margin: 28px 18px 28px 4px;
+}
+
+.sendButton {
+  font-size: 15px;
+  padding: 9px 20px;
+  margin-right: clamp(5px, 1vw, 28px);
 }
 
 .avatar {
@@ -935,12 +1032,6 @@
   font-size: 15px;
 }
 
-.sendButton {
-  font-size: 15px;
-  padding: 9px 23px;
-  margin-right: 28px;
-}
-
 .sidebar {
   display: flex;
   flex-direction: column;
@@ -950,23 +1041,11 @@
   margin: 0 auto;
 }
 
-// Support button
-.dButton {
-  padding: 13px 0;
-  font-size: 17px;
-  max-width: 430px;
-  margin-top: 26px;
-  margin-bottom: 60px;
-}
+.commentsList.scrollable {
+  max-height: 270px;
 }
 
-
-
-
-
-
-
-
+}
 
 
 

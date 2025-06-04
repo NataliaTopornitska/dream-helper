@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 import SupportModal from '../SupportModal/SupportModal';
 
 const DreamsCatalog = () => {
-  const [activeTab, setActiveTab] = useState<'Active' | 'Completed'>('Active');
+  const [activeTab, setActiveTab] = useState<'Active' | 'Completed' | 'Application'>('Active');
   const [dreams, setDreams] = useState<Dream[]>([]);
   const [filteredDreams, setFilteredDreams] = useState<Dream[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -57,21 +57,84 @@ const DreamsCatalog = () => {
   const [selectedPerPage, setSelectedPerPage] = useState<string | number>('Per Page');
   const currentPageNumber = currentPage || 1;
   const totalPages = pagination.num_pages;
+  const [currentUser, setCurrentUser] = useState<{ id: number; email: string; is_staff: boolean; is_active: boolean } | null>(null);
+
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      const token = localStorage.getItem('authToken');
+      if (!token) return;
+
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/v1/users/me/', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Token ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch user');
+        }
+
+        const data = await response.json();
+        setCurrentUser(data);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+
+  useEffect(() => {
+    if (
+      activeTab === "Application" &&
+      currentUser &&
+      currentUser.id === 1 &&
+      currentUser.email === "az@a.com" &&
+      currentUser.is_staff &&
+      currentUser.is_active
+    ) {
+
+      const applicationDreams = dreams.filter((dream: any) => dream.status === "Application");
+
+      setFilteredDreams(applicationDreams);
+      setPagination({
+        ...pagination,
+        count: applicationDreams.length,
+        num_pages: Math.ceil(applicationDreams.length / dreamsPerPage),
+      });
+    }
+  }, [activeTab, dreams, currentUser]);
+
 
   const fetchDreams = async () => {
-    const response = await fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams/?status=${activeTab}`);
-    const data = await response.json();
+    const token = localStorage.getItem('authToken');
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    };
 
+    if (token) {
+      headers['Authorization'] = `Token ${token}`; // або Bearer, залежно від типу
+    }
+
+    const response = await fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams/?status=${activeTab}`, {
+      method: 'GET',
+      headers: headers,
+    });
+
+    const data = await response.json();
     console.log("API Response:", data);
 
     setDreams(data.results);
     setFilteredDreams(data.results);
-
     setPagination({
       next: data.next || "",
       previous: data.previous || "",
       count: data.count,
-      num_pages: data.num_pages
+      num_pages: data.num_pages,
     });
   };
 
@@ -227,7 +290,13 @@ const DreamsCatalog = () => {
     fetchCities("");
     setSelectedPerPage('Per Page');
     setDreamsPerPage(8);
-    setCurrentPage(1);
+  };
+
+const getCurrentDreams = () => {
+    const startIndex = (currentPage - 1) * dreamsPerPage;
+    const endIndex = startIndex + dreamsPerPage;
+
+    return filteredDreams.slice(startIndex, endIndex);
   };
 
   const handlePageChange = (pageUrl: string) => {
@@ -296,6 +365,8 @@ const DreamsCatalog = () => {
     return text.slice(0, maxLength) + '...';
   };
 
+  const currentDreams = getCurrentDreams();
+
   return (
     <div className="dreams-catalog">
       <div className="filter-tabs">
@@ -311,6 +382,26 @@ const DreamsCatalog = () => {
         >
           Fulfilled Dreams
         </button>
+
+        {/* <button
+          className={`tab ${activeTab === 'Application' ? 'Active' : ''}`}
+          onClick={() => setActiveTab('Application')}
+        >
+          Application Dreams
+        </button> */}
+
+        {currentUser &&
+          currentUser.id === 1 &&
+          currentUser.email === "az@a.com" &&
+          currentUser.is_staff &&
+          currentUser.is_active && (
+          <button
+            className={`tab ${activeTab === 'Application' ? 'Active' : ''}`}
+            onClick={() => setActiveTab('Application')}
+          >
+           Application Dreams
+          </button>
+        )}
       </div>
 
       <div ref={wrapperRef} className="filter-controls">
@@ -545,19 +636,6 @@ const DreamsCatalog = () => {
                     setDreamsPerPage(newPageSize);
                     setIsDreamsPerPageDropdownOpen(false);
                     setCurrentPage(1);
-
-                    fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams?page_size=${newPageSize}`)
-                      .then(response => response.json())
-                      .then(data => {
-                        setFilteredDreams(data.results);
-                        setPagination({
-                          next: data.next,
-                          previous: data.previous,
-                          count: data.count,
-                          num_pages: data.num_pages
-                        });
-                      })
-                      .catch(error => console.error("Ошибка запроса:", error));
                   }}
                 >
                   {size}
@@ -580,8 +658,23 @@ const DreamsCatalog = () => {
         </button>
       </div>
 
+        {currentDreams.length === 0 ? (
+        <div className="no-dreams">
+          <img
+            src="/dream-helper/dreams-page/none.png"
+            alt="No dreams"
+            className="no-dreams-image"
+          />
+          <p className="no-dreams-title">No dreams found just yet</p>
+          <p className="no-dreams-subtitle">
+            But every big dream starts with a small step. Maybe yours will be the first?
+          </p>
+        </div>
+      ) : (
+      <>
       <div className="dreams-grid">
-        {filteredDreams.map(dream => {
+          {getCurrentDreams().map(dream => {
+        {/* {filteredDreams.map(dream => { */}
           const goalAmount = parseInt(dream.goal) || 1;
           const collected = dream.total_amount_donations;
           const progressPercent = Math.min((collected / goalAmount) * 100, 100);
@@ -667,6 +760,8 @@ const DreamsCatalog = () => {
           onClose={() => setActiveDream(null)}
         />
       )}
+         </>
+    )}
     </div>
   );
 };

@@ -13,7 +13,7 @@
 
 .modal-content {
   background: #fff;
-  padding: 25px 32px;
+  padding: 22px 32px;
   border-radius: 16px;
   width: 90%;
   max-width: 400px;
@@ -22,9 +22,9 @@
 }
 
 .modal-content h2 {
- font-size: 30px;
+ font-size: 28px;
  font-weight: 600;
- margin-bottom: 20px;
+ margin-bottom: 10px;
 }
 
 .close-btn {
@@ -40,9 +40,9 @@
 }
 
 .modal-img {
-  max-width: 250px;
-  max-height: 200px;
-  margin-bottom: 20px;
+  max-width: 220px;
+  max-height: 170px;
+  margin-bottom: 10px;
   font-weight: 400;
   line-height: 100%;
 }
@@ -50,7 +50,7 @@
 .line-above {
   height: 1px;
   background-color: #464646;
-  margin: 20px 0;
+  margin: 10px 0;
 }
 
 .modal-content p {
@@ -62,7 +62,7 @@
 .line-below {
   height: 1px;
   background-color: #464646;
-  margin: 20px 0 11px;
+  margin: 15px 0 12px;
 }
 
 .donation-checkbox-wrapper {
@@ -71,13 +71,17 @@
   color: #848484;
 }
 
+div.donation-checkbox-wrapper {
+  text-align: left;
+}
+
 .checkbox {
   display: flex;
   align-items: center;
   gap: 12px;
   font-size: 16px;
   line-height: 1;
-  vertical-align: middle;
+  justify-content: flex-start;
 }
 
 .checkbox input {
@@ -85,6 +89,8 @@
   height: 20px;
   margin: 0;
   cursor: pointer;
+  text-align: left;
+  margin-left: 0;
 }
 
 .checkbox.unauthenticated .custom-icon {
@@ -100,10 +106,20 @@
   color: #191919;
 }
 
-.anonymous-note {
-  font-size: 9px;
+label.checkbox.label-authenticated {
+  display: flex;
+  align-items: center;
   color: #191919;
-  font-weight: 200;
+  text-align: left;
+  gap: 0;
+  justify-content: flex-start;
+  margin-right: 100px;
+}
+
+p.anonymous-note {
+  font-size: 14px;
+  color: #191919;
+  font-weight: 300;
   margin-top: 8px;
   line-height: 18px;
 }
@@ -117,22 +133,22 @@
  .line-belows {
   height: 1px;
   background-color: #464646;
-  margin: 11px 0 20px;
+  margin: 11px 0 15px;
 }
 
 .preset-amounts {
   display: flex;
   justify-content: space-around;
-  margin: 1rem 0;
+  margin: 16px 0 13px;
 
   button {
     font-family: "Reddit Sans Condensed", sans-serif;
     background-color: #FFCC74;
     border: 1px solid #191919;
     border-radius: 134px;
-    width: 90px;
-    height: 90px;
-    font-size: 22px;
+    width: 80px;
+    height: 80px;
+    font-size: 21px;
     font-weight: 600;
     cursor: pointer;
   }
@@ -142,30 +158,39 @@ p.or-text {
   font-family: "Inter", sans-serif;
   font-size: 18px;
   font-weight: 500;
-  margin: 1rem 0;
+  margin: 0 0 10px;
   color: #000000;
   margin-bottom: 10px;
 }
 
-.h3-Amount {
-  font-size: 22px;
+h3.h3-Amount {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+h3.own-h3 {
+   font-size: 20px;
   font-weight: 600;
   margin-bottom: 15px;
 }
 
-.amount-input {
+input.amount-input {
   font-family: "Inter", sans-serif;
   width: 100%;
-  padding: 0.5rem;
+  padding: 12px 20px;
   border-radius: 20px;
   border: 1px solid #ccc;
   text-align: center;
-  margin-top: 0;
+  margin: 0 0 15px;
 
   line-height: normal;
   height: 2.5rem;
   box-sizing: border-box;
   vertical-align: middle;
+
+  appearance: textfield;
+  text-align: center;
 }
 
 .support-submit {

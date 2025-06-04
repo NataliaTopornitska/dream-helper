@@ -42,27 +42,6 @@ const DreamCarousel: React.FC = () => {
     return newArray;
   };
 
-//   useEffect(() => {
-//     const shuffledDreams = shuffleArray(randomDreams);
-//     let selectedDreams: Dream[] = [];
-//
-//     if (shuffledDreams.length >= 8) {
-//       selectedDreams = shuffledDreams.slice(0, 8);
-//     } else {
-//       const repeats = Math.ceil(8 / shuffledDreams.length);
-//
-//       for (let i = 0; i < repeats; i++) {
-//         selectedDreams = [...selectedDreams, ...shuffledDreams];
-//       }
-//
-//       selectedDreams = selectedDreams.slice(0, 8);
-//     }
-//
-//     setDreams(selectedDreams);
-//   }, []);
-
-  // For the backend
-
   useEffect(() => {
     async function fetchDreams() {
       try {

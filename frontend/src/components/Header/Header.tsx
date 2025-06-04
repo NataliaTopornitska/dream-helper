@@ -2,28 +2,40 @@ import React, { useState, useEffect } from 'react';
 import './Header.scss';
 import { Menu, X } from 'lucide-react';
 import { useIsMobile } from '../../use-mobile';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import AuthModal from '../AuthModal/AuthModal';
 
 const Header: React.FC = () => {
   const isMobile = useIsMobile();
+  const location = useLocation();
+  const currentPath = location.pathname;
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState<string | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    const storedUsername = localStorage.getItem('username');
+    const checkAuth = () => {
+      const token = localStorage.getItem('authToken');
+      setIsLoggedIn(!!token);
+    };
 
-    setIsLoggedIn(!!token);
-    setUsername(storedUsername);
+    checkAuth();
+
+    window.addEventListener('authChange', checkAuth);
+
+    return () => {
+      window.removeEventListener('authChange', checkAuth);
+    };
   }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  const isActive = (path: string) =>
+    currentPath === path || currentPath.startsWith(path);
 
   return (
     <header className="header">
@@ -44,25 +56,26 @@ const Header: React.FC = () => {
               <div className="mobile-nav">
                 <nav className="nav">
                   <ul className="nav-list">
-                    <li className="nav-item">
+                    <li className={`nav-item ${isActive('/dreams') ? 'active' : ''}`}>
                       <Link to="/dreams" onClick={() => setIsMenuOpen(false)}>
                         Dreams
                       </Link>
                     </li>
-                    <li className="nav-item">
-                      <a href="" onClick={() => setIsMenuOpen(false)}>
+                    <li className={`nav-item ${isActive('/top-donors') ? 'active' : ''}`}>
+                      <Link to="/top-donors" onClick={() => setIsMenuOpen(false)}>
                         Top Donors
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </nav>
                 {isLoggedIn ? (
-                      <div className="profile-link-wrapper" onClick={() => setIsMenuOpen(false)}>
-                    <Link to="/profile" className="profile-link">
-                      Profile
-                    </Link>
-                    {username && <div className="username-display">{username}</div>}
-                  </div>
+                  <Link
+                    to="/profile"
+                    className="profile-link"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Profile
+                  </Link>
                 ) : (
                   <button
                     className="login-button"
@@ -82,21 +95,18 @@ const Header: React.FC = () => {
           <div className="nav-block">
             <nav className="nav">
               <ul className="nav-list">
-                <li className="nav-item">
+                <li className={`nav-item ${isActive('/dreams') ? 'active' : ''}`}>
                   <Link to="/dreams">Dreams</Link>
                 </li>
-                <li className="nav-item">
-                  <a href="">Top Donors</a>
+                <li className={`nav-item ${isActive('/top-donors') ? 'active' : ''}`}>
+                  <Link to="/top-donors">Top Donors</Link>
                 </li>
               </ul>
             </nav>
             {isLoggedIn ? (
-              <div className="profile-link-wrapper" onClick={() => setIsMenuOpen(false)}>
-                <Link to="/profile" className="profile-link">
-                  Profile
-                </Link>
-                {username && <div className="username-display">{username}</div>}
-              </div>
+              <Link to="/profile" className="profile-link">
+                Profile
+              </Link>
             ) : (
               <button
                 className="login-button"
@@ -116,7 +126,6 @@ const Header: React.FC = () => {
         setAuthMode={setAuthMode}
         onLoginSuccess={() => {
           setIsLoggedIn(true);
-          setUsername(localStorage.getItem('username'));
           setIsAuthModalOpen(false);
         }}
       />

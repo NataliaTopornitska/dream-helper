@@ -48,10 +48,35 @@ const InfoCard = ({ dream }) => {
       <div className={styles.progressBar}>
         <div
           className={styles.progressFill}
-          style={{ width: `${dream.level_completed}%` }}
+          style={{
+            width: `${Math.min(dream.level_completed, 100)}%`,
+          }}
         ></div>
       </div>
+
       <div className={styles.amountRow}>
+        {dream.status === 'Completed' ? (
+          <div className={styles.amountItemCentered}>
+            <span className={styles.amountLabel}>Collected</span>
+            <span className={styles.amountValue}>{dream.total_amount_donations}$</span>
+          </div>
+        ) : (
+          <>
+            <div className={styles.amountItem}>
+              <span className={styles.amountLabel}>Collected</span>
+              <span className={styles.amountValue}>{dream.total_amount_donations}$</span>
+            </div>
+            <div className={styles.amountItem}>
+              <span className={styles.amountLabel}>Need</span>
+              <span className={styles.amountValue}>
+                {(+dream.goal - +dream.total_amount_donations).toFixed(2)}$
+              </span>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* <div className={styles.amountRow}>
         <p className={styles.amountItem}>
           <span className={styles.amountLabel}>Collected</span>
           <span className={styles.amountValue}>{dream.total_amount_donations}$</span>
@@ -62,7 +87,7 @@ const InfoCard = ({ dream }) => {
             {(+dream.goal - +dream.total_amount_donations).toFixed(2)}$
           </span>
         </p>
-      </div>
+      </div> */}
     </div>
   );
 };
