@@ -84,19 +84,15 @@ class CategoryView(
     permission_classes = (IsAdminUser,)
 
     def get_permissions(self):
-        if self.action in (
-            "create",
-        ):
+        if self.action in ("create",):
             return [IsAuthenticated()]
-        if self.action in (
-            "list",
-        ):
+        if self.action in ("list",):
             return [AllowAny()]
         return [IsAdminUser()]
 
     @extend_schema(
-    summary="List Categories",
-    description="Get a list of Dream Categories. Each Category has a name and a short description.",
+        summary="List Categories",
+        description="Get a list of Dream Categories. Each Category has a name and a short description.",
     )
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
@@ -110,13 +106,10 @@ class DreamViewSet(
     GenericViewSet,
 ):
     queryset = (
-        Dream.objects
-        .select_related("owner", "dreamer")
+        Dream.objects.select_related("owner", "dreamer")
         .prefetch_related("categories")
         .annotate(
-            number_donations=Count(
-                "donations", filter=Q(donations__status="Paid")
-            ),
+            number_donations=Count("donations", filter=Q(donations__status="Paid")),
             total_amount_donations=Sum(
                 "donations__amount", filter=Q(donations__status="Paid")
             ),
@@ -148,18 +141,18 @@ class DreamViewSet(
         return [AllowAny()]
 
     @extend_schema(
-    summary="List Dreams",
-    description="Get a list of Dreams. " \
-    "<br> At the time of the request, additional data is created for each Dream: " \
-    "<br> number_donations, total_amount_donations, number_comments, number_views & level_completed.",
+        summary="List Dreams",
+        description="Get a list of Dreams. "
+        "<br> At the time of the request, additional data is created for each Dream: "
+        "<br> number_donations, total_amount_donations, number_comments, number_views & level_completed.",
     )
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 
     @extend_schema(
-    summary="Detail of Dream",
-    description="Get all information about Dreams. " \
-    "<br> Each view of Dream increases the number_views by 1.",
+        summary="Detail of Dream",
+        description="Get all information about Dreams. "
+        "<br> Each view of Dream increases the number_views by 1.",
     )
     def retrieve(self, request, *args, **kwargs):
         # every time, if watch detail of Dream, number_views +1
@@ -227,10 +220,10 @@ class DreamViewSet(
         return DreamBaseSerializer
 
     @extend_schema(
-    summary="Random Dreams",
-    description="Get a list of several random Dreams. " \
-    "<br> You can control the number of these dreams via the RANDOM_DREAMS_HOME " \
-    "variable in the .env file (recommended at least 4 for correct display on the home page).",
+        summary="Random Dreams",
+        description="Get a list of several random Dreams. "
+        "<br> You can control the number of these dreams via the RANDOM_DREAMS_HOME "
+        "variable in the .env file (recommended at least 4 for correct display on the home page).",
     )
     @action(
         methods=["get"],
@@ -253,10 +246,10 @@ class DreamViewSet(
         )
 
     @extend_schema(
-    summary="Upload Dream photo",
-    description="Upload Dream photo to storage. " \
-    "<br> A thumbnail (for display in lists on web pages) will be automatically uploaded along with the photo. " \
-    "When you upload a new photo, the previous one will be deleted from the storage.",
+        summary="Upload Dream photo",
+        description="Upload Dream photo to storage. "
+        "<br> A thumbnail (for display in lists on web pages) will be automatically uploaded along with the photo. "
+        "When you upload a new photo, the previous one will be deleted from the storage.",
     )
     @action(
         methods=["post"],
@@ -312,9 +305,9 @@ class DreamViewSet(
         )
 
     @extend_schema(
-    summary="Create Stripe payment session",
-    description="Creates Stripe payment session (User can donate anonimously also). " \
-    "<br> Returns URL(checkout_session.url) if created successfully.",
+        summary="Create Stripe payment session",
+        description="Creates Stripe payment session (User can donate anonimously also). "
+        "<br> Returns URL(checkout_session.url) if created successfully.",
     )
     @action(
         methods=["post"],
@@ -374,7 +367,7 @@ class DreamViewSet(
             if user.is_authenticated:
                 new_donation.donator = user  # if user is authenticated
                 if not user.is_donator:
-                    user.is_donator = True    # select user as a donator
+                    user.is_donator = True  # select user as a donator
                     user.save()
             else:
                 new_donation.donator = None
@@ -407,9 +400,9 @@ class DreamViewSet(
             return Response({"error": str(e)}, status=500)
 
     @extend_schema(
-    summary="Add comment to Dream",
-    description="Adds a new comment from the current User to a specific dream by ID. " \
-    "Only authenticated Users can make comments. "
+        summary="Add comment to Dream",
+        description="Adds a new comment from the current User to a specific dream by ID. "
+        "Only authenticated Users can make comments. ",
     )
     @action(
         methods=["post"],
@@ -433,8 +426,8 @@ class DreamViewSet(
         )
 
     @extend_schema(
-    summary="Get all Dream's donnations",
-    description="Get list all of donations of especial Dream by its ID. "
+        summary="Get all Dream's donations",
+        description="Get list all of donations of especial Dream by its ID. ",
     )
     @action(
         methods=["get"],
@@ -456,8 +449,8 @@ class DreamViewSet(
         return Response(serialized_data.data, status=200)
 
     @extend_schema(
-    summary="Get all Dream's comments",
-    description="Get list all of comments of especial Dream by its ID. "
+        summary="Get all Dream's comments",
+        description="Get list all of comments of especial Dream by its ID. ",
     )
     @action(
         methods=["get"],
@@ -601,17 +594,13 @@ class DonationViewSet(
     queryset = Donation.objects.all()
     serializer_class = DonationSerializer
 
-    @extend_schema(
-    summary="Get list donations",
-    description="Get a list of donations." 
-    )
+    @extend_schema(summary="Get list donations", description="Get a list of donations.")
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 
 
 @extend_schema(
-summary="Get site statistics",
-description="Get a list of statistic data for home." 
+    summary="Get site statistics", description="Get a list of statistic data for home."
 )
 class DreamStatisticsView(APIView):
     permission_classes = [AllowAny]
@@ -653,9 +642,6 @@ class CommentViewSet(
     serializer_class = CommentSerializer
     permission_classes = [IsAdminUser]
 
-    @extend_schema(
-    summary="Get list comments",
-    description="Get a list of comments." 
-    )
+    @extend_schema(summary="Get list comments", description="Get a list of comments.")
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)

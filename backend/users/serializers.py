@@ -272,6 +272,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     location = serializers.SerializerMethodField()
     email = serializers.ReadOnlyField(source="user.email")
     name = serializers.SerializerMethodField()
+    country = serializers.SerializerMethodField()
 
     class Meta:
         model = UserProfile
@@ -285,12 +286,18 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "is_collective",
             "created_at",
             "avatar_url",
+            "city",
+            "country",
         )
 
     def get_name(self, obj) -> str:
         user = obj.user
         name = getattr(obj, "name", None) if obj else None
         return name if name else user.email
+
+    def get_country(self, obj) -> int:
+        if obj.city:
+            return obj.city.country.id
 
     def get_location(self, obj) -> str:
         if obj.city:
@@ -458,9 +465,11 @@ class UserMyDreamsSerializer(serializers.ModelSerializer):
             obj.donations.filter(status="Paid").aggregate(total=Sum("amount"))["total"]
             or 0
         )
-    
+
     def get_dreamer(self, obj) -> str:
-        return obj.dreamer.name if obj.dreamer and hasattr(obj.dreamer, "name") else None
+        return (
+            obj.dreamer.name if obj.dreamer and hasattr(obj.dreamer, "name") else None
+        )
 
 
 class UserMyDonationsSerializer(UserMyDreamsSerializer):
@@ -485,4 +494,5 @@ class UserPreparedDonationsSerializer(serializers.ModelSerializer):
             "dream",
             "url_payment",
             "is_anonymous",
+            "status",
         )
