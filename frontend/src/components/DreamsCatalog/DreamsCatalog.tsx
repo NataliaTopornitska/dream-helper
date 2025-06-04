@@ -89,44 +89,25 @@ const DreamsCatalog = () => {
   }, []);
 
   useEffect(() => {
-  if (
-    activeTab === "Application" &&
-    currentUser &&
-    currentUser.id === 1 &&
-    currentUser.email === "az@a.com" &&
-    currentUser.is_staff &&
-    currentUser.is_active
-  ) {
+    if (
+      activeTab === "Application" &&
+      currentUser &&
+      currentUser.id === 1 &&
+      currentUser.email === "az@a.com" &&
+      currentUser.is_staff &&
+      currentUser.is_active
+    ) {
 
-    const applicationDreams = dreams.filter((dream: any) => dream.status === "Application");
+      const applicationDreams = dreams.filter((dream: any) => dream.status === "Application");
 
-    setFilteredDreams(applicationDreams);
-    setPagination({
-      ...pagination,
-      count: applicationDreams.length,
-      num_pages: Math.ceil(applicationDreams.length / dreamsPerPage),
-    });
-  }
-}, [activeTab, dreams, currentUser]);
-
-
-
-  // const fetchDreams = async () => {
-  //   const response = await fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams/?status=${activeTab}`);
-  //   const data = await response.json();
-
-  //   console.log("API Response:", data);
-
-  //   setDreams(data.results);
-  //   setFilteredDreams(data.results);
-
-  //   setPagination({
-  //     next: data.next || "",
-  //     previous: data.previous || "",
-  //     count: data.count,
-  //     num_pages: data.num_pages
-  //   });
-  // };
+      setFilteredDreams(applicationDreams);
+      setPagination({
+        ...pagination,
+        count: applicationDreams.length,
+        num_pages: Math.ceil(applicationDreams.length / dreamsPerPage),
+      });
+    }
+  }, [activeTab, dreams, currentUser]);
 
 
   const fetchDreams = async () => {

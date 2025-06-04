@@ -43,9 +43,14 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, dream }) =
         follow: false,
       };
 
+      const authToken = localStorage.getItem('authToken');
+
       const response = await fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(authToken ? { Authorization: `Token ${authToken}` } : {}),
+        },
         body: JSON.stringify(body),
       });
 
