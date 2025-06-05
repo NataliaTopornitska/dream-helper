@@ -609,7 +609,8 @@ class DreamStatisticsView(APIView):
     def get(self, request, *args, **kwargs):
         total_dreams = Dream.objects.count()
         people = (
-            User.objects.count() + DreamerProfile.objects.count()
+            User.objects.count()
+            #             + DreamerProfile.objects.count()
         )  #  later may be only active users
 
         queryset = Donation.objects.filter(status="Paid").all()

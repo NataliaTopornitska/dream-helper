@@ -485,6 +485,8 @@ class UserMyDonationsSerializer(UserMyDreamsSerializer):
 
 
 class UserPreparedDonationsSerializer(serializers.ModelSerializer):
+    title = serializers.SerializerMethodField()
+
     class Meta:
         model = Donation
         fields = (
@@ -492,7 +494,11 @@ class UserPreparedDonationsSerializer(serializers.ModelSerializer):
             "date",
             "amount",
             "dream",
+            "title",
             "url_payment",
             "is_anonymous",
             "status",
         )
+
+    def get_title(self, obj) -> str:
+        return obj.dream.title
