@@ -1,10 +1,10 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from enum import Enum
 
-from users.models import User
+# from users.models import User
 
-from users.models import DreamerProfile
-
+from user_profile.models import DreamerProfile
 
 
 class DreamStatusEnum(str, Enum):
@@ -32,7 +32,7 @@ class Category(models.Model):
 
 
 class Comment(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     dream = models.ForeignKey(
         "Dream", on_delete=models.CASCADE, related_name="comments"
     )
@@ -47,7 +47,9 @@ class Comment(models.Model):
 
 
 class Dream(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="dreams")
+    owner = models.ForeignKey(
+        get_user_model(), on_delete=models.CASCADE, related_name="dreams"
+    )
     title = models.CharField(max_length=45)
     to_another = models.BooleanField(default=False)
     dreamer = models.ForeignKey(
@@ -61,9 +63,9 @@ class Dream(models.Model):
     photo_url = models.URLField(null=True, blank=True)
     thumbnail_url = models.URLField(null=True, blank=True)  # miniature
     status = models.CharField(
-        max_length=12, 
-        choices=[(x.value, x.name) for x in DreamStatusEnum], 
-        default="Application"
+        max_length=12,
+        choices=[(x.value, x.name) for x in DreamStatusEnum],
+        default="Application",
     )
     created_at = models.DateTimeField(auto_now_add=True)
     completed_at = models.DateTimeField(null=True, blank=True)
@@ -88,15 +90,20 @@ class Donation(models.Model):
         ("Paid", "Paid"),
         ("Canceled", "Canceled"),
     )"""
+
     dream = models.ForeignKey(Dream, on_delete=models.CASCADE, related_name="donations")
     donator = models.ForeignKey(
-        User, on_delete=models.CASCADE, blank=True, null=True, related_name="donations"
+        get_user_model(),
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="donations",
     )  # may be anonymouse donation
     amount = models.DecimalField(decimal_places=2, max_digits=10)
     status = models.CharField(
-        max_length=8, 
-        choices=[(x.value, x.name) for x in DonationStatusEnumCustom], 
-        default="Prepared"
+        max_length=8,
+        choices=[(x.value, x.name) for x in DonationStatusEnumCustom],
+        default="Prepared",
     )
     url_payment = models.URLField(max_length=400, null=True, blank=True)
     is_anonymous = models.BooleanField(
@@ -112,12 +119,12 @@ class Donation(models.Model):
 
     def __str__(self):
         return self.date.strftime("%Y-%m-%d %H:%M") + " - " + str(self.amount)
-    
+
 
 class Follower(models.Model):
     dream = models.ForeignKey(Dream, on_delete=models.CASCADE, related_name="followers")
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="followers"
+        get_user_model(), on_delete=models.CASCADE, related_name="followers"
     )
 
     def __str__(self):

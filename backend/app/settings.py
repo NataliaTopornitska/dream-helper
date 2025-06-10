@@ -38,8 +38,8 @@ ALLOWED_HOSTS = [
 
 INTERNAL_IPS = [
     # ...
-    "127.0.0.1",    # for debug-toolbar
-    "localhost",    # for debug-toolbar
+    "127.0.0.1",  # for debug-toolbar
+    "localhost",  # for debug-toolbar
     # ...
 ]
 
@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     "rest_framework",
     "rest_framework.authtoken",
     "drf_spectacular",
@@ -60,8 +59,8 @@ INSTALLED_APPS = [
     "django_filters",
     "corsheaders",
     "debug_toolbar",
-
     "users",
+    "user_profile",
     "dreams",
 ]
 
@@ -184,7 +183,7 @@ SPECTACULAR_SETTINGS = {
     "ENUM_NAME_OVERRIDES": {
         "dreams.models.Dream.status": "DreamStatusEnum",
         "dreams.models.Donation.status": "DonationStatusEnumCustom",
-    }
+    },
 }
 
 # for Web

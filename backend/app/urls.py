@@ -30,6 +30,10 @@ from debug_toolbar.toolbar import debug_toolbar_urls
 urlpatterns = [
     path("admin/", admin.site.urls),
     path(f"{API_PREF}/users/", include("users.urls", namespace="users")),
+    path(
+        f"{API_PREF}/user_profile/",
+        include("user_profile.urls", namespace="user_profile"),
+    ),
     path(f"{API_PREF}/dreamhelper/", include("dreams.urls", namespace="dreams")),
     path(f"{API_PREF}/cancel/", CancelView.as_view(), name="cancel"),
     path(f"{API_PREF}/success/", SuccessView.as_view(), name="success"),
@@ -40,7 +44,7 @@ urlpatterns = [
         SpectacularSwaggerView.as_view(url_name="schema"),
         name="swagger-ui",
     ),
-] 
+]
 
 if DEBUG:
     urlpatterns += debug_toolbar_urls()

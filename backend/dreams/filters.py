@@ -1,10 +1,10 @@
 import django_filters
-from rest_framework import serializers
+
 from django.db.models import Q, F
-#  from drf_spectacular.utils import extend_schema_field
+
 
 from .models import Dream, Category
-from users.models import City, Country
+from user_profile.models import City, Country
 
 
 class DreamFilter(django_filters.FilterSet):
@@ -76,9 +76,7 @@ class DreamFilter(django_filters.FilterSet):
         country_id = self.data.get("country")
         city_id = self.data.get("city")
         if city_id:
-            self.filters["city"].queryset = City.objects.filter(
-                    id=city_id
-                )
+            self.filters["city"].queryset = City.objects.filter(id=city_id)
         if country_id:
             try:
                 country_id = int(country_id)
@@ -90,9 +88,8 @@ class DreamFilter(django_filters.FilterSet):
         else:
             self.filters["city"].queryset = City.objects.all()
 
-
-#    @extend_schema_field(serializers.IntegerField())
-        # get pk of country
+    #    @extend_schema_field(serializers.IntegerField())
+    # get pk of country
     def filter_country(self, queryset, name: str, value: int | str):
         country_pk = value.pk if hasattr(value, "pk") else value
 
@@ -110,8 +107,8 @@ class DreamFilter(django_filters.FilterSet):
             | Q(dreamer__isnull=True, owner_country_id=country_pk)
         )
 
-#    @extend_schema_field(serializers.IntegerField())
-    def filter_city(self, queryset,  name: str, value: int | str):
+    #    @extend_schema_field(serializers.IntegerField())
+    def filter_city(self, queryset, name: str, value: int | str):
         # get pk of city
         city_pk = value.pk if hasattr(value, "pk") else value
 

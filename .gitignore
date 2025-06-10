@@ -27,3 +27,5 @@ backup_db.sqlite3
 frontend/
 vite.config.ts
 backup_dreams.json
+backend/user_profile/__pycache__/
+**/__pycache__/

@@ -1,14 +1,21 @@
-from django.db.models import Sum, ExpressionWrapper
+from django.db.models import Sum
 from rest_framework import serializers
 
 from dreams.models import Category, Comment, Dream, Donation
-from rest_framework.fields import ImageField, DecimalField, FloatField
+from rest_framework.fields import ImageField
 
-from users.models import DreamerProfile
-from users.serializers import DreamerProfileCreateSerializer, DreamerProfileSerializer
-from users.serializers import DreamerProfileCreateSerializer, DreamerProfileSerializer, DreamDonatorsSerializer
+from user_profile.models import DreamerProfile
+from user_profile.serializers import (
+    DreamerProfileCreateSerializer,
+    DreamerProfileSerializer,
+)
+from user_profile.serializers import (
+    DreamerProfileCreateSerializer,
+    DreamerProfileSerializer,
+    DreamDonatorsSerializer,
+)
 
-from users.models import Country, City
+from user_profile.models import Country, City
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -121,7 +128,7 @@ class DreamRetrieveSerializer(DreamBaseSerializer):
         owner = obj.owner
         profile = getattr(owner, "userprofile", None)
         return f"{profile.city.name}, {profile.city.country.name}"
-    
+
     def get_is_collective(self, obj) -> bool:
         dreamer = obj.dreamer
         if dreamer:
@@ -129,7 +136,7 @@ class DreamRetrieveSerializer(DreamBaseSerializer):
         owner = obj.owner
         profile = getattr(owner, "userprofile", None)
         return profile.is_collective
-    
+
     def get_owner(self, obj) -> str:
         user = obj.owner
         profile = getattr(user, "userprofile", None)
@@ -272,13 +279,7 @@ class AddDonationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Donation
-        fields = (
-            "dream",
-            "amount",
-            "your_amount",
-            "is_anonymous",
-            "follow"
-        )
+        fields = ("dream", "amount", "your_amount", "is_anonymous", "follow")
 
     def validate(self, data):
         # if your_amount: ignore amount
@@ -325,7 +326,13 @@ class DreamDonationsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Donation
-        fields = ("id", "amount", "is_anonymous", "date", "donator_profile", )
+        fields = (
+            "id",
+            "amount",
+            "is_anonymous",
+            "date",
+            "donator_profile",
+        )
 
     def get_donator_profile(self, obj):
         if obj.donator and hasattr(obj.donator, "userprofile"):

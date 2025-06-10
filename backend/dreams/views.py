@@ -2,10 +2,10 @@ import os
 import random
 
 import stripe
-from django.core.exceptions import BadRequest, ObjectDoesNotExist
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Sum, Count, Q
 from django.http import HttpResponse
-from django.shortcuts import redirect
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import mixins, status
@@ -46,7 +46,8 @@ from utils.storage import (
 
 from app import settings
 
-from users.models import User, DreamerProfile
+# from users.models import User, DreamerProfile
+from user_profile.models import DreamerProfile
 
 from app.settings import (
     BUCKET_NAME,
@@ -609,7 +610,7 @@ class DreamStatisticsView(APIView):
     def get(self, request, *args, **kwargs):
         total_dreams = Dream.objects.count()
         people = (
-            User.objects.count()
+            get_user_model().objects.count()
             #             + DreamerProfile.objects.count()
         )  #  later may be only active users
 

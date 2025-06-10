@@ -4,11 +4,7 @@ from django.utils.translation import gettext as _
 
 from .models import (
     User,
-    DreamerProfile,
-    UserProfile,
     ActivationToken,
-    Country,
-    City,
     Subscriber,
 )
 
@@ -55,8 +51,8 @@ class UserAdmin(DjangoUserAdmin):
 
 admin.site.register(ActivationToken)
 
-admin.site.register(Country)
-admin.site.register(City)
-admin.site.register(UserProfile)
-admin.site.register(DreamerProfile)
+# admin.site.register(Country)
+# admin.site.register(City)
+# admin.site.register(UserProfile)
+# admin.site.register(DreamerProfile)
 admin.site.register(Subscriber)

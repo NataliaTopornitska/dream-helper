@@ -65,78 +65,78 @@ class ActivationToken(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
-class Country(models.Model):
-    name = models.CharField(max_length=63, unique=True)
-
-    class Meta:
-        verbose_name_plural = "countries"
-        ordering = ["name"]
-
-    def __str__(self) -> str:
-        return self.name
-
-
-class City(models.Model):
-    name = models.CharField(max_length=63)
-    country = models.ForeignKey(
-        Country, on_delete=models.CASCADE, related_name="cities"
-    )
-
-    class Meta:
-        verbose_name_plural = "cities"
-        ordering = ["name"]
-
-    def __str__(self) -> str:
-        return self.name
-
-
-class UserProfile(models.Model):
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE, related_name="userprofile"
-    )
-    name = models.CharField(
-        max_length=150,
-        blank=True,
-        null=True,
-    )
-    phone_number = models.CharField(max_length=30, blank=True, null=True, unique=True)
-    city = models.ForeignKey(
-        City,
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True,
-    )
-    direction = models.CharField(max_length=150, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    is_collective = models.BooleanField(default=False)
-    avatar_url = models.URLField(null=True, blank=True)  # save in Storage
-    thumbnail_url = models.URLField(null=True, blank=True)  # miniature
-
-    class Meta:
-        ordering = ["-created_at"]
-
-    def __str__(self) -> str:
-        name = self.name if self.name else "No Name"
-        city = self.city.name if self.city else "No City"
-        phone = self.phone_number if self.phone_number else "No Phone"
-        return f"{name} ({city}) - {phone}"
-
-
-class DreamerProfile(models.Model):
-    name = models.CharField(max_length=150)
-    email = models.EmailField(blank=True, null=True, unique=True)
-    phone_number = models.CharField(max_length=30, unique=True)
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
-    direction = models.CharField(max_length=150)
-    created_at = models.DateTimeField(auto_now_add=True)
-    is_collective = models.BooleanField(default=False)
-
-    class Meta:
-        ordering = ["name"]
-
-    def __str__(self):
-        return f"{self.name} ({self.city.name}) - {self.phone_number}"
-
+# class Country(models.Model):
+#     name = models.CharField(max_length=63, unique=True)
+#
+#     class Meta:
+#         verbose_name_plural = "countries"
+#         ordering = ["name"]
+#
+#     def __str__(self) -> str:
+#         return self.name
+#
+#
+# class City(models.Model):
+#     name = models.CharField(max_length=63)
+#     country = models.ForeignKey(
+#         Country, on_delete=models.CASCADE, related_name="cities"
+#     )
+#
+#     class Meta:
+#         verbose_name_plural = "cities"
+#         ordering = ["name"]
+#
+#     def __str__(self) -> str:
+#         return self.name
+#
+#
+# class UserProfile(models.Model):
+#     user = models.OneToOneField(
+#         User, on_delete=models.CASCADE, related_name="userprofile"
+#     )
+#     name = models.CharField(
+#         max_length=150,
+#         blank=True,
+#         null=True,
+#     )
+#     phone_number = models.CharField(max_length=30, blank=True, null=True, unique=True)
+#     city = models.ForeignKey(
+#         City,
+#         on_delete=models.CASCADE,
+#         blank=True,
+#         null=True,
+#     )
+#     direction = models.CharField(max_length=150, blank=True)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     is_collective = models.BooleanField(default=False)
+#     avatar_url = models.URLField(null=True, blank=True)  # save in Storage
+#     thumbnail_url = models.URLField(null=True, blank=True)  # miniature
+#
+#     class Meta:
+#         ordering = ["-created_at"]
+#
+#     def __str__(self) -> str:
+#         name = self.name if self.name else "No Name"
+#         city = self.city.name if self.city else "No City"
+#         phone = self.phone_number if self.phone_number else "No Phone"
+#         return f"{name} ({city}) - {phone}"
+#
+#
+# class DreamerProfile(models.Model):
+#     name = models.CharField(max_length=150)
+#     email = models.EmailField(blank=True, null=True, unique=True)
+#     phone_number = models.CharField(max_length=30, unique=True)
+#     city = models.ForeignKey(City, on_delete=models.CASCADE)
+#     direction = models.CharField(max_length=150)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     is_collective = models.BooleanField(default=False)
+#
+#     class Meta:
+#         ordering = ["name"]
+#
+#     def __str__(self):
+#         return f"{self.name} ({self.city.name}) - {self.phone_number}"
+#
 
 class Subscriber(models.Model):
     email = models.EmailField(unique=True)
@@ -146,4 +146,4 @@ class Subscriber(models.Model):
         ordering = ["email"]
 
     def __str__(self) -> str:
-        return self.email
+        return str(self.email)
