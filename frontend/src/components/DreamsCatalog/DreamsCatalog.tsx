@@ -382,14 +382,6 @@ const getCurrentDreams = () => {
         >
           Fulfilled Dreams
         </button>
-
-        {/* <button
-          className={`tab ${activeTab === 'Application' ? 'Active' : ''}`}
-          onClick={() => setActiveTab('Application')}
-        >
-          Application Dreams
-        </button> */}
-
         {currentUser &&
           currentUser.id === 1 &&
           currentUser.email === "az@a.com" &&
@@ -399,7 +391,7 @@ const getCurrentDreams = () => {
             className={`tab ${activeTab === 'Application' ? 'Active' : ''}`}
             onClick={() => setActiveTab('Application')}
           >
-           Application Dreams
+           New Dreams
           </button>
         )}
       </div>
@@ -734,8 +726,8 @@ const getCurrentDreams = () => {
                   <span>Need</span>
                 </div>
                 <div className="progress-values">
-                  <span>${collected.toLocaleString('en-US')}</span>
-                  <span>${goalAmount.toLocaleString('en-US')}</span>
+                  <span>{collected.toLocaleString('fr-FR')}$</span>
+                  <span>{goalAmount.toLocaleString('fr-FR')}$</span>
                 </div>
               </div>
               <div className="dream-actions">

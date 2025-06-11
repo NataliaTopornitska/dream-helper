@@ -67,6 +67,13 @@
     }
   }
 
+  button.outline-btn {
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    padding: 14px 50px !important;
+    border-radius: 40px !important;
+  }
+
   &-solid {
     background-color: #000;
     color: #fff;

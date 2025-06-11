@@ -5,7 +5,7 @@ const InfoCard = ({ dream }) => {
     <div className={styles.infoCard}>
       <div className={styles.topRow}>
         <p>
-          <span className={styles.cardLabel}>Owner Name</span>
+          <span className={styles.cardLabel}>Name</span>
           <span className={styles.cardValue}>{dream.owner}</span>
         </p>
         <div className={styles.statItem}>
@@ -36,7 +36,7 @@ const InfoCard = ({ dream }) => {
         <span className={styles.cardValue}>{dream.goal}$</span>
       </p>
       <p>
-        <span className={styles.cardLabel}>Date of Creation</span>
+        <span className={styles.cardLabel}>Created</span>
         <span className={styles.cardValue}>
           {new Date(dream.created_at).toLocaleDateString()}
         </span>

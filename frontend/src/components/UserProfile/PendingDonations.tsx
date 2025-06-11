@@ -50,11 +50,11 @@ const PendingDonations = () => {
 
   return (
     <div className="pending-wrapper">
-      <h2>Pending</h2>
+      <h2>Prepared</h2>
       <div className="pending-table">
         {donations.map((donation) => (
           <div className="pending-row" key={donation.id}>
-            <span>Donation Made</span>
+            <span>Date</span>
             <span>{formatDate(donation.date)}</span>
             <div className="divider" />
             <span>Dream Name</span>

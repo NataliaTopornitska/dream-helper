@@ -1,0 +1,179 @@
+.dream-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.dream-modal {
+  background: #fff;
+  border-radius: 16px;
+  max-width: 960px;
+  width: 95%;
+  padding: 32px;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  font-family: 'Inter', sans-serif;
+}
+
+.dream-modal .close-btn {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+}
+
+.dream-modal .modal-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.dream-modal .modal-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+}
+
+.dream-modal .left-section {
+  flex: 1;
+  min-width: 260px;
+  text-align: center;
+}
+
+.dream-modal .left-section .photo-upload {
+  border: 2px dashed #ddd;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dream-modal .left-section .photo-upload img {
+  width: 100px;
+  margin-bottom: 16px;
+}
+
+.dream-modal .left-section .photo-upload p {
+  font-size: 13px;
+  color: #777;
+}
+
+.dream-modal .right-section {
+  flex: 1;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dream-modal .right-section .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.dream-modal .right-section .form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.dream-modal .right-section .form-group input,
+.dream-modal .right-section .form-group select {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+}
+
+.dream-modal .right-section .form-group input:focus,
+.dream-modal .right-section .form-group select:focus {
+  border-color: #999;
+}
+
+.dream-modal .section {
+  margin-top: 32px;
+}
+
+.dream-modal .section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.dream-modal .section p {
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 16px;
+}
+
+.dream-modal .grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.dream-modal .grid-2 input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.dream-modal textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  resize: vertical;
+  min-height: 120px;
+  outline: none;
+}
+
+.dream-modal textarea:focus {
+  border-color: #999;
+}
+
+.dream-modal .submit-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.dream-modal .submit-wrapper .submit-btn {
+  background-color: #000;
+  color: white;
+  padding: 14px 32px;
+  border: none;
+  border-radius: 9999px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dream-modal .submit-wrapper .submit-btn:hover {
+  background-color: #222;
+}
+
+
+
+
+
+
+
+

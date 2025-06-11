@@ -104,7 +104,10 @@ const Header: React.FC = () => {
               </ul>
             </nav>
             {isLoggedIn ? (
-              <Link to="/profile" className="profile-link">
+              <Link
+                to="/profile"
+                className={`profile-link ${isActive('/profile') ? 'active' : ''}`}
+              >
                 Profile
               </Link>
             ) : (

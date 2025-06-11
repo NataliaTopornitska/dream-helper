@@ -94,7 +94,9 @@ const Statistics: React.FC = () => {
               className="stat-icon"
             />
             <h3 className="stat-label">Anonymous donations</h3>
-            <p className="stat-value">${statistics.anonymousDonations}</p>
+            <p className="stat-value">
+              ${statistics.anonymousDonations.toLocaleString('fr-FR')}
+            </p>
           </div>
 
           <div className="stat-card">
@@ -104,7 +106,9 @@ const Statistics: React.FC = () => {
               className="stat-icon"
             />
             <h3 className="stat-label">Total donations</h3>
-            <p className="stat-value">${statistics.totalDonations}</p>
+            <p className="stat-value">
+              ${statistics.totalDonations.toLocaleString('fr-FR')}
+            </p>
           </div>
         </div>
       </div>
