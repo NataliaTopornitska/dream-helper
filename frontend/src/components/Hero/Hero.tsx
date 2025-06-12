@@ -14,7 +14,7 @@ const Hero = () => {
       try {
         const res = await fetch('http://127.0.0.1:8000/api/v1/users/profile/', {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('authToken') || ''}`,
+            Authorization: `Token ${localStorage.getItem('authToken') || ''}`,
           },
         });
         if (!res.ok) throw new Error('Failed to load profile data');

@@ -13,29 +13,39 @@ const UserProfile = () => {
   const [profileData, setProfileData] = useState(null);
   const [email, setEmail] = useState('');
 
+  const fetchProfile = async () => {
+    try {
+      const res = await fetch('http://127.0.0.1:8000/api/v1/users/profile/', {
+        headers: {
+          Authorization: `Token ${localStorage.getItem('authToken') || ''}`,
+        },
+      });
+      if (!res.ok) throw new Error('Failed to fetch profile');
+      const data = await res.json();
+      setProfileData(data);
+    } catch (err) {
+      console.error('Error fetching profile:', err);
+      setProfileData(null);
+    }
+  };
+
   useEffect(() => {
     const storedEmail = localStorage.getItem('username');
     if (storedEmail) setEmail(storedEmail);
 
-    const fetchProfile = async () => {
-      try {
-        const res = await fetch('http://127.0.0.1:8000/api/v1/users/profile/', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('authToken') || ''}`,
-          },
-        });
-        if (!res.ok) throw new Error('Failed to fetch profile');
-        const data = await res.json();
-        setProfileData(data);
-      } catch (err) {
-        console.error('Error fetching profile:', err);
-        setProfileData(null);
-      }
+    fetchProfile(); // initial fetch
+
+    const handleProfileUpdated = () => {
+      fetchProfile(); // refresh profile when updated
     };
-    fetchProfile();
+
+    window.addEventListener('profileUpdated', handleProfileUpdated);
+
+    return () => {
+      window.removeEventListener('profileUpdated', handleProfileUpdated);
+    };
   }, []);
 
-  // Open modal if redirected here because of incomplete profile
   useEffect(() => {
     const shouldShowModal = localStorage.getItem('showIncompleteModal') === 'true';
     if (shouldShowModal) {

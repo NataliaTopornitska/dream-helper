@@ -139,3 +139,23 @@ input {
   padding: 0;
   margin: 0;
 }
+
+
+// Error
+.input-error {
+  border: 1px solid red;
+}
+
+.error-text {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 2px;
+}
+
+.required-star {
+  color: red;
+  font-weight: bold;
+  font-size: 30px;
+  margin-left: 3px;
+  vertical-align: top;
+}
