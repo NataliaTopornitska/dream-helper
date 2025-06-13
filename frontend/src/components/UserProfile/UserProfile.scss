@@ -41,7 +41,9 @@
 
 .profile-info p {
   margin: 4px 0;
-  font-size: 14px;
+  font-size: 17px;
+  font-family: "Reddit Sans Condensed", sans-serif;
+  text-align: left;
 }
 
 .profile-info span {
@@ -71,22 +73,6 @@
   display: flex;
   gap: 20px;
 }
-
-
-// .profile-right {
-//   display: flex;
-//   flex-direction: column;
-//   align-items: flex-end;
-//   justify-content: space-between;
-//   height: 100%;
-//   gap: 70px;
-// }
-
-// .profile-buttons {
-//   display: flex;
-//   gap: 20px;
-//   margin-top: 160px;
-// }
 
 .outline-btn {
   padding: 12px 28px;

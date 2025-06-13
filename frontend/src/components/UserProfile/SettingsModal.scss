@@ -49,13 +49,13 @@
   cursor: pointer;
 }
 
-.modal-title {
+.modal-title-s {
   margin-bottom: 20px;
   font-size: 24px;
   font-weight: 600;
 }
 
-.modal-image {
+.modal-image-s {
   max-width: 200px;
   margin-bottom: 30px;
 }
@@ -69,18 +69,60 @@
 .form-row {
   display: flex;
   gap: 20px;
+  // flex-wrap: wrap;
+  // align-items: flex-start;
   flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.form-group {
+  // flex: 1 1 auto;
+    flex: 1 1 250px;
+  min-width: 150px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  // display: flex;
+  // align-items: center;
+  // gap: 10px;
+  // width: 320px;
+  // max-width: 100%;
+  // flex-shrink: 0;
+
+
+  // gap: 3px;
+  //  max-width: 400px;
+}
+
+.form-group label {
+  // width: 70px;
+  // flex-shrink: 0;
+  // text-align: left;
+  // font-size: 14px;
+   min-width: 90px; /* однакова ширина для всіх лейблів */
+  flex-shrink: 0;
+  text-align: left;
+}
+
+.form-group input,
+.form-group select {
+  flex: 1;
+  margin-left: 0;
 }
 
 .form-row.single {
   flex-direction: column;
 }
 
-input {
+.is-collective {
+  margin-left: 8px;
+}
+
+.settings-form input {
   flex: 1;
-  padding: 12px 18px;
+  padding: 10px 18px;
   border-radius: 9999px;
-  border: 1px solid #ccc;
+  border: 1px solid #191919;
   font-size: 14px;
 }
 
@@ -96,9 +138,9 @@ input {
 }
 
 .save-button {
-  margin-top: 20px;
-  padding: 14px;
-  width: 100%;
+  margin: 20px auto 0;
+  padding: 13px 150px;
+  max-width: 450px;
   border-radius: 9999px;
   background-color: #000;
   color: white;
@@ -106,6 +148,7 @@ input {
   font-size: 16px;
   border: none;
   cursor: pointer;
+  display: block;
 }
 
 @media (max-width: 480px) {
@@ -130,14 +173,16 @@ input {
 
 
 .signout-button {
+  display: block;
   background: none;
   border: none;
-  color: #000;
+  color: #000000;
   text-decoration: underline;
-  font-size: 14px;
+  font-size: 17px;
+  font-weight: 600;
   cursor: pointer;
-  padding: 0;
-  margin: 0;
+  padding: 20px 0 0;
+  margin: 0 auto;
 }
 
 
@@ -155,7 +200,9 @@ input {
 .required-star {
   color: red;
   font-weight: bold;
-  font-size: 30px;
-  margin-left: 3px;
-  vertical-align: top;
+  font-size: 25px;
+  // margin-left: 3px;
+  // vertical-align: top;
+  position: relative;
+  top: -2px;
 }

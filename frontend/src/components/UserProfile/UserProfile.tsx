@@ -78,6 +78,7 @@ const UserProfile = () => {
             <p><span>Location:</span> {profileData?.location || 'Not specified'}</p>
             <p><span>Email:</span> {email || 'Not logged in'}</p>
             <p><span>Phone:</span> {profileData?.phone_number || 'Not provided'}</p>
+            <p><span>Direction:</span> {profileData?.direction || 'Not specified'}</p>
           </div>
         </div>
 

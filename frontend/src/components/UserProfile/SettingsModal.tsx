@@ -9,20 +9,17 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const [phone, setPhone] = useState('');
   const [direction, setDirection] = useState('');
   const [isCollective, setIsCollective] = useState(false);
-
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
-  const [profileCityId, setProfileCityId] = useState(null);
-
+  const [otherCountry, setOtherCountry] = useState('');
+  const [otherCity, setOtherCity] = useState('');
+  const [isLocationFixed, setIsLocationFixed] = useState(false);
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
+    if (!isOpen) {
       setName('');
       setPhone('');
       setDirection('');
@@ -30,80 +27,59 @@ const SettingsModal = ({ isOpen, onClose }) => {
       setSelectedCountry(null);
       setSelectedCity(null);
       setCities([]);
-      setProfileCityId(null);
+      setOtherCountry('');
+      setOtherCity('');
+      setIsLocationFixed(false);
       setErrors({});
-    }
-    return () => {
       document.body.style.overflow = '';
-    };
-  }, [isOpen]);
+      return;
+    }
 
-  useEffect(() => {
-    if (!isOpen) return;
+    document.body.style.overflow = 'hidden';
+
+    // Fetch countries
     fetch('http://127.0.0.1:8000/api/v1/users/countries/')
       .then(res => res.json())
       .then(setCountries)
-      .catch(err => {
-        console.error("Error loading countries:", err);
-        setCountries([]);
-      });
-  }, [isOpen]);
+      .catch(err => console.error('Error loading countries:', err));
 
-  useEffect(() => {
-    if (!isOpen || countries.length === 0) return;
-
+    // Fetch profile
     fetch('http://127.0.0.1:8000/api/v1/users/profile/', {
       headers: {
         Authorization: `Token ${localStorage.getItem('authToken')}`,
       },
     })
       .then(res => res.json())
-      .then(data => {
-        setName(data.name || '');
-        setPhone(data.phone_number || '');
-        setDirection(data.direction || '');
-        setIsCollective(data.is_collective || false);
+      .then(profile => {
+        setName(profile.name || '');
+        setPhone(profile.phone_number || '');
+        setDirection(profile.direction || '');
+        setIsCollective(profile.is_collective || false);
+        setOtherCountry(profile.other_country || '');
+        setOtherCity(profile.other_city || '');
 
-        const country = countries.find(c => c.id === data.country?.id) || null;
-        setSelectedCountry(country);
-
-        setProfileCityId(data.city?.id || null);
+        if (profile.city) {
+          setSelectedCity(profile.city);
+          setSelectedCountry(profile.country);
+          setIsLocationFixed(true);
+        } else if (profile.country) {
+          setSelectedCountry(profile.country);
+        }
       })
-      .catch(err => {
-        console.error("Error loading profile:", err);
-      });
-  }, [isOpen, countries]);
+      .catch(err => console.error('Error loading profile:', err));
+  }, [isOpen]);
 
   useEffect(() => {
-    if (!isOpen || !selectedCountry) {
-      setCities([]);
-      setSelectedCity(null);
-      return;
-    }
+    if (!selectedCountry || isLocationFixed) return;
 
     fetch(`http://127.0.0.1:8000/api/v1/users/cities/?country=${selectedCountry.id}`)
       .then(res => res.json())
-      .then(data => {
-        setCities(data);
-
-        if (profileCityId) {
-          const matchedCity = data.find(city => city.id === profileCityId);
-          if (matchedCity) {
-            setSelectedCity(matchedCity);
-          }
-          setProfileCityId(null);
-        }
-      })
+      .then(setCities)
       .catch(err => {
-        console.error("Error loading cities:", err);
+        console.error('Error loading cities:', err);
         setCities([]);
-        setSelectedCity(null);
       });
-  }, [selectedCountry, isOpen]);
-
-  useEffect(() => {
-    setSelectedCity(null);
-  }, [selectedCountry]);
+  }, [selectedCountry, isLocationFixed]);
 
   const handleSignOut = () => {
     localStorage.removeItem('authToken');
@@ -116,26 +92,40 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const validate = () => {
     const newErrors = {};
     if (!name.trim()) newErrors.name = 'Name is required';
-    if (!selectedCountry) newErrors.country = 'Country is required';
-    if (!selectedCity) newErrors.city = 'City is required';
+    if (!selectedCity && !otherCity.trim()) newErrors.city = 'City is required';
+    if (isCollective === null) newErrors.is_collective = 'Collective flag is required';
     return newErrors;
+  };
+
+  const handleCollectiveChange = (checked) => {
+    if (!checked) {
+      setName(prevName => {
+        if (prevName.startsWith('"') && prevName.endsWith('"')) {
+          return prevName.slice(1, -1);
+        }
+        return prevName;
+      });
+    }
+    setIsCollective(checked);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
+    if (Object.keys(validationErrors).length) {
       setErrors(validationErrors);
       return;
     }
 
     const payload = {
-      name,
+      name: isCollective ? `"${name}"` : name,
       phone_number: phone,
       direction,
       is_collective: isCollective,
-      country: selectedCountry?.id || null,
-      city: selectedCity?.id || null,
+      country: selectedCountry ? selectedCountry.id : null, // <- null замість 0
+      city: selectedCity ? selectedCity.id : null,          // <- null замість 0
+      other_country: otherCountry,
+      other_city: otherCity,
     };
 
     try {
@@ -149,13 +139,14 @@ const SettingsModal = ({ isOpen, onClose }) => {
       });
 
       if (res.ok) {
-        window.dispatchEvent(new Event("profileUpdated"));
+        window.dispatchEvent(new Event('profileUpdated'));
         onClose();
       } else {
-        console.error("Error saving profile");
+        const errorData = await res.json();
+        console.error('Server error:', errorData);
       }
     } catch (err) {
-      console.error("Error occurred:", err);
+      console.error('Submit error:', err);
     }
   };
 
@@ -165,11 +156,11 @@ const SettingsModal = ({ isOpen, onClose }) => {
     <div className="settings-modal-overlay" onClick={onClose}>
       <div className="settings-modal" onClick={(e) => e.stopPropagation()}>
         <button className="close-button" onClick={onClose}>&times;</button>
-        <h2 className="modal-title">Settings</h2>
+        <h2 className="modal-title-s">Settings</h2>
         <img
           src="/dream-helper/profile-page/change-setting.png"
           alt="Settings Illustration"
-          className="modal-image-p"
+          className="modal-image-s"
         />
 
         <form className="settings-form" onSubmit={handleSubmit} noValidate>
@@ -186,8 +177,9 @@ const SettingsModal = ({ isOpen, onClose }) => {
               />
               {errors.name && <p className="error-text">{errors.name}</p>}
             </div>
+
             <div className="form-group">
-              <label htmlFor="phone">Phone Number</label>
+              <label htmlFor="phone">Phone</label>
               <input
                 id="phone"
                 value={phone}
@@ -205,18 +197,33 @@ const SettingsModal = ({ isOpen, onClose }) => {
                 value={selectedCountry?.id || ''}
                 onChange={(e) => {
                   const country = countries.find(c => c.id === Number(e.target.value));
-                  setSelectedCountry(country);
+                  setSelectedCountry(country || null);
+                  setSelectedCity(null);
                 }}
+                disabled={isLocationFixed}
                 className={errors.country ? 'input-error' : ''}
               >
                 <option value="">Select Country</option>
                 {countries.map((country) => (
-                  <option key={country.id} value={country.id}>{country.name}</option>
+                  <option key={country.id} value={country.id}>
+                    {country.name}
+                  </option>
                 ))}
               </select>
               {errors.country && <p className="error-text">{errors.country}</p>}
             </div>
 
+            <div className="form-group">
+              <label htmlFor="otherCountry">Other country</label>
+              <input
+                id="otherCountry"
+                value={otherCountry}
+                onChange={(e) => setOtherCountry(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="form-row">
             <div className="form-group">
               <label>
                 City <span className="required-star">*</span>
@@ -224,18 +231,29 @@ const SettingsModal = ({ isOpen, onClose }) => {
               <select
                 value={selectedCity?.id || ''}
                 onChange={(e) => {
-                  const city = cities.find(c => c.id === Number(e.target.value));
-                  setSelectedCity(city);
+                  const city = cities.find((c) => c.id === Number(e.target.value));
+                  setSelectedCity(city || null);
                 }}
+                disabled={isLocationFixed || !selectedCountry}
                 className={errors.city ? 'input-error' : ''}
-                disabled={!selectedCountry}
               >
                 <option value="">Select City</option>
                 {cities.map((city) => (
-                  <option key={city.id} value={city.id}>{city.name}</option>
+                  <option key={city.id} value={city.id}>
+                    {city.name}
+                  </option>
                 ))}
               </select>
               {errors.city && <p className="error-text">{errors.city}</p>}
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="otherCity">Other city</label>
+              <input
+                id="otherCity"
+                value={otherCity}
+                onChange={(e) => setOtherCity(e.target.value)}
+              />
             </div>
           </div>
 
@@ -248,25 +266,28 @@ const SettingsModal = ({ isOpen, onClose }) => {
                 onChange={(e) => setDirection(e.target.value)}
               />
             </div>
+
             <div className="form-group checkbox-group">
               <label>
                 <input
                   type="checkbox"
                   checked={isCollective}
-                  onChange={(e) => setIsCollective(e.target.checked)}
+                  onChange={(e) => handleCollectiveChange(e.target.checked)}
                 />
-                Is collective
+                <span className="is-collective">Is collective</span>
               </label>
             </div>
           </div>
+
+          <button className="save-button" type="submit">
+            Save Changes
+          </button>
 
           <div className="signout-link">
             <button type="button" className="signout-button" onClick={handleSignOut}>
               Sign Out
             </button>
           </div>
-
-          <button className="save-button" type="submit">Save Changes</button>
         </form>
       </div>
     </div>
