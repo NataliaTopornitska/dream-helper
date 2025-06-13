@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ("dreams", "0010_alter_donation_options"),
-        ("user_profile", "0001_initial"),
+        ("profiles", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 blank=True,
                 null=True,
                 on_delete=django.db.models.deletion.CASCADE,
-                to="user_profile.dreamerprofile",
+                to="profiles.dreamerprofile",
             ),
         ),
         migrations.AlterField(

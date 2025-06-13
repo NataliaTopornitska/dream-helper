@@ -46,8 +46,7 @@ from utils.storage import (
 
 from app import settings
 
-# from users.models import User, DreamerProfile
-from user_profile.models import DreamerProfile
+from profiles.models import DreamerProfile
 
 from app.settings import (
     BUCKET_NAME,

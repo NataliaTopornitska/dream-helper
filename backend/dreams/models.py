@@ -4,7 +4,7 @@ from enum import Enum
 
 # from users.models import User
 
-from user_profile.models import DreamerProfile
+from profiles.models import DreamerProfile
 
 
 class DreamStatusEnum(str, Enum):

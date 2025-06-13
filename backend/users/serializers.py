@@ -9,13 +9,9 @@ from app.settings import DOMAIN, API_PREF
 
 from users.models import (
     ActivationToken,
-    # DreamerProfile,
-    # Country,
-    # City,
-    # UserProfile,
     Subscriber,
 )
-from user_profile.models import UserProfile
+from profiles.models import UserProfile
 
 from dreams.models import Dream, Donation
 from utils.email import send_email_with_template
@@ -94,6 +90,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         """Update a user"""
         return super().update(instance, validated_data)
+
 
 #
 # class CountrySerializer(serializers.ModelSerializer):

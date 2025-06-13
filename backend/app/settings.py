@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "debug_toolbar",
     "users",
-    "user_profile",
+    "profiles",
     "dreams",
 ]
 

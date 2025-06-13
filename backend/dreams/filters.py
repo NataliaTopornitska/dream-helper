@@ -4,7 +4,7 @@ from django.db.models import Q, F
 
 
 from .models import Dream, Category
-from user_profile.models import City, Country
+from profiles.models import City, Country
 
 
 class DreamFilter(django_filters.FilterSet):

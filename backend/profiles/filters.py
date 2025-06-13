@@ -1,6 +1,6 @@
 import django_filters
 
-from user_profile.models import Country, City
+from profiles.models import Country, City
 
 
 class CityFilter(django_filters.FilterSet):

@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
                         related_name="cities",
-                        to="user_profile.country",
+                        to="profiles.country",
                     ),
                 ),
             ],
@@ -89,7 +89,7 @@ class Migration(migrations.Migration):
                     "city",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
-                        to="user_profile.city",
+                        to="profiles.city",
                     ),
                 ),
             ],
@@ -126,7 +126,7 @@ class Migration(migrations.Migration):
                         blank=True,
                         null=True,
                         on_delete=django.db.models.deletion.CASCADE,
-                        to="user_profile.city",
+                        to="profiles.city",
                     ),
                 ),
                 (

@@ -31,8 +31,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path(f"{API_PREF}/users/", include("users.urls", namespace="users")),
     path(
-        f"{API_PREF}/user_profile/",
-        include("user_profile.urls", namespace="user_profile"),
+        f"{API_PREF}/profiles/",
+        include("profiles.urls", namespace="profiles"),
     ),
     path(f"{API_PREF}/dreamhelper/", include("dreams.urls", namespace="dreams")),
     path(f"{API_PREF}/cancel/", CancelView.as_view(), name="cancel"),

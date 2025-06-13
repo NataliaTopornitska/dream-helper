@@ -4,18 +4,18 @@ from rest_framework import serializers
 from dreams.models import Category, Comment, Dream, Donation
 from rest_framework.fields import ImageField
 
-from user_profile.models import DreamerProfile
-from user_profile.serializers import (
+from profiles.models import DreamerProfile
+from profiles.serializers import (
     DreamerProfileCreateSerializer,
     DreamerProfileSerializer,
 )
-from user_profile.serializers import (
+from profiles.serializers import (
     DreamerProfileCreateSerializer,
     DreamerProfileSerializer,
     DreamDonatorsSerializer,
 )
 
-from user_profile.models import Country, City
+from profiles.models import Country, City
 
 
 class CategorySerializer(serializers.ModelSerializer):

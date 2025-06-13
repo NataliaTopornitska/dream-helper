@@ -14,13 +14,9 @@ from drf_spectacular.utils import extend_schema, OpenApiResponse
 from users.models import (
     User,
     ActivationToken,
-    # UserProfile,
-    # DreamerProfile,
     Subscriber,
-    # Country,
-    # City,
 )
-from user_profile.models import (
+from profiles.models import (
     UserProfile,
     DreamerProfile,
     Country,
@@ -33,22 +29,11 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from users.serializers import (
     UserSerializer,
     UserUpdateSerializer,
-    # UserProfileCreateSerializer,
-    # UserProfileSerializer,
     SubscriberSerializer,
     SubscriberCreateSerializer,
-    # DreamerProfileSerializer,
-    # DreamerProfileCreateSerializer,
-    # UserProfileAvatarSerializer,
-    # CountrySerializer,
-    # CitySerializer,
-    # CityUpdateSerializer,
     LogoutSerializer,
-    # UserMyDreamsSerializer,
-    # UserMyDonationsSerializer,
-    # UserPreparedDonationsSerializer,
 )
-from user_profile.serializers import (
+from profiles.serializers import (
     UserProfileCreateSerializer,
     UserProfileSerializer,
     DreamerProfileSerializer,

@@ -5,13 +5,11 @@ from app import settings
 from app.settings import DOMAIN, API_PREF
 from rest_framework.fields import ImageField
 
-from user_profile.models import (
-    # ActivationToken,
+from profiles.models import (
     DreamerProfile,
     Country,
     City,
     UserProfile,
-    # Subscriber,
 )
 from dreams.models import Dream, Donation
 from utils.email import send_email_with_template

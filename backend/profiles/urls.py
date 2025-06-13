@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 
-from user_profile.views import (
+from profiles.views import (
     UserProfileView,
     DreamerProfileView,
     UploadAvatarView,
@@ -12,7 +12,7 @@ from user_profile.views import (
     UserPreparedDonationsView,
 )
 
-app_name = "user_profile"
+app_name = "profiles"
 
 
 router = DefaultRouter()
@@ -22,12 +22,12 @@ router.register(r"cities", CityView, basename="cities")
 
 
 urlpatterns = [
-    path("profile/", UserProfileView.as_view(), name="profile"),
-    path("profile/upload_avatar/", UploadAvatarView.as_view(), name="upload_avatar"),
-    path("profile/my_dreams/", UserMyDreamsView.as_view(), name="my_dreams"),
-    path("profile/my_donations/", UserMyDonationsView.as_view(), name="my_donations"),
+    path("mine/", UserProfileView.as_view(), name="profile"),
+    path("mine/upload_avatar/", UploadAvatarView.as_view(), name="upload_avatar"),
+    path("mine/my_dreams/", UserMyDreamsView.as_view(), name="my_dreams"),
+    path("mine/my_donations/", UserMyDonationsView.as_view(), name="my_donations"),
     path(
-        "profile/prepared_donations/",
+        "mine/prepared_donations/",
         UserPreparedDonationsView.as_view(),
         name="prepared_donations",
     ),

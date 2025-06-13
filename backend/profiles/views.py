@@ -10,7 +10,7 @@ from users.models import (
     ActivationToken,
     Subscriber,
 )
-from user_profile.models import (
+from profiles.models import (
     UserProfile,
     DreamerProfile,
     Country,
@@ -27,18 +27,18 @@ from users.serializers import (
     SubscriberCreateSerializer,
     LogoutSerializer,
 )
-from user_profile.serializers import (
-  UserProfileCreateSerializer,
-  UserProfileSerializer,
-  DreamerProfileSerializer,
-  DreamerProfileCreateSerializer,
-  UserProfileAvatarSerializer,
-  CountrySerializer,
-  CitySerializer,
-  CityUpdateSerializer,
-  UserMyDreamsSerializer,
-  UserMyDonationsSerializer,
-  UserPreparedDonationsSerializer,
+from profiles.serializers import (
+    UserProfileCreateSerializer,
+    UserProfileSerializer,
+    DreamerProfileSerializer,
+    DreamerProfileCreateSerializer,
+    UserProfileAvatarSerializer,
+    CountrySerializer,
+    CitySerializer,
+    CityUpdateSerializer,
+    UserMyDreamsSerializer,
+    UserMyDonationsSerializer,
+    UserPreparedDonationsSerializer,
 )
 from utils.storage import (
     delete_image_from_storage,
@@ -54,7 +54,7 @@ from django_filters import rest_framework as filters
 # @extend_schema(
 #    summary="Get User's Profile",
 #    description="Get the current User's Profile. Error 401 - if the account of User is not activated.",
-#)
+# )
 class UserProfileView(generics.RetrieveUpdateAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileCreateSerializer
@@ -108,10 +108,19 @@ class UserMyDonationsView(APIView):
         """Get a list Dreams where the current User is donor."""
         user = request.user
         if user.is_donator:
-            dreams = Dream.objects.filter(donations__donator=user, donations__status="Paid").distinct().order_by("-created_at")
-            serializer = self.serializer_class(dreams, many=True, context={"request": request})
+            dreams = (
+                Dream.objects.filter(donations__donator=user, donations__status="Paid")
+                .distinct()
+                .order_by("-created_at")
+            )
+            serializer = self.serializer_class(
+                dreams, many=True, context={"request": request}
+            )
             return Response(serializer.data)
-        return Response({"message": "You haven't made any donations yet."}, status=status.HTTP_204_NO_CONTENT)
+        return Response(
+            {"message": "You haven't made any donations yet."},
+            status=status.HTTP_204_NO_CONTENT,
+        )
 
 
 @extend_schema(
@@ -127,10 +136,17 @@ class UserPreparedDonationsView(APIView):
         """Get a list of user's prepared donations that have not yet been paid."""
         user = request.user
         if user.is_donator:
-            prepared_donations = Donation.objects.filter(donator=user, status="Prepared").order_by("-date")
-            serializer = self.serializer_class(prepared_donations, many=True, context={"request": request})
+            prepared_donations = Donation.objects.filter(
+                donator=user, status="Prepared"
+            ).order_by("-date")
+            serializer = self.serializer_class(
+                prepared_donations, many=True, context={"request": request}
+            )
             return Response(serializer.data)
-        return Response({"message": "You haven't any prepared donations."}, status=status.HTTP_204_NO_CONTENT)
+        return Response(
+            {"message": "You haven't any prepared donations."},
+            status=status.HTTP_204_NO_CONTENT,
+        )
 
 
 @extend_schema(
@@ -199,104 +215,104 @@ class UploadAvatarView(APIView):
 
 
 class DreamerProfileView(
-  mixins.CreateModelMixin,
-  mixins.ListModelMixin,
-  mixins.RetrieveModelMixin,
-  mixins.UpdateModelMixin,
-  GenericViewSet,
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    GenericViewSet,
 ):
-  queryset = DreamerProfile.objects.all()
-  serializer_class = DreamerProfileSerializer
-  permission_classes = [
-    IsAuthenticated,
-  ]
+    queryset = DreamerProfile.objects.all()
+    serializer_class = DreamerProfileSerializer
+    permission_classes = [
+        IsAuthenticated,
+    ]
 
-  def get_serializer_class(self):
-    if self.action in [
-      "create",
-      "update",
-      "partial_update",
-    ]:
-      return DreamerProfileCreateSerializer
-    return self.serializer_class
+    def get_serializer_class(self):
+        if self.action in [
+            "create",
+            "update",
+            "partial_update",
+        ]:
+            return DreamerProfileCreateSerializer
+        return self.serializer_class
 
-  @extend_schema(
-    summary="List Dreamers",
-    description="Get a list of Dreamers (Dreamers are not in Users, but some User created a Dream for this person).",
-  )
-  def list(self, request, *args, **kwargs):
-    return super().list(request, *args, **kwargs)
+    @extend_schema(
+        summary="List Dreamers",
+        description="Get a list of Dreamers (Dreamers are not in Users, but some User created a Dream for this person).",
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 
 class CountryView(
-  mixins.CreateModelMixin,
-  mixins.ListModelMixin,
-  mixins.RetrieveModelMixin,
-  mixins.UpdateModelMixin,
-  GenericViewSet,
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    GenericViewSet,
 ):
-  queryset = Country.objects.all()
-  serializer_class = CountrySerializer
-  permission_classes = [
-    IsAdminUser,
-  ]
+    queryset = Country.objects.all()
+    serializer_class = CountrySerializer
+    permission_classes = [
+        IsAdminUser,
+    ]
 
-  def get_permissions(self):
-    if self.action in [
-      "list",
-    ]:
-      return [AllowAny()]
-    if self.action in [
-      "create",
-    ]:
-      return [IsAuthenticated()]
-    return [IsAdminUser()]
+    def get_permissions(self):
+        if self.action in [
+            "list",
+        ]:
+            return [AllowAny()]
+        if self.action in [
+            "create",
+        ]:
+            return [IsAuthenticated()]
+        return [IsAdminUser()]
 
-  @extend_schema(
-    summary="List Countries",
-    description="Get a list of Countries (Select all countries of registered Users and Dreamers).",
-  )
-  def list(self, request, *args, **kwargs):
-    return super().list(request, *args, **kwargs)
+    @extend_schema(
+        summary="List Countries",
+        description="Get a list of Countries (Select all countries of registered Users and Dreamers).",
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 
 class CityView(
-  mixins.CreateModelMixin,
-  mixins.ListModelMixin,
-  mixins.RetrieveModelMixin,
-  mixins.UpdateModelMixin,
-  GenericViewSet,
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    GenericViewSet,
 ):
-  queryset = City.objects.all()
-  serializer_class = CitySerializer
-  filterset_class = CityFilter
-  filter_backends = (filters.DjangoFilterBackend,)
-  permission_classes = [
-    IsAdminUser,
-  ]
+    queryset = City.objects.all()
+    serializer_class = CitySerializer
+    filterset_class = CityFilter
+    filter_backends = (filters.DjangoFilterBackend,)
+    permission_classes = [
+        IsAdminUser,
+    ]
 
-  def get_permissions(self):
-    if self.action in [
-      "list",
-    ]:
-      return [AllowAny()]
-    if self.action in [
-      "create",
-    ]:
-      return [IsAuthenticated()]
-    return [IsAdminUser()]
+    def get_permissions(self):
+        if self.action in [
+            "list",
+        ]:
+            return [AllowAny()]
+        if self.action in [
+            "create",
+        ]:
+            return [IsAuthenticated()]
+        return [IsAdminUser()]
 
-  def get_serializer_class(self):
-    if self.action in [
-      "update",
-      "partial_update",
-    ]:
-      return CityUpdateSerializer
-    return self.serializer_class
+    def get_serializer_class(self):
+        if self.action in [
+            "update",
+            "partial_update",
+        ]:
+            return CityUpdateSerializer
+        return self.serializer_class
 
-  @extend_schema(
-    summary="List Cities",
-    description="Get a list of Cities (Select all cities of registered Users and Dreamers).",
-  )
-  def list(self, request, *args, **kwargs):
-    return super().list(request, *args, **kwargs)
+    @extend_schema(
+        summary="List Cities",
+        description="Get a list of Cities (Select all cities of registered Users and Dreamers).",
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
