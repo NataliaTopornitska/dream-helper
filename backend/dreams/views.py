@@ -34,6 +34,7 @@ from .serializers import (
     DreamDonationsSerializer,
     DreamCommentsSerializer,
     DreamStatisticsSerializer,
+    ActivateDreamSerializer,
 )
 
 from utils.email import send_email_with_template
@@ -217,6 +218,8 @@ class DreamViewSet(
             return AddDonationSerializer
         if self.action == "add_comment":
             return AddCommentSerializer
+        if self.action == "activate":
+            return ActivateDreamSerializer
         return DreamBaseSerializer
 
     @extend_schema(
@@ -426,6 +429,53 @@ class DreamViewSet(
         )
 
     @extend_schema(
+        summary="Activate Dream",
+        description="Activate a dream by ID, change its status to 'active'. "
+        "Only Admins can update dream status.",
+    )
+    @action(
+        methods=["patch"],
+        detail=True,
+        url_path="activate",
+    )
+    def activate(self, request, pk=None):
+        user = request.user
+        if not user.is_staff:
+            raise PermissionDenied(
+                detail="You do not have sufficient rights to change the status of dream."
+            )
+        dream = Dream.objects.get(pk=pk)
+        if dream.status == "Active":
+            return Response({"detail": "The Dream is already active."}, status=400)
+        try:
+            dream.status = "Active"
+            dream.save()
+            #  send email to owner
+            context = {
+                "owner": dream.owner,
+                "dream": dream.title,
+                "dream_link": f"{URL_DREAM}{dream.id}",
+            }
+            send_email_with_template(
+                subject=f"✨ Your Dream '{dream.title}' Has Been Activated!",
+                template_name=os.path.join(
+                    settings.BASE_DIR,
+                    "templates",
+                    "email",
+                    "dream_activated.html",
+                ),
+                context=context,
+                recipient_email=dream.owner.email,
+            )
+            return Response(
+                {"detail": "The Dream has been activated successfully."},
+                status=status.HTTP_200_OK,
+            )
+
+        except ObjectDoesNotExist:
+            return Response({"detail": "Dream with this ID not found."}, status=404)
+
+    @extend_schema(
         summary="Get all Dream's donations",
         description="Get list all of donations of especial Dream by its ID. ",
     )
@@ -440,7 +490,7 @@ class DreamViewSet(
         except ObjectDoesNotExist:
             return Response({"detail": "Dream with this ID not found."}, status=404)
 
-        donations = dream.donations.all()
+        # donations = dream.donations.all()
         donations = dream.donations.filter(status="Paid").order_by("-date")
         if not donations:
             return Response({"message": "No donations yet."}, status=204)

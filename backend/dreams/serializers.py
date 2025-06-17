@@ -1,4 +1,5 @@
 from django.db.models import Sum
+from paramiko.agent import value
 from rest_framework import serializers
 
 from dreams.models import Category, Comment, Dream, Donation
@@ -364,3 +365,13 @@ class DreamStatisticsSerializer(serializers.Serializer):
     people = serializers.IntegerField()
     anonymous_donations = serializers.FloatField()
     total_donations = serializers.FloatField()
+
+
+class ActivateDreamSerializer(serializers.ModelSerializer):
+    status = serializers.CharField(read_only=True, default="Active")
+    class Meta:
+        model = Dream
+        fields = (
+            "id",
+            "status",
+        )
