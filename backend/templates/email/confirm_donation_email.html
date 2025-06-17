@@ -1,42 +1,118 @@
 <html lang="">
 <head>
+  <meta charset="UTF-8">
   <title>Confirm your donation</title>
+  <style>
+    .link {
+      text-decoration: none;
+      color: inherit;
+    }
+    a {
+      text-decoration: none;
+      font-weight: 600;
+      color: #191919;
+      font-size: 17px;
+    }
+    button {
+      background-color: #000;
+      color: #fff;
+      border: none;
+      font-size: 17px;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-weight: 500;
+      transition: background-color 0.2s;
+      white-space: nowrap;
+
+    &:hover {
+        background-color: #333;
+      }
+    }
+    body {
+      font-family: "Raleway", sans-serif;
+      color: #000;
+      background-color: #fff;
+      overflow-x: hidden;
+      background-image: url('/public/profile-page/background-4.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: top center;
+    }
+    div {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      max-width: 480px;
+      margin: 40px auto;
+      background-color: #B0C4F7;
+      color: #333333;
+      background-image: url('/public/profile-page/background-4.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: top center;
+    }
+    strong, h2 {
+      font-family: "Raleway", sans-serif;
+      color: #191919;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-size: 40px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      line-height: 1.2;
+      text-align: center;
+    }
+    .strong {
+      font-family: "Raleway", sans-serif;
+      color: #191919;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+  </style>
 </head>
-<body style="margin: 0; padding: 0; background-color: #f4f4f4; font-family: Arial, sans-serif;">
-<div style="border: 1px solid #e0e0e0; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            padding: 20px; max-width: 480px; margin: 40px auto; background-color: #ffffff; color: #333333;">
-  <h2 style="color: #4CAF50; text-align: center; margin: 0 0 20px; font-size: 24px; font-weight: bold;">
-    <strong id="email" style="color: #4CAF50;"> Hello, {{ donator }}!</strong>, <br>
+<body>
+<div>
+  <h2>
+    <strong> Hello, {{ donator }}!</strong>, <br>
 
   </h2>
 
-  <p style="margin: 10px 0; line-height: 1.6; font-size: 16px;">
+  <p>
       We are incredibly grateful for your generosity! <br>
-    ❤️ Thank you for your "{{ description }}" on DreamsHelper. Your kindness makes a real difference.
+    ❤️ Thank you for your <span class=strong> "{{ description }}" </span> on DreamsHelper. Your kindness makes a real difference.
   </p>
 
-  <p style="margin: 10px 0; line-height: 1.6; font-size: 16px;">
-     ✨ **Stay Inspired!** <br>
+  <p>
+    ✨ <span class=strong> **Stay Inspired!** </span> <br>
       Keep an eye on DreamsHelper—more dreams are being born every day, and every contribution brings us closer to making them a reality.
   </p>
     <p style="margin: 20px 0; text-align: center;"> 👉
-    <a href="{{ dream_link }}" id="link" style="display: inline-block; background-color: #4CAF50; color: #ffffff;
-            text-decoration: none; font-size: 16px; padding: 10px 20px; border-radius: 4px;">
+    <a href="{{ dream_link }}" style="link"> <button>
       See Dream
-    </a>
+    </button></a>
 
   </p>
-  <p style="margin: 10px 0; line-height: 1.6; font-size: 16px;">
+  <p>
     If you have any questions or need assistance, our support team is always here to help.
   </p>
 
-  <p style="margin: 10px 0; line-height: 1.6; font-size: 16px; color: #666666;">
+  <p>
   </p>
-  <p style="margin: 20px 0 10px; line-height: 1.6; font-size: 16px;">
+  <p>
   </p>
-  <p style="margin: 0; font-style: italic; font-size: 16px; color: #4CAF50;">
-    With gratitude, <br>
-    **The DreamHelper Team**
+
+  <p>
+    <i>
+      With gratitude,<br>
+      <span class=strong>The DreamHelper Team</span>
+    </i>
   </p>
 </div>
 </body>

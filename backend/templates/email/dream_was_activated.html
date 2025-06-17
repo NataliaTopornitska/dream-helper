@@ -1,7 +1,7 @@
 <html lang="">
 <head>
   <meta charset="UTF-8">
-  <title>Activate Your Account</title>
+  <title>The Dream Was Activated!</title>
   <style>
     .link {
       text-decoration: none;
@@ -76,41 +76,45 @@
       line-height: 1.2;
     }
   </style>
+
 </head>
 <body>
 <div>
   <h2>
-    <strong> Hello! </strong> <br>
+    <strong> Hello, {{ owner }}!</strong> <br>
 
   </h2>
 
   <p>
-    We're thrilled to have you join DreamsHelper!<br>
-    ✨ Your journey to supporting dreams begins now. <br><br>
+    <span class=strong> Good news! </span> <br>
+    🎉 Your Dream <span class=strong> **"{{ dream }}"** </span> has been approved by a moderator and has been given the status Active.
+ <br>
+    💖  <span class=strong> **What This Means?** </span> <br>
+    Your Dream is now displayed on the Dreams page where people can support it.
 
-🔹 <span class=strong> **Activate Your Account** </span> <br>
-To get started, simply click the button below:
   </p>
-
-    <p style="margin: 20px 0; text-align: center;"> 👉
-    <a href="{{ activation_link }}" class="link"> <button>
-      Activate Your Account
+  <p style="margin: 20px 0; text-align: center;"> 👉
+    <a href="{{ dream_link }}" style="link"> <button>
+      See Dream
     </button></a>
+
   </p>
 
   <p>
-     Your account was registered using this email: **<span class=strong> {{ user }}</span>**.
+  </p>
+
+  <p>
+    📜  <span class=strong> **Next Steps** </span> <br>
+    You can see it on your Profile page to track its progress.
   </p>
   <p>
+    ✨  <span class=strong> **Stay inspired** </span> <br>
+    You will receive a notification as soon as your Dream is fully completed!
+      <br>
+    Thank you for walking this path with us!
 
   </p>
-  <p>
-    💡<span class=strong> **Need Help?** </span> <br>
-If you have any questions or need assistance, feel free to reach out to our support team. We're here for you! <br><br>
 
-Thank you for being part of the DreamsHelper community! 💖
-
-  </p>
 
   <p>
   </p>
@@ -119,10 +123,12 @@ Thank you for being part of the DreamsHelper community! 💖
 
   <p>
     <i>
-      Best wishes,<br>
-      <span class=strong>The DreamHelper Team</span>
+      Like you, <br>
+      <span class=strong>The DreamHelper Team</span> <br>
+       is standing by your side, sharing your excitement as this dream comes true.
     </i>
   </p>
 </div>
 </body>
 </html>
+

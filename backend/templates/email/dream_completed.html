@@ -1,59 +1,134 @@
 <html lang="">
 <head>
+  <meta charset="UTF-8">
   <title>The Dream Has Come True!</title>
+  <style>
+    .link {
+      text-decoration: none;
+      color: inherit;
+    }
+    a {
+      text-decoration: none;
+      font-weight: 600;
+      color: #191919;
+      font-size: 17px;
+    }
+    button {
+      background-color: #000;
+      color: #fff;
+      border: none;
+      font-size: 17px;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-weight: 500;
+      transition: background-color 0.2s;
+      white-space: nowrap;
+
+    &:hover {
+        background-color: #333;
+      }
+    }
+    body {
+      font-family: "Raleway", sans-serif;
+      color: #000;
+      background-color: #fff;
+      overflow-x: hidden;
+      background-image: url('/public/profile-page/background-4.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: top center;
+    }
+    div {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      max-width: 480px;
+      margin: 40px auto;
+      background-color: #B0C4F7;
+      color: #333333;
+      background-image: url('/public/profile-page/background-4.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: top center;
+    }
+    strong, h2 {
+      font-family: "Raleway", sans-serif;
+      color: #191919;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-size: 40px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      line-height: 1.2;
+      text-align: center;
+    }
+    .strong {
+      font-family: "Raleway", sans-serif;
+      color: #191919;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+  </style>
+
 </head>
-<body style="margin: 0; padding: 0; background-color: #f4f4f4; font-family: Arial, sans-serif;">
-<div style="border: 1px solid #e0e0e0; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            padding: 20px; max-width: 480px; margin: 40px auto; background-color: #ffffff; color: #333333;">
-  <h2 style="color: #4CAF50; text-align: center; margin: 0 0 20px; font-size: 24px; font-weight: bold;">
-    <strong id="email" style="color: #4CAF50;"> Hello, {{ owner }}!</strong>, <br>
+<body>
+<div>
+  <h2>
+    <strong> Hello, {{ owner }}!</strong> <br>
 
   </h2>
 
-  <p style="margin: 10px 0; line-height: 1.6; font-size: 16px;">
-      We have incredible news to share! <br>
-      🎉 The dream **"{{ dream }}"** has successfully reached its goal!
+  <p>
+    <span class=strong> We have incredible news to share! </span> <br>
+    🎉 The dream  <span class=strong> **"{{ dream }}"** </span> has successfully reached its goal!
  <br>
-    💖 **What This Means?** <br>
+    💖  <span class=strong> **What This Means?** </span> <br>
     The $ {{ amount }} funds have been raised and this dream will soon become a reality.
 
   </p>
   <p style="margin: 20px 0; text-align: center;"> 👉
-    <a href="{{ dream_link }}" id="link" style="display: inline-block; background-color: #4CAF50; color: #ffffff;
-            text-decoration: none; font-size: 16px; padding: 10px 20px; border-radius: 4px;">
+    <a href="{{ dream_link }}" style="link"> <button>
       See Dream
-    </a>
+    </button></a>
 
   </p>
 
-  <p style="margin: 10px 0; line-height: 1.6; font-size: 16px;">
-     ✨ **Stay Inspired!** <br>
+  <p>
+    ✨  <span class=strong> **Stay Inspired!** </span> <br>
       Keep an eye on DreamsHelper—more dreams are being born every day, and every contribution brings us closer to making them a reality.
   </p>
 
-  <p style="margin: 10px 0; line-height: 1.6; font-size: 16px;">
-    📜 **Next Steps** <br>
+  <p>
+    📜  <span class=strong> **Next Steps** </span> <br>
     We are currently preparing all the necessary measures to ensure that the support reaches the dreamer.
     After that, you will receive a final **report with updates, photos and details** about the dream.
   </p>
-  <p style="margin: 10px 0; line-height: 1.6; font-size: 16px;">
-      ✨ **You Made a Difference**<br>
+  <p>
+    ✨  <span class=strong> **You Made a Difference** </span> <br>
     DreamsHelper exists because of people like you - those who believe in the magic of making a dream come true. And those people who are ready to support chiu to dream!
       <br>
     Thank you for being a part of this journey!
 
   </p>
-<!--    <img src="http://localhost:9000/dreams-media/avatars/7-7726f992-5f87-4b7a-854e-6e8bf4af5676-foto.jpg" alt="">-->
-<!--    <img src="http://localhost:9000/dreams-media/mini-avatars/7-7726f992-5f87-4b7a-854e-6e8bf4af5676-foto.jpg" alt="">-->
 
 
-  <p style="margin: 10px 0; line-height: 1.6; font-size: 16px; color: #666666;">
+  <p>
   </p>
-  <p style="margin: 20px 0 10px; line-height: 1.6; font-size: 16px;">
+  <p>
   </p>
-  <p style="margin: 0; font-style: italic; font-size: 16px; color: #4CAF50;">
-    Stay inspired, <br>
-    **The DreamHelper Team**
+
+  <p>
+    <i>
+      Stay inspired, <br>
+      <span class=strong>The DreamHelper Team</span>
+    </i>
   </p>
 </div>
 </body>

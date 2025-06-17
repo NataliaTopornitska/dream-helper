@@ -4,44 +4,112 @@
 <head>
   <meta charset="UTF-8">
   <title>Thank You for Your Donation!</title>
-</head>
-<body style="margin: 0; padding: 0; background-color: #f4f4f4; font-family: Arial, sans-serif;">
-  <div style="border: 1px solid #e0e0e0; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-              padding: 20px; max-width: 480px; margin: 40px auto; background-color: #ffffff; color: #333333;">
-    <h2 style="color: #4CAF50; text-align: center; margin: 0 0 20px; font-size: 24px; font-weight: bold;">
-      <strong id="email" style="color: #4CAF50;">Hello!</strong>
-    </h2>
+  <style>
+    .link {
+      text-decoration: none;
+      color: inherit;
+    }
+    a {
+      text-decoration: none;
+      font-weight: 600;
+      color: #191919;
+      font-size: 17px;
+    }
+    button {
+      background-color: #000;
+      color: #fff;
+      border: none;
+      font-size: 17px;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-weight: 500;
+      transition: background-color 0.2s;
+      white-space: nowrap;
 
-    <p style="margin: 10px 0; line-height: 1.6; font-size: 16px;">
+    &:hover {
+        background-color: #333;
+      }
+    }
+    body {
+      font-family: "Raleway", sans-serif;
+      color: #000;
+      background-color: #fff;
+      overflow-x: hidden;
+      background-image: url('/public/profile-page/background-4.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: top center;
+    }
+    div {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      max-width: 480px;
+      margin: 40px auto;
+      background-color: #ffffff;
+      color: #333333;
+    }
+    strong, h2 {
+      font-family: "Raleway", sans-serif;
+      color: #191919;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-size: 40px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      line-height: 1.2;
+      text-align: center;
+    }
+    .strong {
+      font-family: "Raleway", sans-serif;
+      color: #191919;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+  </style>
+</head>
+<body>
+  <div>
+
+    <p style="text-align: center;"><h2>Hello!</h2></p>
+
+
+    <p>
       We are incredibly grateful for your generosity!<br>
-      ❤️ Thank you for your **<strong> donation </strong>** on DreamsHelper.
+      ❤️ Thank you for your **<span class=strong> donation </span>** on DreamsHelper.
     </p>
 
-    <p style="margin: 10px 0; line-height: 1.6; font-size: 16px;">
+    <p>
       Your payment via Stripe has been processed successfully, and your support makes a real difference.
     </p>
 
-    <p style="margin: 10px 0; line-height: 1.6; font-size: 16px;">
-      ✨ <strong>Stay Inspired!</strong><br>
+    <p>
+      ✨ <span class=strong>Stay Inspired!</span><br>
       Keep an eye on DreamHelper—more dreams are being born every day, and every contribution brings us closer to making them a reality.
     </p>
 
     <p style="margin: 20px 0; text-align: center;">
       👉
-      <a href="http://127.0.0.1:5173/dream-helper/#/dreams/" id="link" style="display: inline-block; background-color: #4CAF50; color: #ffffff;
-              text-decoration: none; font-size: 16px; padding: 10px 20px; border-radius: 4px;">
+      <a href="http://127.0.0.1:5173/dream-helper/#/dreams/" class="link"><button>
         Come back
-      </a>
+      </button></a>
     </p>
 
-    <p style="margin: 10px 0; line-height: 1.6; font-size: 16px;">
+    <p>
       If you have any questions or need assistance, our support team is always here to help.
     </p>
 
-    <p style="margin: 0; font-style: italic; font-size: 16px; color: #4CAF50;">
+    <i>
       With gratitude,<br>
-      <strong>The DreamHelper Team</strong>
-    </p>
+      <span class=strong>The DreamHelper Team</span>
+    </i>
 
   </div>
 </body>
