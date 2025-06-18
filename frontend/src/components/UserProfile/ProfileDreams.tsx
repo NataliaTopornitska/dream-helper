@@ -174,16 +174,15 @@ const ProfileDreams: React.FC = () => {
                         <span>Need</span>
                       </div>
                       <div className="progress-values">
-                        <span>{collected.toLocaleString('en-US')}₴</span>
-                        <span>{goalAmount.toLocaleString('uk-UA')}₴</span>
+                        <span>{collected.toLocaleString('fr-FR')}$</span>
+                        <span>{goalAmount.toLocaleString('fr-FR')}$</span>
                       </div>
                     </div>
-                    <button
-                      className="dream-support-btn"
-                      onClick={() => setActiveDream(dream)}
-                    >
-                      Support
-                    </button>
+                    {dream.dreamer && (
+                      <div className="dream-dreamer-label">
+                        Initiated for: <strong>{dream.dreamer}</strong>
+                      </div>
+                    )}
                   </div>
                 );
               })}

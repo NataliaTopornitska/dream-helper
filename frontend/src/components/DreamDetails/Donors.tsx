@@ -43,7 +43,11 @@ const Donors = ({ dreamId }) => {
           <div key={donor.id} className={styles.donorRow}>
             <div className={styles.donorInfo}>
               <img
-                src={donor.donator_profile?.thumbnail_url || "/dream-helper/dream-details/avatar.png"}
+                src={
+                  donor.is_anonymous || donor.donator_profile?.name === "Anonymous"
+                    ? "/dream-helper/profile-page/anonymous-photo.png"
+                    : donor.donator_profile?.thumbnail_url || "/dream-helper/dream-details/anonymous.png"
+                }
                 alt="avatar"
                 className={styles.donorAvatar}
               />

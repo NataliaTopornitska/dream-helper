@@ -1,9 +1,8 @@
 .pending-wrapper {
-  padding: 2rem;
-  background-color: white;
-  border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 32px 0;
   font-family: 'Arial', sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 h2 {
@@ -12,9 +11,10 @@ h2 {
 }
 
 .pending-table {
-  border: 1px solid #ccc;
+  border: 1px solid #191919;
   border-radius: 1rem;
   overflow: hidden;
+  background-color: white;
 }
 
 .pending-row {
@@ -45,6 +45,7 @@ h2 {
   padding: 0.5rem 1rem;
   cursor: pointer;
   font-weight: bold;
+  color: black;
 }
 
 .try-again-btn {
@@ -53,7 +54,7 @@ h2 {
   border-radius: 1.5rem;
   padding: 0.5rem 1rem;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 500;
 }
 
 @media (max-width: 768px) {

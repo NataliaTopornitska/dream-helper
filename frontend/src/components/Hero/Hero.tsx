@@ -1,8 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Hero.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import CreateDreamModal from '../UserProfile/CreateDreamModal';
 
-const Hero: React.FC = () => {
+const Hero = () => {
+  const [isDreamModalOpen, setIsDreamModalOpen] = useState(false);
+  const [profileData, setProfileData] = useState(null);
+  const [isProfileIncompleteModalOpen, setIsProfileIncompleteModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch('http://127.0.0.1:8000/api/v1/users/profile/', {
+          headers: {
+            Authorization: `Token ${localStorage.getItem('authToken') || ''}`,
+          },
+        });
+        if (!res.ok) throw new Error('Failed to load profile data');
+        const data = await res.json();
+        setProfileData(data);
+      } catch (err) {
+        console.error('Failed to load profile data:', err);
+      }
+    };
+    fetchProfile();
+  }, []);
+
+  const email = profileData?.email || localStorage.getItem('username') || '';
+
+  const handleAddDream = () => {
+    const authToken = localStorage.getItem('authToken');
+
+    if (!authToken) {
+      setIsProfileIncompleteModalOpen(true);
+    } else if (!profileData?.name || profileData.name.trim() === '' || profileData.name === email) {
+      localStorage.setItem('showIncompleteModal', 'true');
+      navigate('/profile');
+    } else {
+      setIsDreamModalOpen(true);
+    }
+  };
+
   return (
     <section className="hero">
       <div className="hero-wave-bg"></div>
@@ -15,7 +54,9 @@ const Hero: React.FC = () => {
             own!
           </p>
           <div className="hero-buttons">
-            <button className="btn-outline">Add My Dream</button>
+            <button className="outline-btn" onClick={handleAddDream}>
+              Add My Dream
+            </button>
             <button className="btn-solid">
               <Link to="/dreams" className="btn-link">
                 Make a Donation
@@ -27,6 +68,25 @@ const Hero: React.FC = () => {
           <img src="/dream-helper/home-page/block-1.png" alt="Block 1" />
         </div>
       </div>
+
+      {isDreamModalOpen && (
+        <CreateDreamModal onClose={() => setIsDreamModalOpen(false)} />
+      )}
+
+      {isProfileIncompleteModalOpen && (
+        <div className="profile-incomplete-modal">
+          <div className="modal-h-content">
+            <button
+              className="close-modal-cross"
+              onClick={() => setIsProfileIncompleteModalOpen(false)}
+              aria-label="Close modal"
+            >
+              ✖
+            </button>
+            <p>First, log in and fill out your profile!</p>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

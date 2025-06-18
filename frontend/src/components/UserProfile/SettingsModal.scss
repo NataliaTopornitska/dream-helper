@@ -23,7 +23,7 @@
 
 .settings-modal {
   background: white;
-  padding: 40px;
+  padding: 20px 40px;
   border-radius: 20px;
   width: 90%;
   max-width: 700px;
@@ -45,42 +45,88 @@
   top: 20px;
   background: none;
   border: none;
-  font-size: 28px;
+  font-size: 36px;
   cursor: pointer;
 }
 
-.modal-title {
+.modal-title-s {
   margin-bottom: 20px;
   font-size: 24px;
   font-weight: 600;
 }
 
-.modal-image {
-  max-width: 200px;
-  margin-bottom: 30px;
+.modal-image-s {
+  max-width: 150px;
+  max-height: 150;
+  margin-bottom: 15px;
 }
 
 .settings-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
 }
 
 .form-row {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
+  justify-content: flex-start;
 }
+
+.form-group {
+  flex: 1 1 250px;
+  min-width: 150px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-group label {
+  text-align: left;
+  align-self: flex-start;
+  font-weight: 500;
+  height: 21px;
+}
+
+.settings-form input,
+.settings-form select {
+  height: 38px;
+  padding: 10px 18px;
+  border-radius: 9999px;
+  border: 1px solid #191919;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 
 .form-row.single {
   flex-direction: column;
 }
 
-input {
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 38px;
+  margin-top: 22px;
+}
+
+.form-group.checkbox-group label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.settings-form input {
   flex: 1;
-  padding: 12px 18px;
+  padding: 10px 18px;
   border-radius: 9999px;
-  border: 1px solid #ccc;
+  border: 1px solid #191919;
   font-size: 14px;
 }
 
@@ -96,9 +142,9 @@ input {
 }
 
 .save-button {
-  margin-top: 20px;
-  padding: 14px;
-  width: 100%;
+  margin: 20px auto 0;
+  padding: 13px 150px;
+  max-width: 450px;
   border-radius: 9999px;
   background-color: #000;
   color: white;
@@ -106,6 +152,7 @@ input {
   font-size: 16px;
   border: none;
   cursor: pointer;
+  display: block;
 }
 
 @media (max-width: 480px) {
@@ -128,14 +175,36 @@ input {
   }
 }
 
-
 .signout-button {
+  display: block;
   background: none;
   border: none;
-  color: #000;
+  color: #000000;
   text-decoration: underline;
-  font-size: 14px;
+  font-size: 17px;
+  font-weight: 600;
   cursor: pointer;
   padding: 0;
-  margin: 0;
+  margin: 0 auto;
 }
+
+
+// Error
+.input-error {
+  border: 1px solid red;
+}
+
+.error-text {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 2px;
+}
+
+.required-star {
+  color: red;
+  font-weight: bold;
+  font-size: 20px;
+  position: relative;
+  // top: 3px;
+}
+

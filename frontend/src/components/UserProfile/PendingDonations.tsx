@@ -44,17 +44,47 @@ const PendingDonations = () => {
     return `${day}.${month}.${year}`;
   };
 
+  const cancelDonation = (id: number) => {
+    const token = localStorage.getItem('authToken');
+    if (!token) return;
+
+    fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/donations/${id}/`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Token ${token}`,
+      },
+      body: JSON.stringify({
+        status: 'Canceled',
+        url_payment: '',
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Failed to cancel donation');
+        }
+        return res.json();
+      })
+      .then(() => {
+        setDonations((prev) => prev.filter((donation) => donation.id !== id));
+      })
+      .catch((err) => {
+        console.error(err);
+        alert('Помилка при скасуванні пожертви');
+      });
+  };
+
   if (error || donations.length === 0) {
     return null;
   }
 
   return (
     <div className="pending-wrapper">
-      <h2>Pending</h2>
+      <h2>Prepared</h2>
       <div className="pending-table">
         {donations.map((donation) => (
           <div className="pending-row" key={donation.id}>
-            <span>Donation Made</span>
+            <span>Date</span>
             <span>{formatDate(donation.date)}</span>
             <div className="divider" />
             <span>Dream Name</span>
@@ -63,7 +93,10 @@ const PendingDonations = () => {
             <span>Amount</span>
             <span>{Number(donation.amount).toLocaleString()} $</span>
             <div className="divider" />
-            <button className="cancel-btn" disabled>
+            <button
+              className="cancel-btn"
+              onClick={() => cancelDonation(donation.id)}
+            >
               Cancel Donation
             </button>
             <a

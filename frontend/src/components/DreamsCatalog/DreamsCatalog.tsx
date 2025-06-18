@@ -8,11 +8,13 @@ import {
   Country,
   City,
 } from '../../types/dreams';
+import { useNavigate } from 'react-router-dom';
 import fundingoalData from '../../api/funding_goal.json';
 import popularityData from '../../api/popularity.json';
 import typeOptions from '../../api/type.json';
 import { Link } from 'react-router-dom';
 import SupportModal from '../SupportModal/SupportModal';
+import CreateDreamModal from '../UserProfile/CreateDreamModal';
 
 const DreamsCatalog = () => {
   const [activeTab, setActiveTab] = useState<'Active' | 'Completed' | 'Application'>('Active');
@@ -58,6 +60,11 @@ const DreamsCatalog = () => {
   const currentPageNumber = currentPage || 1;
   const totalPages = pagination.num_pages;
   const [currentUser, setCurrentUser] = useState<{ id: number; email: string; is_staff: boolean; is_active: boolean } | null>(null);
+  const [isDreamModalOpen, setIsDreamModalOpen] = useState(false);
+  const [isProfileIncompleteModalOpen, setIsProfileIncompleteModalOpen] = useState(false);
+  const [profileData, setProfileData] = useState<any>(null); // або типізуй точніше
+  const navigate = useNavigate();
+
 
 
   useEffect(() => {
@@ -117,7 +124,7 @@ const DreamsCatalog = () => {
     };
 
     if (token) {
-      headers['Authorization'] = `Token ${token}`; // або Bearer, залежно від типу
+      headers['Authorization'] = `Token ${token}`;
     }
 
     const response = await fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams/?status=${activeTab}`, {
@@ -211,6 +218,39 @@ const DreamsCatalog = () => {
       document.removeEventListener('mousedown', handleOutsideClick);
     };
   }, []);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch('http://127.0.0.1:8000/api/v1/users/profile/', {
+          headers: {
+            Authorization: `Token ${localStorage.getItem('authToken') || ''}`,
+          },
+        });
+        if (!res.ok) throw new Error('Failed to load profile data');
+        const data = await res.json();
+        setProfileData(data);
+      } catch (err) {
+        console.error('Failed to load profile data:', err);
+      }
+    };
+    fetchProfile();
+  }, []);
+
+
+    const handleAddDream = () => {
+    const authToken = localStorage.getItem('authToken');
+    const email = profileData?.email || localStorage.getItem('username') || '';
+
+    if (!authToken) {
+      setIsProfileIncompleteModalOpen(true);
+    } else if (!profileData?.name || profileData.name.trim() === '' || profileData.name === email) {
+      localStorage.setItem('showIncompleteModal', 'true');
+      navigate('/profile');
+    } else {
+      setIsDreamModalOpen(true);
+    }
+  };
 
   useEffect(() => {
     if (dreams.length > 0) {
@@ -333,25 +373,31 @@ const getCurrentDreams = () => {
     if (pagination.count === 0) { return null; }
 
     return (
-      <div className="pagination">
-        <button
-          className="pagination-arrow"
-          disabled={!pagination.previous}
-          onClick={() => handlePageChange(pagination.previous)}
-        >
-          &lt;
-        </button>
+      <div className="pagination-and-add-wrapper">
+        <div className="pagination-controls">
+          <button
+            className="pagination-arrow"
+            disabled={!pagination.previous}
+            onClick={() => handlePageChange(pagination.previous)}
+          >
+            &lt;
+          </button>
 
-        <span>
-          {currentPage} / {pagination.num_pages}
-        </span>
+          <span>
+            {currentPage} / {pagination.num_pages}
+          </span>
 
-        <button
-          className="pagination-arrow"
-          disabled={!pagination.next}
-          onClick={() => handlePageChange(pagination.next)}
-        >
-          &gt;
+          <button
+            className="pagination-arrow"
+            disabled={!pagination.next}
+            onClick={() => handlePageChange(pagination.next)}
+          >
+            &gt;
+          </button>
+        </div>
+
+        <button className="add-dream-button" onClick={handleAddDream}>
+          Add My Dream
         </button>
       </div>
     );
@@ -382,14 +428,6 @@ const getCurrentDreams = () => {
         >
           Fulfilled Dreams
         </button>
-
-        {/* <button
-          className={`tab ${activeTab === 'Application' ? 'Active' : ''}`}
-          onClick={() => setActiveTab('Application')}
-        >
-          Application Dreams
-        </button> */}
-
         {currentUser &&
           currentUser.id === 1 &&
           currentUser.email === "az@a.com" &&
@@ -399,7 +437,7 @@ const getCurrentDreams = () => {
             className={`tab ${activeTab === 'Application' ? 'Active' : ''}`}
             onClick={() => setActiveTab('Application')}
           >
-           Application Dreams
+           New Dreams
           </button>
         )}
       </div>
@@ -674,7 +712,6 @@ const getCurrentDreams = () => {
       <>
       <div className="dreams-grid">
           {getCurrentDreams().map(dream => {
-        {/* {filteredDreams.map(dream => { */}
           const goalAmount = parseInt(dream.goal) || 1;
           const collected = dream.total_amount_donations;
           const progressPercent = Math.min((collected / goalAmount) * 100, 100);
@@ -734,8 +771,8 @@ const getCurrentDreams = () => {
                   <span>Need</span>
                 </div>
                 <div className="progress-values">
-                  <span>${collected.toLocaleString('en-US')}</span>
-                  <span>${goalAmount.toLocaleString('en-US')}</span>
+                  <span>{collected.toLocaleString('fr-FR')}$</span>
+                  <span>{goalAmount.toLocaleString('fr-FR')}$</span>
                 </div>
               </div>
               <div className="dream-actions">

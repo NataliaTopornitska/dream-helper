@@ -98,7 +98,7 @@ const Comments = ({ dreamId }: CommentsProps) => {
       <div className={styles.wrapper}>
         <div className={styles.inputRow}>
           <img
-            src="/dream-helper/dream-details/avatar.png"
+            src="/dream-helper/dream-details/profile-page/profile-photo.png"
             alt="avatar"
             className={styles.avatarMain}
           />
@@ -131,7 +131,7 @@ const Comments = ({ dreamId }: CommentsProps) => {
             comments.map(comment => (
               <div key={comment.id} className={styles.commentItem}>
                 <img
-                  src={comment.owner_profile.thumbnail_url || '/dream-helper/dream-details/avatar.png'}
+                  src={comment.owner_profile.thumbnail_url || '/dream-helper/profile-page/profile-photo.png'}
                   alt="avatar"
                   className={styles.avatar}
                 />

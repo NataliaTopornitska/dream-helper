@@ -324,6 +324,59 @@
 
 
 
+// Button Add my dream - below
+.pagination-and-add-wrapper {
+  position: relative;
+  margin-top: 20px;
+  min-height: 50px;
+  margin-bottom: 70px;
+}
+
+.pagination-controls {
+  font-family: "Inter", sans-serif;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pagination-arrow {
+  font-family: "Inter", sans-serif;
+  padding: 6px 12px;
+  font-size: 18px;
+  cursor: pointer;
+  border: 1px solid #191919;
+  border-radius: 999px;
+}
+
+.add-dream-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: transparent;
+  border: 1px solid #000;
+  border-radius: 40px;
+  padding: 14px 50px;
+  font-size: 17px;
+  font-weight: 600;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.add-dream-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+
+
+
+
+
+
+
+
 @media (max-width: 767px) {
   .hero {
     padding-top: 0;
