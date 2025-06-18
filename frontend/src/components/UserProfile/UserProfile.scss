@@ -9,13 +9,6 @@
   padding-top: 48px;
 }
 
-
-// .profile-left {
-//   display: flex;
-//   align-items: center;
-//   gap: 30px;
-// }
-
 .profile-left {
   display: flex;
   flex-direction: column;
@@ -23,6 +16,20 @@
   gap: 16px;
   text-align: center;
 }
+
+
+.dream-dreamer-label {
+  display: block;
+  font-size: 17px;
+  padding: 16px 10px;
+  background-color: #f0f8ff;
+  font-weight: 700;
+  color: rgb(25, 25, 25);
+  text-align: center;
+  width: 100%;
+  word-wrap: break-word;
+}
+
 
 .profile-photo {
   width: 180px;
@@ -65,7 +72,7 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
-  height: 230px;
+  height: 260px;
   position: relative;
 }
 
@@ -75,22 +82,24 @@
 }
 
 .outline-btn {
-  padding: 12px 28px;
+  padding: 12px 47px;
   border: 1px solid black;
   border-radius: 9999px;
   background: transparent;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 17px;
 }
 
 .solid-btn {
-  padding: 12px 28px;
+  padding: 12px 47px;
   border: none;
   border-radius: 9999px;
   background-color: #1a1a1a;
   color: white;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 17px;
 }
 
 
@@ -109,7 +118,7 @@
   z-index: 1000;
 }
 
-.modal-content {
+.modal-contents {
   background: white;
   padding: 20px 30px 10px;
   border-radius: 10px;
@@ -118,7 +127,7 @@
   box-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
-.modal-content p {
+.modal-contents p {
   font-size: 19px;
   background-color: rgb(240, 248, 255);
   color: rgb(25, 25, 25);
@@ -147,10 +156,8 @@
   font-weight: 600;
 }
 
-
-.profile-incomplete-modal .modal-content {
+.profile-incomplete-modal .modal-contents {
   position: relative;
-  /* інші стилі модалки */
 }
 
 .close-modal-cross {
@@ -162,4 +169,31 @@
   font-size: 20px;
   cursor: pointer;
   color: #333;
+}
+
+.avatar-wrapper {
+  position: relative;
+  width: 180px;
+  height: 180px;
+
+  .profile-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .upload-icon {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: white;
+    border-radius: 50%;
+    padding: 6px;
+    cursor: pointer;
+    img {
+      width: 22px;
+      height: 22px;
+    }
+  }
 }

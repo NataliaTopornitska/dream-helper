@@ -52,6 +52,36 @@
   }
 }
 
+.modal-h-content {
+  padding: 15px;
+  background-color: #f0f8ff;
+  border-radius: 8px;
+  color: black;
+  text-align: center;
+  line-height: normal;
+  position: relative;
+  padding-top: 40px;
+}
+
+.modal-h-content p {
+  padding: 20px;
+  font-size: 19px;
+  text-align: center;
+  background-color: rgb(228, 238, 247);
+  line-height: normal;
+}
+
+.close-modal-cross {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #000;
+}
+
 .btn {
   &-outline {
     background-color: transparent;
@@ -68,10 +98,10 @@
   }
 
   button.outline-btn {
-    font-size: 17px !important;
-    font-weight: 600 !important;
-    padding: 14px 50px !important;
-    border-radius: 40px !important;
+    font-size: 17px;
+    font-weight: 600;
+    padding: 12px 47px;
+    border-radius: 40px;
   }
 
   &-solid {
@@ -79,7 +109,7 @@
     color: #fff;
     border: none;
     border-radius: 40px;
-    padding: 14px 50px;
+    padding: 12px 47px;
     font-size: 17px;
     font-weight: 600;
     transition: background-color 0.2s;

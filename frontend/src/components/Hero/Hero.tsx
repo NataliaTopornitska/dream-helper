@@ -33,7 +33,7 @@ const Hero = () => {
     const authToken = localStorage.getItem('authToken');
 
     if (!authToken) {
-      setIsProfileIncompleteModalOpen(true); // Not logged in
+      setIsProfileIncompleteModalOpen(true);
     } else if (!profileData?.name || profileData.name.trim() === '' || profileData.name === email) {
       localStorage.setItem('showIncompleteModal', 'true');
       navigate('/profile');
@@ -75,7 +75,7 @@ const Hero = () => {
 
       {isProfileIncompleteModalOpen && (
         <div className="profile-incomplete-modal">
-          <div className="modal-content">
+          <div className="modal-h-content">
             <button
               className="close-modal-cross"
               onClick={() => setIsProfileIncompleteModalOpen(false)}

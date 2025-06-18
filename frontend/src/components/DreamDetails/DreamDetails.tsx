@@ -46,19 +46,20 @@ const DreamDetails = () => {
       <h1 className={styles.dreamTitle}>{dream.title}</h1>
 
       <div className={styles.header}>
-        <img
-          src={dream.photo_url || dream.thumbnail_url}
-          alt={dream.title}
-          className={`${styles.dreamImage} ${styles.dreamImageStyled}`}
-          onError={(e) => {
-            const target = e.currentTarget as HTMLImageElement;
-            target.onerror = null;
-            target.src = '/dream-helper/dream-details/details-d.png';
-          }}
-        />
+        <div className={styles.imageWrapper}>
+          <img
+            src={dream.photo_url?.trim() || dream.thumbnail_url?.trim() || '/dream-helper/dreams-page/block-1.png'}
+            alt={dream.title}
+            className={styles.dreamImageStyled}
+            onError={(e) => {
+              const target = e.currentTarget as HTMLImageElement;
+              target.onerror = null;
+              target.src = '/dream-helper/dreams-page/block-1.png';
+            }}
+          />
+        </div>
         <InfoCard dream={dream} />
       </div>
-
       <div className={styles.detailsWrapper}>
         <div className={styles.descriptionSide}>
           <div className={styles.descriptionContainer}>

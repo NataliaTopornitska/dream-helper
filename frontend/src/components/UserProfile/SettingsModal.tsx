@@ -37,13 +37,11 @@ const SettingsModal = ({ isOpen, onClose }) => {
 
     document.body.style.overflow = 'hidden';
 
-    // Fetch countries
     fetch('http://127.0.0.1:8000/api/v1/users/countries/')
       .then(res => res.json())
       .then(setCountries)
       .catch(err => console.error('Error loading countries:', err));
 
-    // Fetch profile
     fetch('http://127.0.0.1:8000/api/v1/users/profile/', {
       headers: {
         Authorization: `Token ${localStorage.getItem('authToken')}`,
@@ -119,14 +117,17 @@ const SettingsModal = ({ isOpen, onClose }) => {
 
     const payload = {
       name: isCollective ? `"${name}"` : name,
-      phone_number: phone,
       direction,
       is_collective: isCollective,
-      country: selectedCountry ? selectedCountry.id : null, // <- null замість 0
-      city: selectedCity ? selectedCity.id : null,          // <- null замість 0
+      country: selectedCountry ? selectedCountry.id : null,
+      city: selectedCity ? selectedCity.id : null,
       other_country: otherCountry,
       other_city: otherCity,
     };
+
+    if (phone.trim()) {
+      payload.phone_number = phone.trim();
+    }
 
     try {
       const res = await fetch('http://127.0.0.1:8000/api/v1/users/profile/', {
@@ -167,7 +168,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="name">
-                Name <span className="required-star">*</span>
+                Full Name <span className="required-star">*</span>
               </label>
               <input
                 id="name"
@@ -179,7 +180,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="phone">Phone</label>
+              <label htmlFor="phone">Phone Number</label>
               <input
                 id="phone"
                 value={phone}

@@ -178,12 +178,11 @@ const ProfileDreams: React.FC = () => {
                         <span>{goalAmount.toLocaleString('fr-FR')}$</span>
                       </div>
                     </div>
-                    <button
-                      className="dream-support-btn"
-                      onClick={() => setActiveDream(dream)}
-                    >
-                      Support
-                    </button>
+                    {dream.dreamer && (
+                      <div className="dream-dreamer-label">
+                        Initiated for: <strong>{dream.dreamer}</strong>
+                      </div>
+                    )}
                   </div>
                 );
               })}

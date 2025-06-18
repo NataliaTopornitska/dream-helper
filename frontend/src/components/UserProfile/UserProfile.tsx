@@ -5,6 +5,7 @@ import ProfileDreams from './ProfileDreams';
 import ProfileDonations from './ProfileDonations';
 import PendingDonations from './PendingDonations';
 import CreateDreamModal from './CreateDreamModal';
+import { Link } from 'react-router-dom';
 
 const UserProfile = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -29,21 +30,66 @@ const UserProfile = () => {
     }
   };
 
+  const handleAvatarUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) {
+      alert('No file selected');
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload a valid image file.');
+      return;
+    }
+
+    event.target.value = null;
+
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    try {
+      const res = await fetch('http://127.0.0.1:8000/api/v1/users/profile/upload_avatar/', {
+        method: 'POST',
+        headers: {
+          Authorization: `Token ${localStorage.getItem('authToken') || ''}`,
+        },
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.error || 'Failed to upload image');
+        return;
+      }
+
+      alert(data.message || 'Avatar uploaded successfully');
+
+      setProfileData((prev) => ({
+        ...prev,
+        avatar_url: `${data.avatar_url}?t=${Date.now()}`,
+      }));
+
+      fetchProfile();
+
+    } catch (err) {
+      console.error('Upload error:', err);
+      alert('Something went wrong during upload');
+    }
+  };
+
   useEffect(() => {
     const storedEmail = localStorage.getItem('username');
     if (storedEmail) setEmail(storedEmail);
 
-    fetchProfile(); // initial fetch
+    fetchProfile();
 
     const handleProfileUpdated = () => {
-      fetchProfile(); // refresh profile when updated
+      fetchProfile();
     };
 
     window.addEventListener('profileUpdated', handleProfileUpdated);
-
-    return () => {
-      window.removeEventListener('profileUpdated', handleProfileUpdated);
-    };
+    return () => window.removeEventListener('profileUpdated', handleProfileUpdated);
   }, []);
 
   useEffect(() => {
@@ -66,7 +112,35 @@ const UserProfile = () => {
     <>
       <div className="profile-container">
         <div className="profile-left">
-          <img src="/dream-helper/profile-page/profile-photo.png" alt="User" className="profile-photo" />
+          <div className="avatar-wrapper" style={{ position: 'relative' }}>
+            <img
+              src={profileData?.avatar_url || "/dream-helper/profile-page/profile-photo.png"}
+              alt="User"
+              className="profile-photo"
+            />
+            <label
+              className="upload-icon"
+              style={{
+                position: 'absolute',
+                bottom: '5px',
+                right: '20px',
+                cursor: 'pointer',
+              }}
+            >
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarUpload}
+                style={{ display: 'none' }}
+              />
+              <img
+                src="/dream-helper/profile-page/camera.png"
+                alt="Upload"
+                style={{ width: '24px', height: '24px' }}
+              />
+            </label>
+          </div>
+
           <div className="profile-info">
             <h2>
               {profileData
@@ -93,7 +167,9 @@ const UserProfile = () => {
             <button className="outline-btn" onClick={handleAddDream}>
               Add My Dream
             </button>
-            <button className="solid-btn">Make a Donation</button>
+            <Link to="/dreams" className="solid-btn-link">
+              <button className="solid-btn">Make a Donation</button>
+            </Link>
           </div>
         </div>
 
@@ -110,7 +186,7 @@ const UserProfile = () => {
 
       {isProfileIncompleteModalOpen && (
         <div className="profile-incomplete-modal">
-          <div className="modal-content">
+          <div className="modal-contents">
             <button
               className="close-modal-cross"
               onClick={() => setIsProfileIncompleteModalOpen(false)}
