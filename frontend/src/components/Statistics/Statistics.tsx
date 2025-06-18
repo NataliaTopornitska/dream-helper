@@ -32,35 +32,6 @@ const Statistics: React.FC = () => {
     fetchStatistics();
   }, []);
 
-  // For the backend
-
-  // useEffect(() => {
-  //   async function fetchStatistics() {
-  //     try {
-  //       const response = await fetch(
-  //         'http://127.0.0.1:8000/api/v1/dreamhelper/statistics/',
-  //       );
-
-  //       if (!response.ok) {
-  //         throw new Error('Error getting data.');
-  //       }
-
-  //       const data = await response.json();
-
-  //       setStatistics({
-  //         totalDreams: data.total_dreams,
-  //         people: data.people,
-  //         anonymousDonations: data.anonymous_donations,
-  //         totalDonations: data.total_donations,
-  //       });
-  //     } catch (error) {
-  //       console.error('Error getting statistics data:', error);
-  //     }
-  //   }
-
-  //   fetchStatistics();
-  // }, []);
-
   return (
     <section className="statistics">
       <div className="statistics-wave-bg"></div>

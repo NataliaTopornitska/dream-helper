@@ -37,12 +37,12 @@ const SettingsModal = ({ isOpen, onClose }) => {
 
     document.body.style.overflow = 'hidden';
 
-    fetch('http://127.0.0.1:8000/api/v1/users/countries/')
+    fetch('http://127.0.0.1:8000/api/v1/profiles/countries/')
       .then(res => res.json())
       .then(setCountries)
       .catch(err => console.error('Error loading countries:', err));
 
-    fetch('http://127.0.0.1:8000/api/v1/users/profile/', {
+    fetch('http://127.0.0.1:8000/api/v1/profiles/mine/', {
       headers: {
         Authorization: `Token ${localStorage.getItem('authToken')}`,
       },
@@ -70,7 +70,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (!selectedCountry || isLocationFixed) return;
 
-    fetch(`http://127.0.0.1:8000/api/v1/users/cities/?country=${selectedCountry.id}`)
+    fetch(`http://127.0.0.1:8000/api/v1/profiles/cities/?country=${selectedCountry.id}`)
       .then(res => res.json())
       .then(setCities)
       .catch(err => {
@@ -130,7 +130,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
     }
 
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/v1/users/profile/', {
+      const res = await fetch('http://127.0.0.1:8000/api/v1/profiles/mine/', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

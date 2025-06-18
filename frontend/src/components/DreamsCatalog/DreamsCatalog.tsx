@@ -154,14 +154,14 @@ const DreamsCatalog = () => {
   };
 
   const fetchCountries = async () => {
-    const response = await fetch('http://127.0.0.1:8000/api/v1/users/countries/');
+    const response = await fetch('http://127.0.0.1:8000/api/v1/profiles/countries/');
     const data = await response.json();
 
     setCountries(data);
   };
 
   const fetchCities = async (country: string = "") => {
-    const response = await fetch(`http://127.0.0.1:8000/api/v1/users/cities/?country=${country}`);
+    const response = await fetch(`http://127.0.0.1:8000/api/v1/profiles/cities/?country=${country}`);
     const data = await response.json();
     setCities(data);
   };

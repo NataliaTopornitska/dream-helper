@@ -75,19 +75,6 @@ const InfoCard = ({ dream }) => {
           </>
         )}
       </div>
-
-      {/* <div className={styles.amountRow}>
-        <p className={styles.amountItem}>
-          <span className={styles.amountLabel}>Collected</span>
-          <span className={styles.amountValue}>{dream.total_amount_donations}$</span>
-        </p>
-        <p className={styles.amountItem}>
-          <span className={styles.amountLabel}>Need</span>
-          <span className={styles.amountValue}>
-            {(+dream.goal - +dream.total_amount_donations).toFixed(2)}$
-          </span>
-        </p>
-      </div> */}
     </div>
   );
 };

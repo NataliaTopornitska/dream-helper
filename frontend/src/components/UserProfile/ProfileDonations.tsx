@@ -36,7 +36,7 @@ const ProfileDonations: React.FC = () => {
         }
 
         const response = await fetch(
-          'http://127.0.0.1:8000/api/v1/users/profile/my_donations/',
+          'http://127.0.0.1:8000/api/v1/profiles/mine/my_donations/',
           {
             method: 'GET',
             headers: {

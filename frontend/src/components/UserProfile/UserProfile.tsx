@@ -16,7 +16,7 @@ const UserProfile = () => {
 
   const fetchProfile = async () => {
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/v1/users/profile/', {
+      const res = await fetch('http://127.0.0.1:8000/api/v1/profiles/mine/', {
         headers: {
           Authorization: `Token ${localStorage.getItem('authToken') || ''}`,
         },
@@ -48,7 +48,7 @@ const UserProfile = () => {
     formData.append('avatar', file);
 
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/v1/users/profile/upload_avatar/', {
+      const res = await fetch('http://127.0.0.1:8000/api/v1/profiles/mine/upload_avatar/', {
         method: 'POST',
         headers: {
           Authorization: `Token ${localStorage.getItem('authToken') || ''}`,

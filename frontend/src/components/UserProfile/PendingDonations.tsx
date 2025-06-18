@@ -17,7 +17,7 @@ const PendingDonations = () => {
     const token = localStorage.getItem('authToken');
     if (!token) return;
 
-    fetch('http://127.0.0.1:8000/api/v1/users/profile/prepared_donations/', {
+    fetch('http://127.0.0.1:8000/api/v1/profiles/mine/prepared_donations/', {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Token ${token}`,
