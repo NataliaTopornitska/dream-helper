@@ -168,6 +168,9 @@ class UploadAvatarView(APIView):
         return self.request.user.userprofile
 
     def post(self, request):
+        print("FILES:", request.FILES)
+        print("DATA:", request.data)
+
         profile = self.get_object()
 
         # # Delete old avatar & thumbnail, if it exists, from bucket
@@ -178,13 +181,16 @@ class UploadAvatarView(APIView):
         file = request.FILES.get("photo_avatar")
         if not file:
             return Response(
-                {"error": "There is no file."}, status=status.HTTP_400_BAD_REQUEST
+              {"error": "There is no file. "
+                          "Select a file of the following format: jpg, webp, jfif & png."},
+                  status=status.HTTP_400_BAD_REQUEST
             )
 
         # check MIME
         if not file.content_type.startswith("image/"):
             return Response(
-                {"error": "Uploaded file is not an image."},
+                {"error": "Uploaded file is not an image. "
+                          "Allowed formats: jpg, webp, jfif & png."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 

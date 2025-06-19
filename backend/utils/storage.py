@@ -105,6 +105,7 @@ def upload_image_and_miniature_to_storage(
         # create miniature
         mini_buffer = io.BytesIO()
         image = Image.open(other_copy_file)  # using other copy
+        image = image.convert("RGB")
         image.thumbnail((width_thumbnail, height_thumbnail))
         image.save(mini_buffer, format="JPEG")
         mini_buffer.seek(0)
