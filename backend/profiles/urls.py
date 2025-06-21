@@ -10,15 +10,17 @@ from profiles.views import (
     UserMyDreamsView,
     UserMyDonationsView,
     UserPreparedDonationsView,
+    OtherCountryView,
 )
 
 app_name = "profiles"
 
 
 router = DefaultRouter()
-router.register(r"dreamers", DreamerProfileView, basename="dreamers")
-router.register(r"countries", CountryView, basename="countries")
-router.register(r"cities", CityView, basename="cities")
+router.register("dreamers", DreamerProfileView, basename="dreamers")
+router.register("countries", CountryView, basename="countries")
+router.register("cities", CityView, basename="cities")
+router.register("other_countries", OtherCountryView, basename="other_countries")
 
 
 urlpatterns = [

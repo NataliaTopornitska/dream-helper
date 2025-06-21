@@ -15,6 +15,7 @@ from profiles.models import (
     DreamerProfile,
     Country,
     City,
+    OtherCountry,
 )
 from dreams.models import Dream, Donation
 
@@ -28,17 +29,19 @@ from users.serializers import (
     LogoutSerializer,
 )
 from profiles.serializers import (
-    UserProfileCreateSerializer,
+    UserProfileUpdateSerializer,
     UserProfileSerializer,
     DreamerProfileSerializer,
     DreamerProfileCreateSerializer,
     UserProfileAvatarSerializer,
     CountrySerializer,
     CitySerializer,
-    CityUpdateSerializer,
+    # CityUpdateSerializer,
     UserMyDreamsSerializer,
     UserMyDonationsSerializer,
     UserPreparedDonationsSerializer,
+    CityCreateSerializer,
+    OtherCountrySerializer,
 )
 from utils.storage import (
     delete_image_from_storage,
@@ -57,7 +60,7 @@ from django_filters import rest_framework as filters
 # )
 class UserProfileView(generics.RetrieveUpdateAPIView):
     queryset = UserProfile.objects.all()
-    serializer_class = UserProfileCreateSerializer
+    serializer_class = UserProfileSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
@@ -72,8 +75,8 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
         return self.request.user.userprofile
 
     def get_serializer_class(self):
-        if self.request.method in ("POST", "PUT", "PATCH"):
-            return UserProfileCreateSerializer
+        if self.request.method in ("PUT", "PATCH"):
+            return UserProfileUpdateSerializer
         return UserProfileSerializer
 
 
@@ -168,8 +171,8 @@ class UploadAvatarView(APIView):
         return self.request.user.userprofile
 
     def post(self, request):
-        print("FILES:", request.FILES)
-        print("DATA:", request.data)
+        # print("FILES:", request.FILES)
+        # print("DATA:", request.data)
 
         profile = self.get_object()
 
@@ -282,11 +285,25 @@ class CountryView(
         return super().list(request, *args, **kwargs)
 
 
+class OtherCountryView(
+  # mixins.CreateModelMixin,
+  mixins.ListModelMixin,
+  # mixins.RetrieveModelMixin,
+  # mixins.UpdateModelMixin,
+  GenericViewSet,
+):
+    queryset = OtherCountry.objects.all()
+    serializer_class = OtherCountrySerializer
+    permission_classes = [
+        AllowAny,
+    ]
+
+
 class CityView(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
-    mixins.UpdateModelMixin,
+    # mixins.UpdateModelMixin,
     GenericViewSet,
 ):
     queryset = City.objects.all()
@@ -309,11 +326,13 @@ class CityView(
         return [IsAdminUser()]
 
     def get_serializer_class(self):
-        if self.action in [
-            "update",
-            "partial_update",
-        ]:
-            return CityUpdateSerializer
+        if self.action == "create":
+            return CityCreateSerializer
+        # if self.action in [
+        #     "update",
+        #     "partial_update",
+        # ]:
+        #     return CityUpdateSerializer
         return self.serializer_class
 
     @extend_schema(

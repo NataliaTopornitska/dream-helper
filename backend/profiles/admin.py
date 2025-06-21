@@ -6,9 +6,11 @@ from .models import (
     UserProfile,
     Country,
     City,
+    OtherCountry,
 )
 
 admin.site.register(Country)
 admin.site.register(City)
 admin.site.register(UserProfile)
 admin.site.register(DreamerProfile)
+admin.site.register(OtherCountry)

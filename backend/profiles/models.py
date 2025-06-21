@@ -2,7 +2,6 @@ from django.contrib.auth import get_user_model
 from django.db import models
 
 
-
 class Country(models.Model):
     name = models.CharField(max_length=63, unique=True)
 
@@ -25,7 +24,12 @@ class City(models.Model):
         db_table = "users_city"  # old table
         verbose_name_plural = "cities"
         ordering = ["name"]
-
+        constraints = [
+            models.UniqueConstraint(
+                fields=["name", "country"],
+                name="unique_city_country",
+            )
+        ]
 
     def __str__(self) -> str:
         return str(self.name)
@@ -43,7 +47,7 @@ class UserProfile(models.Model):
     phone_number = models.CharField(max_length=30, blank=True, null=True, unique=True)
     city = models.ForeignKey(
         City,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         blank=True,
         null=True,
     )
@@ -68,7 +72,7 @@ class DreamerProfile(models.Model):
     name = models.CharField(max_length=150)
     email = models.EmailField(blank=True, null=True, unique=True)
     phone_number = models.CharField(max_length=30, unique=True)
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True)
     direction = models.CharField(max_length=150)
     created_at = models.DateTimeField(auto_now_add=True)
     is_collective = models.BooleanField(default=False)
@@ -79,3 +83,14 @@ class DreamerProfile(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.city.name}) - {self.phone_number}"
+
+
+class OtherCountry(models.Model):
+    name = models.CharField(max_length=63, unique=True)
+    code = models.CharField(max_length=2, unique=True)
+
+    def __str__(self):
+        return f"{self.name} / {self.code}"
+
+    class Meta:
+        ordering = ["name"]
