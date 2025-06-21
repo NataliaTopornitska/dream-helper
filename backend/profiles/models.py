@@ -93,4 +93,5 @@ class OtherCountry(models.Model):
         return f"{self.name} / {self.code}"
 
     class Meta:
+        verbose_name_plural = "other countries"
         ordering = ["name"]

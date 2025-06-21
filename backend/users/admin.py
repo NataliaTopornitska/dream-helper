@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.admin import ModelAdmin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.utils.translation import gettext as _
 
@@ -49,10 +50,38 @@ class UserAdmin(DjangoUserAdmin):
     ordering = ("email",)
 
 
-admin.site.register(ActivationToken)
+# admin.site.register(ActivationToken)
 
 # admin.site.register(Country)
 # admin.site.register(City)
 # admin.site.register(UserProfile)
 # admin.site.register(DreamerProfile)
-admin.site.register(Subscriber)
+# admin.site.register(Subscriber)
+
+
+@admin.register(ActivationToken)
+class ActivationTokenAdmin(ModelAdmin):
+    """Define ActivationToken model"""
+    list_display = (
+        "id",
+        "token",
+        "user",
+        "created_at",
+    )
+    search_fields = (
+        "user__email",
+        "created_at",
+    )
+
+
+@admin.register(Subscriber)
+class SubscriberAdmin(ModelAdmin):
+    """Define Subscriber model"""
+    list_display = (
+        "id",
+        "email",
+        "is_active",
+    )
+    search_fields = (
+        "email",
+    )
