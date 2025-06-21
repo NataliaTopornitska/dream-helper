@@ -285,11 +285,16 @@ class CountryView(
         return super().list(request, *args, **kwargs)
 
 
+@extend_schema(
+    summary="List All Countries of World",
+    description="List all Countries of World. "
+                "Used for controlled entry of a new Country into the database. \n"
+                "Initialized when the project is first launched by the command: "
+                "python manage.py import_other_countries",
+)
 class OtherCountryView(
   # mixins.CreateModelMixin,
   mixins.ListModelMixin,
-  # mixins.RetrieveModelMixin,
-  # mixins.UpdateModelMixin,
   GenericViewSet,
 ):
     queryset = OtherCountry.objects.all()

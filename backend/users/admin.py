@@ -42,12 +42,13 @@ class UserAdmin(DjangoUserAdmin):
     list_display = (
         "email",
         "is_staff",
-        "is_active",
         "is_owner",
         "is_donator",
+        "is_active"
     )
     search_fields = ("email",)
     ordering = ("email",)
+    list_editable = ("is_active",)
 
 
 # admin.site.register(ActivationToken)
@@ -85,3 +86,4 @@ class SubscriberAdmin(ModelAdmin):
     search_fields = (
         "email",
     )
+    list_editable = ("is_active", )
