@@ -24,3 +24,31 @@
 
  * `docker-compose up -d --build`
  * `python manage.py import_other_countries`  -  For first run (DB empty)
+
+
+
+
+
+
+#####  working moments
+1. set-cors.sh   abo   wait-for-it.sh
+має Windows-рядки (CRLF) замість Unix-рядків (LF). Через це інтерпретатор sh (в Linux) бачить зайвий \r і не може знайти команду bash\r або sh\r.
+
+2. Якщо потрібно зберегти фото або дані:
+    Підключись до MinIO Web UI або mc
+    Завантаж усе локально:
+
+mc alias set local http://localhost:9000 MINIO_USER MINIO_PASSWORD
+mc mirror local/dreams-media ./backup
+
+    Це скопіює всі файли з бакета dreams-media у теку ./backup
+
+3. docker-compose down -v   #####  vydalyt vsi danni zo storage, iakscho ne treba, to prosto:
+4. docker-compose down
+
+5. Образ minio/minio:latest автоматично оновлюється	Закріпити конкретну версію в docker-compose.yml
+image: minio/minio:RELEASE.2025-05-24T17-08-30Z
+
+docker-compose pull
+docker-compose up -d --force-recreate
+
