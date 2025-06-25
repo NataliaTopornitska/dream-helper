@@ -21,7 +21,7 @@ class DonationStatusEnumCustom(str, Enum):
 
 class Category(models.Model):
     name = models.CharField(max_length=65, unique=True)
-    description = models.CharField(max_length=255)
+    description = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
         return self.name
@@ -88,9 +88,9 @@ class Donation(models.Model):
     STATUS_DONATION = (
         ("Prepared", "Prepared"),
         ("Paid", "Paid"),
-        ("Canceled", "Canceled"),
-    )"""
-
+        ("Canceled", "Canceled")
+    )
+    """
     dream = models.ForeignKey(Dream, on_delete=models.CASCADE, related_name="donations")
     donator = models.ForeignKey(
         get_user_model(),

@@ -34,14 +34,14 @@ from users.serializers import (
     LogoutSerializer,
 )
 from profiles.serializers import (
-    UserProfileCreateSerializer,
+    # UserProfileCreateSerializer,
     UserProfileSerializer,
     DreamerProfileSerializer,
     DreamerProfileCreateSerializer,
     UserProfileAvatarSerializer,
     CountrySerializer,
     CitySerializer,
-    CityUpdateSerializer,
+    # CityUpdateSerializer,
     UserMyDreamsSerializer,
     UserMyDonationsSerializer,
     UserPreparedDonationsSerializer,
