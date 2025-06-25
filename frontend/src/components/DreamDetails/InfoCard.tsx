@@ -33,7 +33,8 @@ const InfoCard = ({ dream }) => {
       </p>
       <p>
         <span className={styles.cardLabel}>Goal</span>
-        <span className={styles.cardValue}>{dream.goal}$</span>
+        {/* <span className={styles.cardValue}>{dream.goal}$</span> */}
+        <span className={styles.cardValue}>{Number(dream.goal).toLocaleString('fr-FR')}$</span>
       </p>
       <p>
         <span className={styles.cardLabel}>Created</span>

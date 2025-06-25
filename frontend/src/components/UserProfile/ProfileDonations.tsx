@@ -123,6 +123,11 @@ const ProfileDonations: React.FC = () => {
                           className="dream-img"
                         />
                       </Link>
+                      <div className="user-donation">
+                        <div className="donation-label">Your Donation</div>
+                        <div className="donation-amount">{dream.user_amount.toLocaleString('fr-FR')}$</div>
+                      </div>
+
                       <div className="dream-stats">
                         <div className="stat-item">
                           <img
@@ -158,9 +163,6 @@ const ProfileDonations: React.FC = () => {
                       <div className="progress-values">
                         <span>{collected.toLocaleString('fr-FR')}$</span>
                         <span>{goalAmount.toLocaleString('fr-FR')}$</span>
-                      </div>
-                      <div className="user-amount">
-                        You donated: <strong>{dream.user_amount.toLocaleString('fr-FR')}$</strong>
                       </div>
                     </div>
                     <button

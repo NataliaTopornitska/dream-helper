@@ -1,4 +1,4 @@
-.dream-modal-overlay {
+.create-modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
@@ -6,12 +6,14 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  overflow-y: auto;
+  font-family: "Raleway", sans-serif;
 }
 
-.dream-modal {
+.create-modal {
   background: #fff;
   border-radius: 16px;
-  max-width: 960px;
+  max-width: 800px;
   width: 95%;
   padding: 32px;
   position: relative;
@@ -19,161 +21,294 @@
   overflow-y: auto;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
   font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
 }
 
-.dream-modal .close-btn {
+.create-modal .create-close-btn {
   position: absolute;
   top: 16px;
   right: 20px;
-  font-size: 24px;
+  font-size: 40px;
   background: none;
+  font-weight: 400;
   border: none;
   cursor: pointer;
-  color: #333;
+  color: #191919;
 }
 
-.dream-modal .modal-title {
+.create-modal .create-modal-title {
+  font-family: "Raleway", sans-serif;
   text-align: center;
-  font-size: 28px;
+  font-size: 27px;
   font-weight: 600;
   margin-bottom: 24px;
+  color: #333;
+
+
+  width: 100%;
+  border-bottom: 1px solid #8d8989;
+  padding-bottom: 20px;
+  margin-bottom: 32px;
 }
 
-.dream-modal .modal-content {
+.create-modal-content {
   display: flex;
   flex-wrap: wrap;
   gap: 32px;
+  margin-bottom: 32px;
 }
 
-.dream-modal .left-section {
+.create-left-section {
   flex: 1;
-  min-width: 260px;
+  min-width: 280px;
   text-align: center;
-}
-
-.dream-modal .left-section .photo-upload {
-  border: 2px dashed #ddd;
-  border-radius: 12px;
-  padding: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
-.dream-modal .left-section .photo-upload img {
-  width: 100px;
-  margin-bottom: 16px;
+.create-photo-upload {
+  border: none;
+  border-radius: 16px;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+  max-width: 360px;
+  margin: 0 auto;
 }
 
-.dream-modal .left-section .photo-upload p {
-  font-size: 13px;
-  color: #777;
+.create-photo-upload img {
+  width: 360px;
+  height: auto;
+  margin-bottom: 10px;
 }
 
-.dream-modal .right-section {
+.create-photo-upload p {
+  font-family: "Reddit Sans Condensed", sans-serif;
+  font-size: 14px;
+  color: #464646;
+  line-height: 1.4;
+  margin: 0;
+  text-align: left;
+}
+
+#create-photo-upload {
+  display: none;
+}
+
+.create-upload-btn {
+  background-color: transparent;
+  color: #000;
+  padding: 8px 0;
+  font-weight: 500;
+  border-bottom: 1px solid #000;
+  border-radius: 0;
+  margin-top: 16px;
+  cursor: pointer;
+}
+
+.create-right-section {
   flex: 1;
-  min-width: 260px;
+  min-width: 280px;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.dream-modal .right-section .form-group {
+.create-form-group {
   display: flex;
   flex-direction: column;
+  margin-bottom: 0;
 }
 
-.dream-modal .right-section .form-group label {
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 6px;
-  color: #333;
-}
-
-.dream-modal .right-section .form-group input,
-.dream-modal .right-section .form-group select {
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 14px;
-  outline: none;
-}
-
-.dream-modal .right-section .form-group input:focus,
-.dream-modal .right-section .form-group select:focus {
-  border-color: #999;
-}
-
-.dream-modal .section {
-  margin-top: 32px;
-}
-
-.dream-modal .section h3 {
+.create-field-heading {
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: #000000;
+}
+
+.create-form-group label {
+  font-size: 12px;
+  font-weight: 500;
   margin-bottom: 8px;
+  color: #464646;
 }
 
-.dream-modal .section p {
-  font-size: 13px;
-  color: #777;
+.create-form-group input,
+.create-form-group select,
+.create-grid-2 input,
+textarea {
+  padding: 10px 14px;
+  border: 1px solid #191919;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.create-form-group input:focus,
+.create-form-group select:focus,
+.create-grid-2 input:focus,
+textarea:focus {
+  border-color: #999;
+  box-shadow: 0 0 0 2px rgba(#999, 0.2);
+}
+
+.create-checkbox-group label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: normal;
+  margin-bottom: 0;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 8px;
+}
+
+.checkbox-label input[type="checkbox"] {
+  transform: scale(1.2);
+  width: auto;
+  flex-shrink: 0;
+}
+
+div.create-form-group.create-checkbox-group label {
+ margin-top: 6px;
+ font-size: 15px;
+ color: #464646;
+ margin-right: 8px;
+}
+
+.create-form-group input[type="checkbox"] {
+  width: auto;
+  margin-right: 16px;
+  transform: scale(1.2);
+  flex-shrink: 0;
+}
+
+.create-section {
+  margin-top: 32px;
+  padding-bottom: 0;
+}
+
+.create-section h3 {
+  font-family: "Raleway", sans-serif;
+  font-size: 22px;
+  font-weight: 600;
   margin-bottom: 16px;
+  color: #333;
+  text-align: center;
 }
 
-.dream-modal .grid-2 {
+.create-section p {
+  font-size: 12px;
+  font-weight: 500;
+  color: #464646;
+  margin-bottom: 22px;
+}
+
+.create-grid-2 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 16px;
 }
 
-.dream-modal .grid-2 input {
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 14px;
+ .create-grid-2 select {
+    border: 1px solid #191919;
+    border-radius: 9999px;
+    padding: 10px 14px;
 }
 
-.dream-modal textarea {
+textarea {
+  font-family: "Raleway", sans-serif;
   width: 100%;
-  padding: 12px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  resize: vertical;
   min-height: 120px;
-  outline: none;
+  resize: vertical;
+  border: 1px solid #191919;
+  border-radius: 25px;
 }
 
-.dream-modal textarea:focus {
-  border-color: #999;
-}
-
-.dream-modal .submit-wrapper {
+.create-submit-wrapper {
   display: flex;
   justify-content: flex-end;
-  margin-top: 24px;
+  margin-top: 26px;
 }
 
-.dream-modal .submit-wrapper .submit-btn {
+.create-submit-btn {
   background-color: #000;
   color: white;
-  padding: 14px 32px;
+  padding: 13px 37px;
   border: none;
   border-radius: 9999px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  min-width: 150px;
+  text-align: center;
+
+  &:hover {
+    background-color: #222;
+  }
 }
 
-.dream-modal .submit-wrapper .submit-btn:hover {
-  background-color: #222;
+.required-star {
+ font-size: 17px;
 }
 
+.create-section h3.tell-us {
+  font-family: "Raleway", sans-serif;
+    font-size: 21px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #333;
+    text-align: left;
+}
 
+.describe-us {
+  color: #686767;
+}
 
+@media (max-width: 768px) {
+  .create-modal {
+    padding: 20px;
+  }
 
+  .create-modal-content {
+    flex-direction: column;
+    gap: 24px;
+  }
 
+  .create-left-section, .create-right-section {
+    min-width: unset;
+    width: 100%;
+  }
 
+  .create-grid-2 {
+    grid-template-columns: 1fr;
+  }
 
+  .create-submit-wrapper {
+    justify-content: center;
+  }
+}
 
+@media (max-width: 480px) {
+  .create-modal .create-modal-title {
+    font-size: 24px;
+  }
+
+  .photo-upload p {
+    font-size: 12px;
+  }
+
+  .create-section h3 {
+    font-size: 16px;
+  }
+}

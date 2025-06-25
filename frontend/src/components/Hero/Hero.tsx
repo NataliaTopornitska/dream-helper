@@ -70,7 +70,10 @@ const Hero = () => {
       </div>
 
       {isDreamModalOpen && (
-        <CreateDreamModal onClose={() => setIsDreamModalOpen(false)} />
+        <CreateDreamModal
+          isOpen={isDreamModalOpen}
+          onClose={() => setIsDreamModalOpen(false)}
+        />
       )}
 
       {isProfileIncompleteModalOpen && (
@@ -83,7 +86,7 @@ const Hero = () => {
             >
               ✖
             </button>
-            <p>First, log in and fill out your profile!</p>
+            <p>You are not logged in yet. Please log in and complete the required fields to add your dream!</p>
           </div>
         </div>
       )}
