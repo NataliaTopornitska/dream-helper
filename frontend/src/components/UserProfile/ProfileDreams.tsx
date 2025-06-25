@@ -178,11 +178,9 @@ const ProfileDreams: React.FC = () => {
                         <span>{goalAmount.toLocaleString('fr-FR')}$</span>
                       </div>
                     </div>
-                    {dream.dreamer && (
-                      <div className="dream-dreamer-label">
-                        Initiated for: <strong>{dream.dreamer}</strong>
-                      </div>
-                    )}
+                    <div className="dream-dreamer-label">
+                      {dream.dreamer ? `Initiated for: ${dream.dreamer}` : '\u00A0'}
+                    </div>
                   </div>
                 );
               })}

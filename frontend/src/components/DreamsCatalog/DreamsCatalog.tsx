@@ -709,96 +709,118 @@ const getCurrentDreams = () => {
           </p>
         </div>
       ) : (
-      <>
-      <div className="dreams-grid">
-          {getCurrentDreams().map(dream => {
-          const goalAmount = parseInt(dream.goal) || 1;
-          const collected = dream.total_amount_donations;
-          const progressPercent = Math.min((collected / goalAmount) * 100, 100);
+          <>
+          <div className="dreams-grid">
+              {getCurrentDreams().map(dream => {
+              const goalAmount = parseInt(dream.goal) || 1;
+              const collected = dream.total_amount_donations;
+              const progressPercent = Math.min((collected / goalAmount) * 100, 100);
 
-          return (
-            <div key={dream.id} className="dream-card">
-              <div className="dream-image">
-                <Link to={`/dreams/${dream.id}`}>
-                  <img
-                    src={dream.thumbnail_url || "/home-page/a-dream.png"}
-                    alt={dream.title}
-                    className="dream-img"
-                    onLoad={(e) => (e.target as HTMLImageElement).classList.add("loaded")}
-                    onError={(e) => {
-                      console.log("Image not found for dream:", dream.id);
-                      (e.target as HTMLImageElement).src = "/dream-helper/home-page/a-dream.png";
-                    }}
-                  />
-                </Link>
-                <div className="dream-stats">
-                  <div className="stat-item">
-                    <img
-                      src="/dream-helper/home-page/eye.svg"
-                      alt="Views"
-                      className="stat-icon"
-                    />
-                    <span>{dream.number_views}</span>
+              return (
+                <div key={dream.id} className="dream-card">
+                  <div className="dream-image">
+                    <Link to={`/dreams/${dream.id}`}>
+                      <img
+                        src={dream.thumbnail_url || "/home-page/a-dream.png"}
+                        alt={dream.title}
+                        className="dream-img"
+                        onLoad={(e) => (e.target as HTMLImageElement).classList.add("loaded")}
+                        onError={(e) => {
+                          console.log("Image not found for dream:", dream.id);
+                          (e.target as HTMLImageElement).src = "/dream-helper/home-page/a-dream.png";
+                        }}
+                      />
+                    </Link>
+                    <div className="dream-stats">
+                      <div className="stat-item">
+                        <img
+                          src="/dream-helper/home-page/eye.svg"
+                          alt="Views"
+                          className="stat-icon"
+                        />
+                        <span>{dream.number_views}</span>
+                      </div>
+                      <div className="stat-item">
+                        <img
+                          src="/dream-helper/home-page/comment.svg"
+                          alt="Comments"
+                          className="stat-icon"
+                        />
+                        <span>{dream.number_comments}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="stat-item">
-                    <img
-                      src="/dream-helper/home-page/comment.svg"
-                      alt="Comments"
-                      className="stat-icon"
-                    />
-                    <span>{dream.number_comments}</span>
+                  <h3 className="dream-title">
+                    <Link to={`/dreams/${dream.id}`} className="dream-title-link">
+                      {dream.title}
+                    </Link>
+                  </h3>
+                  <p className="dream-content">
+                    {truncateText(dream.content, 140)}
+                  </p>
+
+                  <div className="dream-progress">
+                    <div className="progress-bar">
+                      <div
+                        className="progress-fill"
+                        style={{ width: `${progressPercent}%` }}
+                      ></div>
+                    </div>
+                    <div className="progress-labels">
+                      <span>Collected</span>
+                      <span>Need</span>
+                    </div>
+                    <div className="progress-values">
+                      <span>{collected.toLocaleString('fr-FR')}$</span>
+                      <span>{goalAmount.toLocaleString('fr-FR')}$</span>
+                    </div>
+                  </div>
+                  <div className="dream-actions">
+                    {activeTab === 'Completed' ? (
+                      <span className="collected-text">Collected</span>
+                    ) : (
+                      <button className="dream-support-btn" onClick={() => setActiveDream(dream)}>
+                        Support
+                      </button>
+                    )}
                   </div>
                 </div>
-              </div>
-              <h3 className="dream-title">
-                <Link to={`/dreams/${dream.id}`} className="dream-title-link">
-                  {dream.title}
-                </Link>
-              </h3>
-              <p className="dream-content">
-                {truncateText(dream.content, 140)}
-              </p>
+              );
+            })}
+          </div>
 
-              <div className="dream-progress">
-                <div className="progress-bar">
-                  <div
-                    className="progress-fill"
-                    style={{ width: `${progressPercent}%` }}
-                  ></div>
-                </div>
-                <div className="progress-labels">
-                  <span>Collected</span>
-                  <span>Need</span>
-                </div>
-                <div className="progress-values">
-                  <span>{collected.toLocaleString('fr-FR')}$</span>
-                  <span>{goalAmount.toLocaleString('fr-FR')}$</span>
-                </div>
-              </div>
-              <div className="dream-actions">
-                {activeTab === 'Completed' ? (
-                  <span className="collected-text">Collected</span>
-                ) : (
-                  <button className="dream-support-btn" onClick={() => setActiveDream(dream)}>
-                    Support
-                  </button>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+          {renderPagination()}
+          {activeDream && (
+            <SupportModal
+              isOpen={true}
+              dream={activeDream}
+              onClose={() => setActiveDream(null)}
+            />
+          )}
+            </>
+        )}
 
-      {renderPagination()}
-      {activeDream && (
-        <SupportModal
-          isOpen={true}
-          dream={activeDream}
-          onClose={() => setActiveDream(null)}
+          {isDreamModalOpen && (
+        <CreateDreamModal
+          isOpen={isDreamModalOpen}
+          onClose={() => setIsDreamModalOpen(false)}
         />
       )}
-         </>
-    )}
+
+      {isProfileIncompleteModalOpen && (
+        <div className="profile-incomplete-modal">
+          <div className="modal-h-content">
+            <button
+              className="close-modal-cross"
+              onClick={() => setIsProfileIncompleteModalOpen(false)}
+              aria-label="Close modal"
+            >
+              ✖
+            </button>
+            <p>You are not logged in yet. Please log in and complete the required fields to add your dream!</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

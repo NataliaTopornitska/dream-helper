@@ -24,7 +24,6 @@
     font-weight: 700;
     margin-bottom: 20px;
     line-height: 1.2;
-
   }
 
   &-text {
@@ -54,21 +53,25 @@
 
 .modal-h-content {
   padding: 15px;
-  background-color: #f0f8ff;
   border-radius: 8px;
-  color: black;
+  color: rgb(37, 37, 37);
   text-align: center;
   line-height: normal;
   position: relative;
   padding-top: 40px;
+  background-color: white;
+  max-width: 380px;
+  line-height: 22px;
 }
 
 .modal-h-content p {
   padding: 20px;
-  font-size: 19px;
+  font-size: 16px;
   text-align: center;
-  background-color: rgb(228, 238, 247);
-  line-height: normal;
+  background-color: #f0f8ff;
+  line-height: 22px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .close-modal-cross {

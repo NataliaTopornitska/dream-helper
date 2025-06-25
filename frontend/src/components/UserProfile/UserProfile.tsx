@@ -45,7 +45,7 @@ const UserProfile = () => {
     event.target.value = null;
 
     const formData = new FormData();
-    formData.append('avatar', file);
+    formData.append('photo_avatar', file);
 
     try {
       const res = await fetch('http://127.0.0.1:8000/api/v1/profiles/mine/upload_avatar/', {
@@ -181,7 +181,10 @@ const UserProfile = () => {
       <div className="pending-donations-wrapper"><PendingDonations /></div>
 
       {isDreamModalOpen && (
-        <CreateDreamModal onClose={() => setIsDreamModalOpen(false)} />
+        <CreateDreamModal
+          isOpen={isDreamModalOpen}
+          onClose={() => setIsDreamModalOpen(false)}
+        />
       )}
 
       {isProfileIncompleteModalOpen && (
