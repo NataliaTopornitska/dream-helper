@@ -10,7 +10,7 @@ mc anonymous set download local/dreams-media
 mc cors set local/dreams-media <<EOF
 [
   {
-    "AllowedOrigins": ["http://localhost:5173"],
+    "AllowedOrigins": ["http://localhost:5173", "http://127.0.0.1:5173"],
     "AllowedMethods": ["GET"],
     "AllowedHeaders": ["*"],
     "ExposeHeaders": [],
