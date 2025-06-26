@@ -16,8 +16,8 @@ from dreams.models import Dream, Donation
 from utils.email import send_email_with_template
 
 from .validators import (
-  validate_city_country_pair,
-  validate_profile_city_country_validated_data,
+    validate_city_country_pair,
+    validate_profile_city_country_validated_data,
 )
 
 
@@ -49,21 +49,28 @@ class OtherCountrySerializer(serializers.ModelSerializer):
 
 
 class CityCreateSerializer(serializers.ModelSerializer):
-    country = serializers.PrimaryKeyRelatedField(queryset=Country.objects.all(), allow_null=True, required=False)
+    country = serializers.PrimaryKeyRelatedField(
+        queryset=Country.objects.all(), allow_null=True, required=False
+    )
     other_country = serializers.PrimaryKeyRelatedField(
-        queryset=OtherCountry.objects.exclude(name__in=Subquery(Country.objects.values("name"))),
+        queryset=OtherCountry.objects.exclude(
+            name__in=Subquery(Country.objects.values("name"))
+        ),
         allow_null=True,
-        required=False
+        required=False,
     )
 
     class Meta:
         model = City
-        fields = ("id", "country",  "other_country", "name")
-
+        fields = ("id", "country", "other_country", "name")
 
     def validate(self, data):
         city_name = data.get("name").strip().title()
-        country = data.get("other_country") if data.get("other_country") else data.get("country")
+        country = (
+            data.get("other_country")
+            if data.get("other_country")
+            else data.get("country")
+        )
 
         del data["other_country"]
         if city_name and country:
@@ -114,7 +121,8 @@ class DreamerProfileCreateSerializer(serializers.ModelSerializer):
         default=None,
     )
     city = serializers.PrimaryKeyRelatedField(
-        queryset=City.objects.all(), required=False,
+        queryset=City.objects.all(),
+        required=False,
         allow_null=True,
         default=None,
     )
@@ -186,12 +194,12 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
         default=None,
     )
     city = serializers.PrimaryKeyRelatedField(
-        queryset=City.objects.all(),
-        required=False, allow_null=True, default=None
+        queryset=City.objects.all(), required=False, allow_null=True, default=None
     )
     # other_city = CityCreateSerializer()
     other_city = serializers.CharField(
-        required=False, allow_blank=True,
+        required=False,
+        allow_blank=True,
     )
 
     class Meta:
@@ -208,6 +216,12 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
             "created_at",
         )
 
+    def validate(self, attrs):
+        print("===================VALIDATION======================")
+        return validate_profile_city_country_validated_data(
+            attrs, instance=self.instance
+        )
+
     # def validate_city(self, value):
     #     return validate_city_format(value)
     #
@@ -219,7 +233,7 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
     #     return data
 
     def create(self, validated_data):
-        validate_profile_city_country_validated_data(validated_data)
+        # validate_profile_city_country_validated_data(validated_data)
         # other_country = validated_data.pop("other_country", None)
         # other_city_name = validated_data.pop("other_city", "").strip()
         # selected_country = validated_data.pop("country", None)
@@ -252,21 +266,23 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         """Update a user's Profile,"""
-        other_country = validated_data.pop("other_country", None)
-        if other_country:
-            country, _ = Country.objects.get_or_create(name=other_country.name)
-            validated_data["country"] = country
-
-        other_city = validated_data.pop("other_city", None)
-
-        if other_city:
-            country = validate_city_country_pair(other_city, country=validated_data["country"])
-            city, _ = City.objects.get_or_create(
-                name=other_city, country=country
-            )
-            validated_data["city"] = city
+        # other_country = validated_data.pop("other_country", None)
+        # if other_country:
+        #     country, _ = Country.objects.get_or_create(name=other_country.name)
+        #     validated_data["country"] = country
+        #
+        # other_city = validated_data.pop("other_city", None)
+        #
+        # if other_city:
+        #     country = validate_city_country_pair(other_city, country=validated_data["country"])
+        #     city, _ = City.objects.get_or_create(
+        #         name=other_city, country=country
+        #     )
+        #     validated_data["city"] = city
+        # validate_profile_city_country_validated_data(validated_data, instance=instance)
 
         name = validated_data.pop("name", "")
+
         profile = super().update(instance, validated_data)
         if name:
             profile.name = name
