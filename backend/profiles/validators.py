@@ -40,7 +40,6 @@ def validate_phone_number(phone_number: str) -> str:
         .replace(")", "")
         .replace("+", "")
     )
-    print(f"____ validate_phone_number() =========  START")
     if not numeric_phone_number.isnumeric():
         raise serializers.ValidationError(
             f"The phone number '{numeric_phone_number}' must contain only numbers and especial symbols."
@@ -54,7 +53,6 @@ def validate_phone_number(phone_number: str) -> str:
         raise serializers.ValidationError(
             "Check the entered phone number for compliance."
         )
-    print(f"____ validate_phone_number() ========= FINISH")
     return phone_number
 
 

@@ -109,7 +109,6 @@ class DreamerProfileCreateSerializer(serializers.ModelSerializer):
     name = serializers.CharField(required=False, allow_blank=True)
     phone_number = serializers.CharField(required=False, allow_blank=True)
     direction = serializers.CharField(required=False, allow_blank=True)
-
     email = serializers.EmailField(required=False)
     country = serializers.PrimaryKeyRelatedField(
         queryset=Country.objects.all(), required=False
@@ -146,15 +145,21 @@ class DreamerProfileCreateSerializer(serializers.ModelSerializer):
             "created_at",
         )
 
+    def validate(self, attrs):
+        print("===================VALIDATION  DreamerProfile =====================")
+        return validate_profile_city_country_validated_data(
+            attrs, instance=self.instance
+        )
+
     def validate_dreamer(self, value):
         to_another = self.initial_data.get("to_another", True)
         if not to_another:
             return None  # if to_another=False, ignore dreamer
         return value
 
-    def create(self, validated_data):
+    # def create(self, validated_data):
 
-        validate_profile_city_country_validated_data(validated_data)
+        # validate_profile_city_country_validated_data(validated_data)
         # other_country = validated_data.pop("other_country", None)
         # other_city_name = validated_data.pop("other_city", "").strip()
         # selected_country = validated_data.pop("country", None)
@@ -167,7 +172,7 @@ class DreamerProfileCreateSerializer(serializers.ModelSerializer):
         #     country = selected_country
         # else:
         #     raise serializers.ValidationError(
-        #         "Please select a country or enter your own."
+        #         "Please select a country."
         #     )
         #
         # # Get or create city
@@ -180,7 +185,7 @@ class DreamerProfileCreateSerializer(serializers.ModelSerializer):
         #
         # validated_data["city"] = city
 
-        return DreamerProfile.objects.create(**validated_data)
+        # return DreamerProfile.objects.create(**validated_data)
 
 
 class UserProfileUpdateSerializer(serializers.ModelSerializer):
@@ -217,7 +222,7 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
         )
 
     def validate(self, attrs):
-        print("===================VALIDATION======================")
+        print("===================VALIDATION  UserProfile =====================")
         return validate_profile_city_country_validated_data(
             attrs, instance=self.instance
         )
@@ -232,7 +237,7 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
     #         validate_city_country_pair(city, country)
     #     return data
 
-    def create(self, validated_data):
+    # def create(self, validated_data):
         # validate_profile_city_country_validated_data(validated_data)
         # other_country = validated_data.pop("other_country", None)
         # other_city_name = validated_data.pop("other_city", "").strip()
@@ -246,7 +251,7 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
         #   country = selected_country
         # else:
         #   raise serializers.ValidationError(
-        #     "Please select a country or enter your own."
+        #     "Please select a country."
         #   )
         #
         # # Get or create city
@@ -262,7 +267,7 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
         #   raise serializers.ValidationError("Please select a city or enter your own.")
         #
         # validated_data["city"] = city
-        return UserProfile.objects.create(**validated_data)
+        # return UserProfile.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         """Update a user's Profile,"""
