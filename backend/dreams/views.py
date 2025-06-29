@@ -80,7 +80,7 @@ class CategoryView(
     # mixins.DestroyModelMixin,
     GenericViewSet,
 ):
-    queryset = Category.objects.all()
+    queryset = Category.objects.filter(is_verified=True)
     serializer_class = CategorySerializer
     permission_classes = (IsAdminUser,)
 

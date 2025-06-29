@@ -146,7 +146,12 @@ class DreamRetrieveSerializer(DreamBaseSerializer):
 
     def get_categories(self, obj) -> str:
         categories = obj.categories.all()
-        return ", ".join([category.name for category in categories])
+        return ", ".join(
+            [
+                category.name if category.is_verified else f"{category.name}🔒"
+                for category in categories
+            ]
+        )
 
 
 class DreamCreateSerializer(DreamBaseSerializer):
@@ -357,6 +362,7 @@ class DreamStatisticsSerializer(serializers.Serializer):
 
 class ActivateDreamSerializer(serializers.ModelSerializer):
     status = serializers.CharField(read_only=True, default="Active")
+
     class Meta:
         model = Dream
         fields = (
