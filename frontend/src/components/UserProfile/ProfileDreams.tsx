@@ -30,10 +30,13 @@ const ProfileDreams: React.FC = () => {
   const [activeDream, setActiveDream] = useState<Dream | null>(null);
   const isMobile = useIsMobile();
 
+  const displayCount = isMobile ? 1 : window.innerWidth < 1024 ? 2 : 4;
+
   useEffect(() => {
     async function fetchDreams() {
       try {
         const token = localStorage.getItem('authToken');
+
         if (!token) {
           console.error('No auth token found, please log in');
           return;
@@ -76,7 +79,8 @@ const ProfileDreams: React.FC = () => {
   };
 
   const visibleDreams = () => {
-    const displayCount = isMobile ? 1 : window.innerWidth < 1024 ? 2 : 4;
+    if (dreams.length <= displayCount) return dreams;
+
     const result = [];
 
     for (let i = 0; i < displayCount; i++) {
@@ -98,18 +102,17 @@ const ProfileDreams: React.FC = () => {
           <p>You haven't added any dreams yet.</p>
         ) : (
           <div className="carousel">
-            <button className="carousel-nav prev" onClick={handlePrev}>
-              &lt;
-            </button>
+            {dreams.length > displayCount && (
+              <button className="carousel-nav prev" onClick={handlePrev}>
+                &lt;
+              </button>
+            )}
 
             <div className="carousel-container">
               {visibleDreams().map(dream => {
                 const goalAmount = parseInt(dream.goal) || 1;
                 const collected = dream.total_amount_donations;
-                const progressPercent = Math.min(
-                  (collected / goalAmount) * 100,
-                  100,
-                );
+                const progressPercent = Math.min((collected / goalAmount) * 100, 100);
 
                 return (
                   <div key={dream.id} className="dream-card">
@@ -118,14 +121,13 @@ const ProfileDreams: React.FC = () => {
                         <img
                           src={dream.thumbnail_url || 'home-page/a-dream.png'}
                           alt={dream.title}
-                          onLoad={event => {
-                            event.currentTarget.classList.add('loaded');
-                          }}
-                          onError={event => {
-                            const img = event.currentTarget;
+                          onLoad={e => e.currentTarget.classList.add('loaded')}
+                          onError={e => {
+                            const img = e.currentTarget;
+
                             if (
                               img.src !==
-                              window.location.origin + 'home-page/a-dream.png'
+                              window.location.origin + '/home-page/a-dream.png'
                             ) {
                               img.src = 'home-page/a-dream.png';
                             }
@@ -152,16 +154,19 @@ const ProfileDreams: React.FC = () => {
                         </div>
                       </div>
                     </div>
+
                     <h3 className="dream-title">
                       <Link to={`/dreams/${dream.id}`} className="dream-title-link">
                         {dream.title}
                       </Link>
                     </h3>
+
                     <p className="dream-content">
                       {dream.content.length > 140
                         ? dream.content.slice(0, 140) + '...'
                         : dream.content}
                     </p>
+
                     <div className="dream-progress">
                       <div className="progress-bar">
                         <div
@@ -178,6 +183,7 @@ const ProfileDreams: React.FC = () => {
                         <span>{goalAmount.toLocaleString('fr-FR')}$</span>
                       </div>
                     </div>
+
                     <div className="dream-dreamer-label">
                       {dream.dreamer ? `Initiated for: ${dream.dreamer}` : '\u00A0'}
                     </div>
@@ -186,9 +192,11 @@ const ProfileDreams: React.FC = () => {
               })}
             </div>
 
-            <button className="carousel-nav next" onClick={handleNext}>
-              &gt;
-            </button>
+            {dreams.length > displayCount && (
+              <button className="carousel-nav next" onClick={handleNext}>
+                &gt;
+              </button>
+            )}
           </div>
         )}
       </div>

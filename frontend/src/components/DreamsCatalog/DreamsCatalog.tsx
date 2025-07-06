@@ -15,6 +15,7 @@ import typeOptions from '../../api/type.json';
 import { Link } from 'react-router-dom';
 import SupportModal from '../SupportModal/SupportModal';
 import CreateDreamModal from '../UserProfile/CreateDreamModal';
+import { useSearchParams } from 'react-router-dom';
 
 const DreamsCatalog = () => {
   const [activeTab, setActiveTab] = useState<'Active' | 'Completed' | 'Application'>('Active');
@@ -62,10 +63,39 @@ const DreamsCatalog = () => {
   const [currentUser, setCurrentUser] = useState<{ id: number; email: string; is_staff: boolean; is_active: boolean } | null>(null);
   const [isDreamModalOpen, setIsDreamModalOpen] = useState(false);
   const [isProfileIncompleteModalOpen, setIsProfileIncompleteModalOpen] = useState(false);
-  const [profileData, setProfileData] = useState<any>(null); // або типізуй точніше
+  const [profileData, setProfileData] = useState<any>(null);
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
+  const handleCategoryChange = (category: string) => {
+    const foundCategory = categories.find(
+      (cat) => cat.name === category || cat.id.toString() === category
+    );
+    setSelectedCategory(foundCategory || null);
 
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev);
+
+      if (category === 'all') {
+        newParams.delete('category');
+      } else {
+        newParams.set('category', category);
+      }
+      return newParams;
+    });
+
+    setIsCategoryDropdownOpen(false);
+  };
+
+  const category = searchParams.get('category') || 'all';
+
+  useEffect(() => {
+  if (category === 'all') {
+    setSelectedCategory(null);
+  } else {
+    setSelectedCategory({ id: 0, name: category });
+  }
+}, [category]);
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -127,7 +157,8 @@ const DreamsCatalog = () => {
       headers['Authorization'] = `Token ${token}`;
     }
 
-    const response = await fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams/?status=${activeTab}`, {
+    const categoryParam = category !== 'all' ? `&category=${category}` : '';
+    const response = await fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams/?status=${activeTab}${categoryParam}`, {
       method: 'GET',
       headers: headers,
     });
@@ -187,7 +218,7 @@ const DreamsCatalog = () => {
     fetchDreams();
     fetchCategories();
     fetchCountries();
-  }, [activeTab]);
+  }, [activeTab, category]);
 
   useEffect(() => {
     if (selectedCountry) {
@@ -222,7 +253,7 @@ const DreamsCatalog = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:8000/api/v1/users/profile/', {
+        const res = await fetch('http://127.0.0.1:8000/api/v1/profiles/mine/', {
           headers: {
             Authorization: `Token ${localStorage.getItem('authToken') || ''}`,
           },
@@ -251,6 +282,18 @@ const DreamsCatalog = () => {
       setIsDreamModalOpen(true);
     }
   };
+
+  useEffect(() => {
+    if (category === 'all') {
+      setSelectedCategory(null);
+    } else {
+      const foundCategory = categories.find(cat =>
+        cat.id.toString() === category || cat.name === category
+      );
+      setSelectedCategory(foundCategory || null);
+    }
+  }, [category, categories]);
+
 
   useEffect(() => {
     if (dreams.length > 0) {
@@ -301,6 +344,8 @@ const DreamsCatalog = () => {
     queryParams.append("status", activeTab);
     queryParams.append("page", currentPage.toString());
     queryParams.append("page_size", dreamsPerPage.toString());
+
+    setSearchParams(queryParams);
 
     fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams?${queryParams.toString()}`)
       .then(response => response.json())

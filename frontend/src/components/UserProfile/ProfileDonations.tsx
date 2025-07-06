@@ -25,6 +25,7 @@ const ProfileDonations: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [activeDream, setActiveDream] = useState<Dream | null>(null);
   const isMobile = useIsMobile();
+  const maxDisplayCount = isMobile ? 1 : window.innerWidth < 1024 ? 2 : 4;
 
   useEffect(() => {
     async function fetchDreams() {
@@ -72,7 +73,7 @@ const ProfileDonations: React.FC = () => {
   };
 
   const visibleDreams = () => {
-    const displayCount = isMobile ? 1 : window.innerWidth < 1024 ? 2 : 4;
+    const displayCount = Math.min(maxDisplayCount, dreams.length);
     const result = [];
 
     for (let i = 0; i < displayCount; i++) {
@@ -94,7 +95,7 @@ const ProfileDonations: React.FC = () => {
           <p>You haven't supported any dreams yet.</p>
         ) : (
           <div className="carousel">
-            {dreams.length > 1 && (
+            {dreams.length > maxDisplayCount && (
               <button className="carousel-nav prev" onClick={handlePrev}>
                 &lt;
               </button>
@@ -125,7 +126,7 @@ const ProfileDonations: React.FC = () => {
                       </Link>
                       <div className="user-donation">
                         <div className="donation-label">Your Donation</div>
-                        <div className="donation-amount">{dream.user_amount.toLocaleString('fr-FR')}$</div>
+                        <div className="donation-amount">{dream.user_amount.toLocaleString('fr-FR').replace(/\u00A0/g, ' ')}$</div>
                       </div>
 
                       <div className="dream-stats">
@@ -176,7 +177,7 @@ const ProfileDonations: React.FC = () => {
               })}
             </div>
 
-            {dreams.length > 1 && (
+            {dreams.length > maxDisplayCount && (
               <button className="carousel-nav next" onClick={handleNext}>
                 &gt;
               </button>

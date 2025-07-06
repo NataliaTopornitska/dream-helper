@@ -20,8 +20,8 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
   const [direction, setDirection] = useState('');
   const [isCollective, setIsCollective] = useState(false);
   const [dreamDescription, setDreamDescription] = useState('');
+  const [anotherDreamDescription, setAnotherDreamDescription] = useState('');
 
-  // Завантаження категорій
   useEffect(() => {
     fetch('http://127.0.0.1:8000/api/v1/dreamhelper/categories/')
       .then(res => res.json())
@@ -29,7 +29,6 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
       .catch(err => console.error('Failed to fetch categories:', err));
   }, []);
 
-  // Завантаження країн
   useEffect(() => {
     fetch('http://127.0.0.1:8000/api/v1/profiles/countries/')
       .then(res => res.json())
@@ -37,7 +36,6 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
       .catch(err => console.error('Failed to fetch countries:', err));
   }, []);
 
-  // Завантаження міст при зміні країни
   useEffect(() => {
     if (!selectedCountry) {
       setCities([]);
@@ -63,7 +61,9 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
       goalAmount,
       category: selectedCategory === 'other' ? otherCategory : selectedCategory,
       isForAnother,
+      dreamDescription,
       ...(isForAnother && {
+        anotherDreamDescription,
         personFullName,
         personPhoneNumber,
         personCountry: selectedCountry ? selectedCountry.id : null,
@@ -74,11 +74,9 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
         direction,
         isCollective,
       }),
-      ...(isForAnother && { dreamDescription }),
     };
 
     console.log('Dream Data:', formData);
-    // Тут можеш відправити formData на сервер
   };
 
   return (
@@ -116,7 +114,6 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
               </div>
 
               <div className="create-form-group">
-                <label htmlFor="goal-amount">Goal</label>
                 <input
                   type="number"
                   id="goal-amount"
@@ -139,12 +136,10 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
                   {categories.map(cat => (
                     <option key={cat.id} value={cat.name}>{cat.name}</option>
                   ))}
-                  <option value="other">Other</option>
                 </select>
               </div>
 
               <div className="create-form-group">
-                {/* <label htmlFor="other-category-input">Other Category</label> */}
                 <input
                   type="text"
                   id="other-category-input"
@@ -166,6 +161,19 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
                 </label>
               </div>
             </div>
+
+          </div>
+          <div className="create-section">
+            <h3 className="tell-us_dream">Tell us about your dream</h3>
+            <p className="describe-us">
+              Describe your dream in more detail. What do you want to achieve or experience? Why is it important to you?Open up about your dream in a heartfelt way. Describe your emotions, your hopes, and what this dream means to you. Help others feel connected to your journey so they understand why it matters.
+            </p>
+            <textarea
+              placeholder="Your text here"
+              value={dreamDescription}
+              onChange={e => setDreamDescription(e.target.value)}
+              required
+            />
           </div>
 
           {isForAnother && (
@@ -178,7 +186,7 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
                 <div className="create-grid-2">
                   <div className="create-form-group">
                     <label htmlFor="person-full-name">
-                      Name of the person you create dream for <span className="required-star">*</span>
+                      Name of the person you create dream for <span className="required-stars">*</span>
                     </label>
                     <input
                       id="person-full-name"
@@ -191,7 +199,7 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
 
                   <div className="create-form-group">
                     <label htmlFor="person-phone-number">
-                      Phone of the person you create dream for <span className="required-star">*</span>
+                      Phone of the person you create dream for <span className="required-stars">*</span>
                     </label>
                     <input
                       id="person-phone-number"
@@ -204,7 +212,7 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
 
                    <div className="create-form-group">
                     <label htmlFor="person-country">
-                      Country of the person you create dream for <span className="required-star">*</span>
+                      Country of the person you create dream for <span className="required-stars">*</span>
                     </label>
                     <select
                       id="person-country"
@@ -224,18 +232,24 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
                   </div>
 
                   <div className="create-form-group">
-                    <label htmlFor="person-other-country">Other country</label>
-                    <input
+                    <label htmlFor="person-other-country">
+                      Other country <span className="required-stars" style={{ visibility: 'hidden' }}>*</span>
+                    </label>
+                    <select
                       id="person-other-country"
-                      placeholder="Other country"
                       value={otherCountry}
                       onChange={e => setOtherCountry(e.target.value)}
-                    />
+                    >
+                      <option value="">Select other country</option>
+                      {countries.map(country => (
+                        <option key={country.id} value={country.name}>{country.name}</option>
+                      ))}
+                    </select>
                   </div>
 
                    <div className="create-form-group">
                     <label htmlFor="person-city">
-                      City of the person you create dream for <span className="required-star">*</span>
+                      City of the person you create dream for <span className="required-stars">*</span>
                     </label>
                     <select
                       id="person-city"
@@ -255,10 +269,12 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
                   </div>
 
                   <div className="create-form-group">
-                    <label htmlFor="person-other-city">Other city</label>
+                    <label htmlFor="person-other-city">
+                      Other city <span className="required-stars" style={{ visibility: 'hidden' }}>*</span>
+                    </label>
                     <input
                       id="person-other-city"
-                      placeholder="Other city"
+                      placeholder="Enter city"
                       value={otherCity}
                       onChange={e => setOtherCity(e.target.value)}
                     />
@@ -286,14 +302,15 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
               </div>
 
               <div className="create-section">
-                <h3 className='tell-us'>Tell us about your dream</h3>
+                <h3 className='tell-us'>Tell us about your dream for another</h3>
                 <p className='describe-us'>
-                  Describe your dream in more detail. What do you want to achieve or experience? Why is it important to you?Open up about your dream in a heartfelt way. Describe your emotions, your hopes, and what this dream means to you. Help others feel connected to your journey so they understand why it matters.
+                  Describe your dream in more detail...
                 </p>
                 <textarea
-                  placeholder="Your text here"
-                  value={dreamDescription}
-                  onChange={e => setDreamDescription(e.target.value)}
+                  placeholder="Their dream description"
+                  value={anotherDreamDescription}
+                  onChange={e => setAnotherDreamDescription(e.target.value)}
+                  required
                 />
               </div>
             </>

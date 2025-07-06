@@ -4,8 +4,9 @@ import './PendingDonations.scss';
 interface Donation {
   id: number;
   date: string;
-  dream: string;
-  amount: number;
+  dream: number;
+  title: string;
+  amount: number | string;
   url_payment: string;
 }
 
@@ -14,26 +15,42 @@ const PendingDonations = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (!token) return;
+    const fetchDonations = () => {
+      const token = localStorage.getItem('authToken');
+      if (!token) return;
 
-    fetch('http://127.0.0.1:8000/api/v1/profiles/mine/prepared_donations/', {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Token ${token}`,
-      },
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error('Failed to fetch prepared donations');
-        }
-        return res.status === 204 ? [] : res.json();
+      fetch('http://127.0.0.1:8000/api/v1/profiles/mine/prepared_donations/', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Token ${token}`,
+        },
       })
-      .then((data) => setDonations(data))
-      .catch((err) => {
-        console.error('Fetch error:', err);
-        setError('error');
-      });
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error('Failed to fetch prepared donations');
+          }
+          return res.status === 204 ? [] : res.json();
+        })
+        .then((data) => setDonations(data))
+        .catch((err) => {
+          console.error('Fetch error:', err);
+          setError('error');
+        });
+    };
+
+    fetchDonations();
+
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        fetchDonations();
+      }
+    };
+
+    window.addEventListener('pageshow', onPageShow);
+
+    return () => {
+      window.removeEventListener('pageshow', onPageShow);
+    };
   }, []);
 
   const formatDate = (dateString: string) => {
@@ -84,19 +101,25 @@ const PendingDonations = () => {
       <div className="pending-table">
         {donations.map((donation) => (
           <div className="pending-row" key={donation.id}>
-            <span>Date</span>
-            <span>{formatDate(donation.date)}</span>
+            <div className="col col-date">
+              <span>Date</span>
+              <span>{formatDate(donation.date)}</span>
+            </div>
             <div className="divider" />
-            <span>Dream Name</span>
-            <span>{donation.dream}</span>
+
+            <div className="col col-title">
+              <span>Dream Name</span>
+              <span>{donation.title}</span>
+            </div>
             <div className="divider" />
-            <span>Amount</span>
-            <span>{Number(donation.amount).toLocaleString()} $</span>
+
+            <div className="col col-amount">
+              <span>Amount</span>
+              <span>{Number(donation.amount).toLocaleString()} $</span>
+            </div>
             <div className="divider" />
-            <button
-              className="cancel-btn"
-              onClick={() => cancelDonation(donation.id)}
-            >
+
+            <button className="cancel-btn" onClick={() => cancelDonation(donation.id)}>
               Cancel Donation
             </button>
             <a

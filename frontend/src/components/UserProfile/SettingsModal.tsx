@@ -49,7 +49,12 @@ const SettingsModal = ({ isOpen, onClose }) => {
     })
       .then(res => res.json())
       .then(profile => {
-        setName(profile.name || '');
+        if (profile.name) {
+          const rawName = profile.is_collective && profile.name.startsWith('"') && profile.name.endsWith('"')
+            ? profile.name.slice(1, -1)
+            : profile.name;
+          setName(rawName);
+        }
         setPhone(profile.phone_number || '');
         setDirection(profile.direction || '');
         setIsCollective(profile.is_collective || false);
@@ -172,6 +177,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
               </label>
               <input
                 id="name"
+                placeholder="Your Full Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className={errors.name ? 'input-error' : ''}
@@ -180,9 +186,12 @@ const SettingsModal = ({ isOpen, onClose }) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="phone">Phone Number</label>
+              <label htmlFor="phone">
+                Phone Number <span className="required-star" style={{ visibility: 'hidden' }}>*</span>
+              </label>
               <input
                 id="phone"
+                placeholder="Your Phone Number"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
               />
@@ -215,12 +224,21 @@ const SettingsModal = ({ isOpen, onClose }) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="otherCountry">Other country</label>
-              <input
+              <label htmlFor="otherCountry">
+                Other country <span className="required-star" style={{ visibility: 'hidden' }}>*</span>
+              </label>
+              <select
                 id="otherCountry"
                 value={otherCountry}
                 onChange={(e) => setOtherCountry(e.target.value)}
-              />
+              >
+                <option value="">Select Other Country</option>
+                {countries.map((country) => (
+                  <option key={country.id} value={country.name}>
+                    {country.name}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
@@ -249,9 +267,12 @@ const SettingsModal = ({ isOpen, onClose }) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="otherCity">Other city</label>
+              <label htmlFor="otherCity">
+                Other city <span className="required-star" style={{ visibility: 'hidden' }}>*</span>
+              </label>
               <input
                 id="otherCity"
+                placeholder="Name of Your City"
                 value={otherCity}
                 onChange={(e) => setOtherCity(e.target.value)}
               />
@@ -260,9 +281,12 @@ const SettingsModal = ({ isOpen, onClose }) => {
 
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="direction">Direction</label>
+              <label htmlFor="direction">
+                Direction <span className="required-star" style={{ visibility: 'hidden' }}>*</span>
+              </label>
               <input
                 id="direction"
+                placeholder="Name of Your Direction"
                 value={direction}
                 onChange={(e) => setDirection(e.target.value)}
               />
