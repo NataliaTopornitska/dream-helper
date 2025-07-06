@@ -1,5 +1,6 @@
 from rest_framework import generics, mixins, status
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.exceptions import NotAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
@@ -65,14 +66,11 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_object(self):
-        if not self.request.user.is_active:
-            return Response(
-                {
-                    "error": "We are very sorry, but your account is not activated. First you need to activate the link from the letter you received to your email."
-                },
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
-        return self.request.user.userprofile
+      if not self.request.user.is_active:
+        raise NotAuthenticated(
+          detail="We are very sorry, but your account is not activated. Please activate your account via the email link."
+        )
+      return self.request.user.userprofile
 
     def get_serializer_class(self):
         if self.request.method in ("PUT", "PATCH"):
@@ -184,16 +182,20 @@ class UploadAvatarView(APIView):
         file = request.FILES.get("photo_avatar")
         if not file:
             return Response(
-              {"error": "There is no file. "
-                          "Select a file of the following format: jpg, webp, jfif & png."},
-                  status=status.HTTP_400_BAD_REQUEST
+                {
+                    "error": "There is no file. "
+                    "Select a file of the following format: jpg, webp, jfif & png."
+                },
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
         # check MIME
         if not file.content_type.startswith("image/"):
             return Response(
-                {"error": "Uploaded file is not an image. "
-                          "Allowed formats: jpg, webp, jfif & png."},
+                {
+                    "error": "Uploaded file is not an image. "
+                    "Allowed formats: jpg, webp, jfif & png."
+                },
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -288,14 +290,14 @@ class CountryView(
 @extend_schema(
     summary="List All Countries of World",
     description="List all Countries of World. "
-                "Used for controlled entry of a new Country into the database. \n"
-                "Initialized when the project is first launched by the command: "
-                "python manage.py import_other_countries",
+    "Used for controlled entry of a new Country into the database. \n"
+    "Initialized when the project is first launched by the command: "
+    "python manage.py import_other_countries",
 )
 class OtherCountryView(
-  # mixins.CreateModelMixin,
-  mixins.ListModelMixin,
-  GenericViewSet,
+    # mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    GenericViewSet,
 ):
     queryset = OtherCountry.objects.all()
     serializer_class = OtherCountrySerializer

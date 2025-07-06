@@ -16,7 +16,7 @@ from profiles.serializers import (
     DreamDonatorsSerializer,
 )
 
-from profiles.models import Country, City
+from profiles.models import Country, City, OtherCountry
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -146,7 +146,12 @@ class DreamRetrieveSerializer(DreamBaseSerializer):
 
     def get_categories(self, obj) -> str:
         categories = obj.categories.all()
-        return ", ".join([category.name for category in categories])
+        return ", ".join(
+            [
+                category.name if category.is_verified else f"{category.name}🔒"
+                for category in categories
+            ]
+        )
 
 
 class DreamCreateSerializer(DreamBaseSerializer):
@@ -173,23 +178,11 @@ class DreamCreateSerializer(DreamBaseSerializer):
         try:
             dreamer = None
             to_another = validated_data.get("to_another")
-            if to_another is False:
-                validated_data.pop("dreamer", None)
-            else:
+            if to_another:
                 dreamer_data = validated_data.pop("dreamer", None)
-                # create Dreamer if dreamer_data
-                if dreamer_data and any(dreamer_data.values()):  # check that not empty
-
-                    if isinstance(dreamer_data.get("country"), Country):
-                        dreamer_data["country"] = dreamer_data["country"].id
-                    if isinstance(dreamer_data.get("city"), City):
-                        dreamer_data["city"] = dreamer_data["city"].id
-
-                    dreamer_serializer = DreamerProfileCreateSerializer(
-                        data=dreamer_data
-                    )
-                    dreamer_serializer.is_valid(raise_exception=True)
-                    dreamer = dreamer_serializer.save()
+                if dreamer_data:
+                    # create Dreamer
+                    dreamer = DreamerProfile.objects.create(**dreamer_data)
 
             categories_data = validated_data.pop("categories", [])
 
@@ -369,6 +362,7 @@ class DreamStatisticsSerializer(serializers.Serializer):
 
 class ActivateDreamSerializer(serializers.ModelSerializer):
     status = serializers.CharField(read_only=True, default="Active")
+
     class Meta:
         model = Dream
         fields = (

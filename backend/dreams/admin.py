@@ -17,11 +17,13 @@ class CategoryAdmin(ModelAdmin):
         "id",
         "name",
         "description",
+        "is_verified",
     )
     search_fields = (
         "id",
         "name",
     )
+    list_editable = ("is_verified", )
 
 
 @admin.register(Comment)

@@ -19,6 +19,7 @@ from drf_spectacular.utils import extend_schema
 
 from .models import Category, Dream, Donation, Comment, Follower
 from .pagination import DreamSetPagination
+from .permissions import IsAdminOrIsOwner
 from .serializers import (
     CategorySerializer,
     DreamCreateSerializer,
@@ -80,7 +81,7 @@ class CategoryView(
     # mixins.DestroyModelMixin,
     GenericViewSet,
 ):
-    queryset = Category.objects.all()
+    queryset = Category.objects.filter(is_verified=True)
     serializer_class = CategorySerializer
     permission_classes = (IsAdminUser,)
 
@@ -128,7 +129,6 @@ class DreamViewSet(
         # only admins can see all of dreams
         if self.action == "list" and not self.request.user.is_staff:
             queryset = queryset.filter(status__in=["Active", "Completed"])
-
         return queryset
 
     def get_permissions(self):
@@ -139,6 +139,8 @@ class DreamViewSet(
             return [IsAdminUser()]
         if self.action in ("create", "upload_dream_photo"):  # create only AuthUser
             return [IsAuthenticated()]
+        if self.action in ("retrieve",):
+            return [IsAdminOrIsOwner()]
         return [AllowAny()]
 
     @extend_schema(

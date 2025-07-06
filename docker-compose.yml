@@ -42,7 +42,7 @@ services:
     networks:
       - dreams_net
 
-  # MinIO server (storage)
+  # MinIO server (storage)#
   minio:
     image: minio/minio:latest
     container_name: minio
