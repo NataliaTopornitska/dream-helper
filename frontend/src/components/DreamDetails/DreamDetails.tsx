@@ -11,22 +11,85 @@ const DreamDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [dream, setDream] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasPermission, setHasPermission] = useState(true);
 
   useEffect(() => {
-    if (!id) return;
+    const fetchData = async () => {
+      try {
+        if (!id) return;
 
-    fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams/${id}/`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+        const token = localStorage.getItem('authToken');
+        console.log('Token:', token);
+
+        let adminCheck = false;
+
+        if (token) {
+          const profileRes = await fetch('http://127.0.0.1:8000/api/v1/users/me/', {
+            headers: {
+              Authorization: `Token ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (profileRes.ok) {
+            const profile = await profileRes.json();
+            console.log('Profile:', profile);
+
+            if (
+              profile.id === 1 &&
+              profile.email?.trim().toLowerCase() === 'az@a.com' &&
+              profile.is_staff === true
+            ) {
+              adminCheck = true;
+              setIsAdmin(true);
+              console.log('Admin access granted');
+            }
+          } else {
+            console.warn('Failed to fetch profile:', profileRes.status);
+          }
+        } else {
+          console.warn('No token found in localStorage');
         }
-        return response.json();
-      })
-      .then(data => setDream(data))
-      .catch(error => console.error('Fetch error:', error));
+
+        const dreamRes = await fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams/${id}/`, {
+          headers: token
+            ? { Authorization: `Token ${token}` }
+            : {},
+        });
+
+        if (!dreamRes.ok) throw new Error('Dream not found');
+        const dreamData = await dreamRes.json();
+
+        console.log('Dream status:', dreamData.status);
+        console.log('Admin check:', adminCheck);
+
+        if (dreamData.status?.toLowerCase() === 'application' && !adminCheck) {
+          setHasPermission(false);
+          return;
+        }
+
+        setDream(dreamData);
+      } catch (err) {
+        console.error('Error loading dream:', err);
+        setHasPermission(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, [id]);
 
-  if (!dream) return <p>Loading...</p>;
+  if (isLoading) return <p>Loading...</p>;
+  if (!hasPermission)
+    return (
+      <p style={{ padding: '2rem', fontSize: '18px' }}>
+        You don't have permission to view this dream.
+      </p>
+    );
+  if (!dream) return <p>Dream not found.</p>;
 
   return (
     <div className={styles.dreamDetails}>
@@ -48,10 +111,14 @@ const DreamDetails = () => {
       <div className={styles.header}>
         <div className={styles.imageWrapper}>
           <img
-            src={dream.photo_url?.trim() || dream.thumbnail_url?.trim() || '/dream-helper/dreams-page/block-1.png'}
+            src={
+              dream.photo_url?.trim() ||
+              dream.thumbnail_url?.trim() ||
+              '/dream-helper/dreams-page/block-1.png'
+            }
             alt={dream.title}
             className={styles.dreamImageStyled}
-            onError={(e) => {
+            onError={e => {
               const target = e.currentTarget as HTMLImageElement;
               target.onerror = null;
               target.src = '/dream-helper/dreams-page/block-1.png';
@@ -60,6 +127,7 @@ const DreamDetails = () => {
         </div>
         <InfoCard dream={dream} />
       </div>
+
       <div className={styles.detailsWrapper}>
         <div className={styles.descriptionSide}>
           <div className={styles.descriptionContainer}>

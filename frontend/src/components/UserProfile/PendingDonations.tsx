@@ -108,7 +108,6 @@ const PendingDonations = () => {
             <div className="divider" />
 
             <div className="col col-title">
-              <span>Dream Name</span>
               <span>{donation.title}</span>
             </div>
             <div className="divider" />

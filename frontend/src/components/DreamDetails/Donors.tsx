@@ -33,7 +33,7 @@ const Donors = ({ dreamId }: { dreamId: number }) => {
   }
 
   if (!donors || donors.length === 0) {
-    return <div className={styles.donorsContainer}>No donors yet.</div>;
+    return <div style={{ textAlign: 'center', padding: '20px', color: '#191919' }}>No donors yet.</div>;
   }
 
   return (

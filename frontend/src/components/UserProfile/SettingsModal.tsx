@@ -17,6 +17,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const [otherCity, setOtherCity] = useState('');
   const [isLocationFixed, setIsLocationFixed] = useState(false);
   const [errors, setErrors] = useState({});
+  const [otherCountries, setOtherCountries] = useState([]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -41,6 +42,11 @@ const SettingsModal = ({ isOpen, onClose }) => {
       .then(res => res.json())
       .then(setCountries)
       .catch(err => console.error('Error loading countries:', err));
+
+    fetch('http://127.0.0.1:8000/api/v1/profiles/other_countries/')
+      .then(res => res.json())
+      .then(setOtherCountries)
+      .catch(err => console.error('Error loading other countries:', err));
 
     fetch('http://127.0.0.1:8000/api/v1/profiles/mine/', {
       headers: {
@@ -233,7 +239,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                 onChange={(e) => setOtherCountry(e.target.value)}
               >
                 <option value="">Select Other Country</option>
-                {countries.map((country) => (
+                {otherCountries.map((country) => (
                   <option key={country.id} value={country.name}>
                     {country.name}
                   </option>
