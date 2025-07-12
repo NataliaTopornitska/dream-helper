@@ -412,7 +412,11 @@ class UserMyDonationsSerializer(UserMyDreamsSerializer):
 
     def get_user_amount(self, obj) -> float:
         user = self.context.get("request").user
-        donations = Donation.objects.values("amount").filter(donator=user, dream=obj)
+        donations = Donation.objects.values("amount").filter(
+            donator=user,
+            dream=obj,
+            status="Paid",
+        )
         return sum(item["amount"] for item in donations)
 
 
