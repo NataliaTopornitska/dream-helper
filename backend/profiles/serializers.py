@@ -114,7 +114,9 @@ class DreamerProfileCreateSerializer(serializers.ModelSerializer):
         queryset=Country.objects.all(), required=False
     )
     other_country = serializers.PrimaryKeyRelatedField(
-        queryset=OtherCountry.objects.all(),
+        queryset=OtherCountry.objects.exclude(
+            name__in=Subquery(Country.objects.values("name"))
+        ),
         required=False,
         allow_null=True,
         default=None,
@@ -159,33 +161,33 @@ class DreamerProfileCreateSerializer(serializers.ModelSerializer):
 
     # def create(self, validated_data):
 
-        # validate_profile_city_country_validated_data(validated_data)
-        # other_country = validated_data.pop("other_country", None)
-        # other_city_name = validated_data.pop("other_city", "").strip()
-        # selected_country = validated_data.pop("country", None)
-        # selected_city = validated_data.pop("city", None)
-        #
-        # # Get or create country
-        # if other_country:
-        #     country = other_country
-        # elif selected_country:
-        #     country = selected_country
-        # else:
-        #     raise serializers.ValidationError(
-        #         "Please select a country."
-        #     )
-        #
-        # # Get or create city
-        # if other_city_name:
-        #     city, _ = City.objects.get_or_create(name=other_city_name, country=country)
-        # elif selected_city:
-        #     city = selected_city
-        # else:
-        #     raise serializers.ValidationError("Please select a city or enter your own.")
-        #
-        # validated_data["city"] = city
+    # validate_profile_city_country_validated_data(validated_data)
+    # other_country = validated_data.pop("other_country", None)
+    # other_city_name = validated_data.pop("other_city", "").strip()
+    # selected_country = validated_data.pop("country", None)
+    # selected_city = validated_data.pop("city", None)
+    #
+    # # Get or create country
+    # if other_country:
+    #     country = other_country
+    # elif selected_country:
+    #     country = selected_country
+    # else:
+    #     raise serializers.ValidationError(
+    #         "Please select a country."
+    #     )
+    #
+    # # Get or create city
+    # if other_city_name:
+    #     city, _ = City.objects.get_or_create(name=other_city_name, country=country)
+    # elif selected_city:
+    #     city = selected_city
+    # else:
+    #     raise serializers.ValidationError("Please select a city or enter your own.")
+    #
+    # validated_data["city"] = city
 
-        # return DreamerProfile.objects.create(**validated_data)
+    # return DreamerProfile.objects.create(**validated_data)
 
 
 class UserProfileUpdateSerializer(serializers.ModelSerializer):
@@ -193,7 +195,9 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
         queryset=Country.objects.all(), required=False, allow_null=True, default=None
     )
     other_country = serializers.PrimaryKeyRelatedField(
-        queryset=OtherCountry.objects.all(),
+        queryset=OtherCountry.objects.exclude(
+            name__in=Subquery(Country.objects.values("name"))
+        ),
         required=False,
         allow_null=True,
         default=None,
@@ -238,36 +242,36 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
     #     return data
 
     # def create(self, validated_data):
-        # validate_profile_city_country_validated_data(validated_data)
-        # other_country = validated_data.pop("other_country", None)
-        # other_city_name = validated_data.pop("other_city", "").strip()
-        # selected_country = validated_data.pop("country", None)
-        # selected_city = validated_data.pop("city", None)
-        #
-        # # Get or create country
-        # if other_country:
-        #   country = other_country
-        # elif selected_country:
-        #   country = selected_country
-        # else:
-        #   raise serializers.ValidationError(
-        #     "Please select a country."
-        #   )
-        #
-        # # Get or create city
-        # if other_city_name:
-        #   new_country, _ = Country.objects.get_or_create(name=country.name)
-        #   country = validate_city_country_pair(other_city_name, country=new_country)
-        #
-        #   city, _ = City.objects.get_or_create(name=other_city_name, country=country)
-        #
-        # elif selected_city:
-        #   city = selected_city
-        # else:
-        #   raise serializers.ValidationError("Please select a city or enter your own.")
-        #
-        # validated_data["city"] = city
-        # return UserProfile.objects.create(**validated_data)
+    # validate_profile_city_country_validated_data(validated_data)
+    # other_country = validated_data.pop("other_country", None)
+    # other_city_name = validated_data.pop("other_city", "").strip()
+    # selected_country = validated_data.pop("country", None)
+    # selected_city = validated_data.pop("city", None)
+    #
+    # # Get or create country
+    # if other_country:
+    #   country = other_country
+    # elif selected_country:
+    #   country = selected_country
+    # else:
+    #   raise serializers.ValidationError(
+    #     "Please select a country."
+    #   )
+    #
+    # # Get or create city
+    # if other_city_name:
+    #   new_country, _ = Country.objects.get_or_create(name=country.name)
+    #   country = validate_city_country_pair(other_city_name, country=new_country)
+    #
+    #   city, _ = City.objects.get_or_create(name=other_city_name, country=country)
+    #
+    # elif selected_city:
+    #   city = selected_city
+    # else:
+    #   raise serializers.ValidationError("Please select a city or enter your own.")
+    #
+    # validated_data["city"] = city
+    # return UserProfile.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         """Update a user's Profile,"""
