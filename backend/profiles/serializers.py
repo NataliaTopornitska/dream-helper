@@ -318,6 +318,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "is_collective",
             "created_at",
             "avatar_url",
+            "thumbnail_url",
             "city",
             "country",
         )
