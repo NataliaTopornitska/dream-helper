@@ -7,42 +7,48 @@ const DreamsHero: React.FC = () => {
   const [isDreamModalOpen, setIsDreamModalOpen] = useState(false);
   const [isProfileIncompleteModalOpen, setIsProfileIncompleteModalOpen] = useState(false);
   const [profileData, setProfileData] = useState<any>(null);
-  const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
-  const fetchProfile = async () => {
-    try {
-      const res = await fetch('http://127.0.0.1:8000/api/v1/profiles/mine/', {
-        headers: {
-          Authorization: `Token ${localStorage.getItem('authToken') || ''}`,
-        },
-      });
-      if (!res.ok) throw new Error('Failed to fetch profile');
-      const data = await res.json();
-      setProfileData(data);
-    } catch (err) {
-      console.error('Error fetching profile:', err);
-    }
-  };
-
   useEffect(() => {
-    const storedEmail = localStorage.getItem('username');
-    if (storedEmail) setEmail(storedEmail);
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch('http://127.0.0.1:8000/api/v1/profiles/mine/', {
+          headers: {
+            Authorization: `Token ${localStorage.getItem('authToken') || ''}`,
+          },
+        });
+        if (!res.ok) throw new Error('Failed to fetch profile');
+        const data = await res.json();
+        setProfileData(data);
+      } catch (err) {
+        console.error('Error fetching profile:', err);
+      }
+    };
 
     fetchProfile();
 
-    const shouldShowModal = localStorage.getItem('showIncompleteModal') === 'true';
-    if (shouldShowModal) {
+    // show modal if redirected from profile check
+    if (localStorage.getItem('showIncompleteModal') === 'true') {
       setIsProfileIncompleteModalOpen(true);
       localStorage.removeItem('showIncompleteModal');
     }
   }, []);
 
+  const email = profileData?.email || localStorage.getItem('username') || '';
+
   const handleAddDream = () => {
-    if (profileData && profileData.name && profileData.name !== email) {
-      setIsDreamModalOpen(true);
-    } else {
+    const authToken = localStorage.getItem('authToken');
+
+    if (!authToken) {
+      // not logged in
       setIsProfileIncompleteModalOpen(true);
+    } else if (!profileData?.name || profileData.name.trim() === '' || profileData.name === email) {
+      // profile incomplete
+      localStorage.setItem('showIncompleteModal', 'true');
+      navigate('/profile');
+    } else {
+      // profile complete
+      setIsDreamModalOpen(true);
     }
   };
 
@@ -75,7 +81,7 @@ const DreamsHero: React.FC = () => {
       </div>
 
       {isDreamModalOpen && (
-        <CreateDreamModal onClose={() => setIsDreamModalOpen(false)} />
+        <CreateDreamModal isOpen={isDreamModalOpen} onClose={() => setIsDreamModalOpen(false)} />
       )}
 
       {isProfileIncompleteModalOpen && (
@@ -88,17 +94,7 @@ const DreamsHero: React.FC = () => {
             >
               ✖
             </button>
-            <p>Your profile is incomplete! Please add information in the profile settings.</p>
-            <img
-              src="/dream-helper/profile-page/settings.png"
-              alt="Settings"
-              className="settings-icon-modal"
-              onClick={() => {
-                navigate('/profile');
-                setIsProfileIncompleteModalOpen(false);
-              }}
-              style={{ cursor: 'pointer', width: '30px', height: '30px' }}
-            />
+            <p>You are not logged in yet. Please log in and complete the required fields to add your dream!</p>
           </div>
         </div>
       )}
@@ -107,4 +103,3 @@ const DreamsHero: React.FC = () => {
 };
 
 export default DreamsHero;
-

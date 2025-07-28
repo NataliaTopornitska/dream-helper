@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './CreateDreamModal.scss';
 
 const CreateDreamModal = ({ isOpen, onClose }) => {
@@ -61,30 +61,103 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  const handleSubmit = e => {
-    e.preventDefault();
+const fileInputRef = useRef(null);
 
-    const formData = {
-      dreamTitle,
-      goalAmount,
-      category: selectedCategory === 'other' ? otherCategory : selectedCategory,
-      isForAnother,
-      dreamDescription,
-      ...(isForAnother && {
-        personFullName,
-        personPhoneNumber,
-        personCountry: selectedCountry ? selectedCountry.id : null,
-        personOtherCountry: otherCountry,
-        personCity: selectedCity ? selectedCity.id : null,
-        personOtherCity: otherCity,
-        personAddress,
-        direction,
-        isCollective,
-      }),
+const handlePhotoClick = () => {
+  if (fileInputRef.current) {
+    fileInputRef.current.click();
+  }
+};
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const token = localStorage.getItem('authToken');
+
+  let forWhom = null;
+
+  if (isForAnother) {
+    forWhom = {
+      name: personFullName,
+      phone: personPhoneNumber,
+      country: selectedCountry?.id || null,
+      other_country: otherCountry || '',
+      city: selectedCity?.id || null,
+      other_city: otherCity || '',
+      address: personAddress || '',
+      direction: direction || '',
+      is_collective: isCollective,
     };
+  }
 
-    console.log('Dream Data:', formData);
+  const payload = {
+    title: dreamTitle,
+    to_another: isForAnother,
+    categories: selectedCategory && selectedCategory !== 'other'
+      ? [categories.find(cat => cat.name === selectedCategory)?.id || 0]
+      : [],
+    new_category: selectedCategory === 'other' ? otherCategory : '',
+    content: dreamDescription,
+    goal: Number(goalAmount),
+    for_whom: isForAnother ? forWhom : null,
   };
+
+  try {
+    const res = await fetch('http://127.0.0.1:8000/api/v1/dreamhelper/dreams/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+      const errData = await res.json();
+      console.error('Failed to create dream:', errData);
+      alert('Could not submit dream: ' + (errData?.error || res.statusText));
+      return;
+    }
+
+    const data = await res.json();
+    console.log('Dream created successfully:', data);
+
+    const dreamId = data.id;
+
+    // Після створення мрії — надсилаємо фото, якщо вибране
+    const file = fileInputRef.current?.files[0];
+
+    if (file) {
+      const formData = new FormData();
+      formData.append('photo', file);
+
+      const uploadRes = await fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams/${dreamId}/upload_dream_photo/`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Token ${token}`
+        },
+        body: formData
+      });
+
+      if (!uploadRes.ok) {
+        const uploadError = await uploadRes.json();
+        console.error('Photo upload failed:', uploadError);
+        alert('Dream created, but photo upload failed.');
+      } else {
+        console.log('Photo uploaded successfully.');
+      }
+    }
+
+    // alert(`Your dream was shared successfully! Dream ID: ${dreamId}`);
+    onClose();
+
+  } catch (err) {
+    console.error('Unexpected error:', err);
+    alert('Something went wrong while submitting your dream.');
+  }
+};
+
+
 
   const dreamDescriptionBlock = (
     <div className="create-section">
@@ -111,12 +184,18 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
         <form onSubmit={handleSubmit}>
           <div className="create-modal-content">
             <div className="create-left-section">
-              <div className="create-photo-upload">
-                <img src="/dream-helper/profile-page/add-dream.png" alt="Upload" />
+             <div className="create-photo-upload" onClick={handlePhotoClick} style={{ cursor: 'pointer' }}>
+              <img src="/dream-helper/profile-page/add-dream.png" alt="Upload" />
                 <p>
                   *The photo you upload doesn’t have to be of yourself, but it should represent a dream you want to make come true.
                 </p>
-                <input type="file" id="dream-photo" style={{ display: 'none' }} />
+                <input
+                  type="file"
+                  id="dream-photo"
+                  ref={fileInputRef}
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                />
               </div>
             </div>
 

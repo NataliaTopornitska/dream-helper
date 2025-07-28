@@ -130,20 +130,39 @@
 
 
 @media (max-width: 767px) {
+.hero-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+   .hero-title,
   .hero-text {
-   max-width: 250px;
-   font-family: "Reddit Sans Condensed", sans-serif;
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    box-sizing: border-box;
   }
 
-  div.hero-content {
-    margin: 0;
-    width: 250px;
+  div.hero-content{
+      width: 100% !important;
   }
 
-  div.hero-image {
- min-width: 100px;
- min-height: 100px;
+  .hero-image {
+    margin-top: 20px;
+    max-width: 300px;
   }
+
+  p.hero-text {
+    max-width: 100%;
+    font-family: "Reddit Sans Condensed", sans-serif;
+  }
+
+button.outline-btn,
+button.btn-solid {
+  width: 100%;
+  max-width: 100%;
+}
 
   button.btn {
     &-outline {
@@ -157,6 +176,14 @@
       padding: 12px 16px;
       white-space: nowrap;
     }
+  }
+
+    button.outline-btn {
+    font-size: 15px;
+    font-weight: 600;
+    padding: 12px 16px;
+    border-radius: 40px;
+    white-space: nowrap;
   }
 
   .hero-container {

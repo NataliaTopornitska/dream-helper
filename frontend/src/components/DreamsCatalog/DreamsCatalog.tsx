@@ -377,12 +377,18 @@ const DreamsCatalog = () => {
     setDreamsPerPage(8);
   };
 
-const getCurrentDreams = () => {
-    const startIndex = (currentPage - 1) * dreamsPerPage;
-    const endIndex = startIndex + dreamsPerPage;
+// const getCurrentDreams = () => {
+//     const startIndex = (currentPage - 1) * dreamsPerPage;
+//     const endIndex = startIndex + dreamsPerPage;
 
-    return filteredDreams.slice(startIndex, endIndex);
-  };
+//     return filteredDreams.slice(startIndex, endIndex);
+//   };
+
+
+const getCurrentDreams = () => {
+  return filteredDreams;
+};
+
 
   const handlePageChange = (pageUrl: string) => {
     if (pageUrl) {
