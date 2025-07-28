@@ -1,3 +1,6 @@
+from django_filters import rest_framework as filters
+from django.db.models import Subquery
+
 from rest_framework import generics, mixins, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.exceptions import NotAuthenticated
@@ -52,7 +55,6 @@ from utils.storage import (
 from app.settings import RESIZE_PHOTO_AVATAR
 
 from .filters import CityFilter
-from django_filters import rest_framework as filters
 
 
 # @extend_schema(
@@ -66,11 +68,11 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_object(self):
-      if not self.request.user.is_active:
-        raise NotAuthenticated(
-          detail="We are very sorry, but your account is not activated. Please activate your account via the email link."
-        )
-      return self.request.user.userprofile
+        if not self.request.user.is_active:
+            raise NotAuthenticated(
+                detail="We are very sorry, but your account is not activated. Please activate your account via the email link."
+            )
+        return self.request.user.userprofile
 
     def get_serializer_class(self):
         if self.request.method in ("PUT", "PATCH"):
@@ -299,7 +301,9 @@ class OtherCountryView(
     mixins.ListModelMixin,
     GenericViewSet,
 ):
-    queryset = OtherCountry.objects.all()
+    queryset = (
+        OtherCountry.objects.exclude(name__in=Subquery(Country.objects.values("name"))),
+    )
     serializer_class = OtherCountrySerializer
     permission_classes = [
         AllowAny,
