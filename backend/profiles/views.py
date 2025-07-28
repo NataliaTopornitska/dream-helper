@@ -301,8 +301,8 @@ class OtherCountryView(
     mixins.ListModelMixin,
     GenericViewSet,
 ):
-    queryset = (
-        OtherCountry.objects.exclude(name__in=Subquery(Country.objects.values("name"))),
+    queryset = OtherCountry.objects.exclude(
+        name__in=Subquery(Country.objects.values("name"))
     )
     serializer_class = OtherCountrySerializer
     permission_classes = [
