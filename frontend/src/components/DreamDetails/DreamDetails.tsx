@@ -20,7 +20,12 @@ const DreamDetails = () => {
       try {
         if (!id) return;
 
+        setIsLoading(true);
+        setHasPermission(true);
+        setDream(null);
+
         const token = localStorage.getItem('authToken');
+
         console.log('Token:', token);
 
         let adminCheck = false;
@@ -70,7 +75,7 @@ const DreamDetails = () => {
         console.log('Admin check:', adminCheck);
 
         if (dreamData.status?.toLowerCase() === 'application') {
-          const isOwner = profile && profile.name === dreamData.owner;
+          const isOwner = profile && profile.id === dreamData.owner_id;
 
           if (!(adminCheck || isOwner)) {
             setHasPermission(false);
@@ -129,6 +134,7 @@ const DreamDetails = () => {
             className={styles.dreamImageStyled}
             onError={e => {
               const target = e.currentTarget as HTMLImageElement;
+
               target.onerror = null;
               target.src = '/dream-helper/dreams-page/block-1.png';
             }}
