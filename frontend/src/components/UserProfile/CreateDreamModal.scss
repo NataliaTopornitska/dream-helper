@@ -288,6 +288,11 @@ textarea {
   color: #686767;
 }
 
+.error-border {
+  border: 1px solid red !important;
+}
+
+
 @media (max-width: 768px) {
   .create-modal {
     padding: 20px;
@@ -325,3 +330,5 @@ textarea {
     font-size: 16px;
   }
 }
+
+

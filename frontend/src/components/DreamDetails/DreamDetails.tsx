@@ -24,6 +24,7 @@ const DreamDetails = () => {
         console.log('Token:', token);
 
         let adminCheck = false;
+        let profile: any = null;
 
         if (token) {
           const profileRes = await fetch('http://127.0.0.1:8000/api/v1/users/me/', {
@@ -34,7 +35,7 @@ const DreamDetails = () => {
           });
 
           if (profileRes.ok) {
-            const profile = await profileRes.json();
+            profile = await profileRes.json();
             console.log('Profile:', profile);
 
             if (
@@ -62,12 +63,20 @@ const DreamDetails = () => {
         if (!dreamRes.ok) throw new Error('Dream not found');
         const dreamData = await dreamRes.json();
 
+        console.log('DreamData:', dreamData);
+        console.log('Profile:', profile);
+
         console.log('Dream status:', dreamData.status);
         console.log('Admin check:', adminCheck);
 
-        if (dreamData.status?.toLowerCase() === 'application' && !adminCheck) {
-          setHasPermission(false);
-          return;
+        if (dreamData.status?.toLowerCase() === 'application') {
+          const isOwner = profile && profile.name === dreamData.owner;
+
+          if (!(adminCheck || isOwner)) {
+            setHasPermission(false);
+
+            return;
+          }
         }
 
         setDream(dreamData);

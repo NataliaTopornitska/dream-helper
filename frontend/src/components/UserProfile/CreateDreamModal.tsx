@@ -21,6 +21,7 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
   const [direction, setDirection] = useState('');
   const [isCollective, setIsCollective] = useState(false);
   const [dreamDescription, setDreamDescription] = useState('');
+  const [categoryError, setCategoryError] = useState(false);
 
   useEffect(() => {
     fetch('http://127.0.0.1:8000/api/v1/dreamhelper/categories/')
@@ -47,6 +48,7 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
     if (!selectedCountry) {
       setCities([]);
       setSelectedCity(null);
+
       return;
     }
 
@@ -61,103 +63,116 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-const fileInputRef = useRef(null);
+  const fileInputRef = useRef(null);
 
-const handlePhotoClick = () => {
-  if (fileInputRef.current) {
-    fileInputRef.current.click();
-  }
-};
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  const token = localStorage.getItem('authToken');
-
-  let forWhom = null;
-
-  if (isForAnother) {
-    forWhom = {
-      name: personFullName,
-      phone: personPhoneNumber,
-      country: selectedCountry?.id || null,
-      other_country: otherCountry || '',
-      city: selectedCity?.id || null,
-      other_city: otherCity || '',
-      address: personAddress || '',
-      direction: direction || '',
-      is_collective: isCollective,
-    };
-  }
-
-  const payload = {
-    title: dreamTitle,
-    to_another: isForAnother,
-    categories: selectedCategory && selectedCategory !== 'other'
-      ? [categories.find(cat => cat.name === selectedCategory)?.id || 0]
-      : [],
-    new_category: selectedCategory === 'other' ? otherCategory : '',
-    content: dreamDescription,
-    goal: Number(goalAmount),
-    for_whom: isForAnother ? forWhom : null,
+  const handlePhotoClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
-  try {
-    const res = await fetch('http://127.0.0.1:8000/api/v1/dreamhelper/dreams/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Token ${token}`
-      },
-      body: JSON.stringify(payload)
-    });
 
-    if (!res.ok) {
-      const errData = await res.json();
-      console.error('Failed to create dream:', errData);
-      alert('Could not submit dream: ' + (errData?.error || res.statusText));
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const token = localStorage.getItem('authToken');
+
+    if (!selectedCategory && !otherCategory) {
+      setCategoryError(true);
+    } else {
+      setCategoryError(false);
+    }
+
+    if (!dreamTitle || !dreamDescription || !goalAmount || (!selectedCategory && !otherCategory)) {
       return;
     }
 
-    const data = await res.json();
-    console.log('Dream created successfully:', data);
+    let forWhom = null;
 
-    const dreamId = data.id;
-
-    // Після створення мрії — надсилаємо фото, якщо вибране
-    const file = fileInputRef.current?.files[0];
-
-    if (file) {
-      const formData = new FormData();
-      formData.append('photo', file);
-
-      const uploadRes = await fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams/${dreamId}/upload_dream_photo/`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Token ${token}`
-        },
-        body: formData
-      });
-
-      if (!uploadRes.ok) {
-        const uploadError = await uploadRes.json();
-        console.error('Photo upload failed:', uploadError);
-        alert('Dream created, but photo upload failed.');
-      } else {
-        console.log('Photo uploaded successfully.');
-      }
+    if (isForAnother) {
+      forWhom = {
+        name: personFullName,
+        phone: personPhoneNumber,
+        country: selectedCountry?.id || null,
+        other_country: otherCountry || '',
+        city: selectedCity?.id || null,
+        other_city: otherCity || '',
+        address: personAddress || '',
+        direction: direction || '',
+        is_collective: isCollective,
+      };
     }
 
-    // alert(`Your dream was shared successfully! Dream ID: ${dreamId}`);
-    onClose();
+    const payload = {
+      title: dreamTitle,
+      to_another: isForAnother,
+      categories:
+        selectedCategory && selectedCategory !== 'other'
+          ? [categories.find(cat => cat.name === selectedCategory)?.id]
+          : [],
+      new_category: otherCategory || '',
+      content: dreamDescription,
+      goal: Number(goalAmount),
+      for_whom: isForAnother ? forWhom : null,
+    };
 
-  } catch (err) {
-    console.error('Unexpected error:', err);
-    alert('Something went wrong while submitting your dream.');
-  }
-};
+    try {
+      const res = await fetch('http://127.0.0.1:8000/api/v1/dreamhelper/dreams/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${token}`
+        },
+        body: JSON.stringify(payload)
+      });
 
+      if (!res.ok) {
+        const errData = await res.json();
 
+        console.error('Failed to create dream:', errData);
+        alert('Could not submit dream: ' + (errData?.error || res.statusText));
+
+        return;
+      }
+
+      const data = await res.json();
+
+      console.log('Dream created successfully:', data);
+
+      const dreamId = data.id;
+
+      const file = fileInputRef.current?.files[0];
+
+      if (file) {
+        const formData = new FormData();
+
+        formData.append('photo', file);
+
+        const uploadRes = await fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams/${dreamId}/upload_dream_photo/`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Token ${token}`
+          },
+          body: formData
+        });
+
+        if (!uploadRes.ok) {
+          const uploadError = await uploadRes.json();
+
+          console.error('Photo upload failed:', uploadError);
+          alert('Dream created, but photo upload failed.');
+        } else {
+          console.log('Photo uploaded successfully.');
+        }
+      }
+
+      onClose();
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      alert('Something went wrong while submitting your dream.');
+    }
+  };
 
   const dreamDescriptionBlock = (
     <div className="create-section">
@@ -168,11 +183,23 @@ const handleSubmit = async (e) => {
       <textarea
         placeholder="Your text here"
         value={dreamDescription}
-        onChange={e => setDreamDescription(e.target.value)}
+        onChange={e => {
+          setDreamDescription(e.target.value);
+          e.target.setCustomValidity("");
+        }}
+        onInvalid={e => e.target.setCustomValidity("Please fill out this field.")}
         required
       />
     </div>
   );
+
+  const validateCategory = () => {
+    if (!selectedCategory && !otherCategory) {
+      setCategoryError(true);
+    } else {
+      setCategoryError(false);
+    }
+  };
 
   return (
     <div className="create-modal-overlay" onClick={onClose}>
@@ -185,7 +212,7 @@ const handleSubmit = async (e) => {
           <div className="create-modal-content">
             <div className="create-left-section">
              <div className="create-photo-upload" onClick={handlePhotoClick} style={{ cursor: 'pointer' }}>
-              <img src="/dream-helper/profile-page/add-dream.png" alt="Upload" />
+                <img src="/dream-helper/profile-page/add-dream.png" alt="Upload" />
                 <p>
                   *The photo you upload doesn’t have to be of yourself, but it should represent a dream you want to make come true.
                 </p>
@@ -205,14 +232,18 @@ const handleSubmit = async (e) => {
                 <label htmlFor="dream-title">Write a short title that reflects the essence of your dream</label>
                 <input
                   type="text"
-                  id="dream-title"
                   placeholder="Your Dream"
-                  maxLength={45}
                   value={dreamTitle}
-                  onChange={e => setDreamTitle(e.target.value)}
+                  onChange={(e) => {
+                    setDreamTitle(e.target.value);
+                    e.target.setCustomValidity("");
+                  }}
+                  onInvalid={(e) => e.target.setCustomValidity("Please fill out this field.")}
                   required
+                  maxLength={45}
                 />
               </div>
+
 
               <div className="create-form-group">
                 <input
@@ -220,7 +251,11 @@ const handleSubmit = async (e) => {
                   id="goal-amount"
                   placeholder="Enter your amount"
                   value={goalAmount}
-                  onChange={e => setGoalAmount(e.target.value)}
+                  onChange={e => {
+                    setGoalAmount(e.target.value);
+                    e.target.setCustomValidity("");
+                  }}
+                  onInvalid={e => e.target.setCustomValidity("Please fill out this field.")}
                   required
                   min={1}
                 />
@@ -230,8 +265,13 @@ const handleSubmit = async (e) => {
                 <select
                   id="category-select"
                   value={selectedCategory}
-                  onChange={e => setSelectedCategory(e.target.value)}
-                  required
+                  onChange={e => {
+                    setSelectedCategory(e.target.value);
+                    e.target.setCustomValidity("");
+                  }}
+                  onInvalid={e => e.target.setCustomValidity("Please select an option.")}
+                  required={!otherCategory}
+                  className="create-form-input"
                 >
                   <option value="">Select Category</option>
                   {categories.map(cat => (
@@ -246,7 +286,11 @@ const handleSubmit = async (e) => {
                   id="other-category-input"
                   placeholder="Other Category"
                   value={otherCategory}
-                  onChange={e => setOtherCategory(e.target.value)}
+                  onChange={e => {
+                    setOtherCategory(e.target.value);
+                    const select = document.getElementById("category-select");
+                    if (select) select.setCustomValidity("");
+                  }}
                 />
               </div>
 
@@ -282,7 +326,11 @@ const handleSubmit = async (e) => {
                       id="person-full-name"
                       placeholder="Full name"
                       value={personFullName}
-                      onChange={e => setPersonFullName(e.target.value)}
+                      onChange={e => {
+                        setPersonFullName(e.target.value);
+                        e.target.setCustomValidity("");
+                      }}
+                      onInvalid={e => e.target.setCustomValidity("Please fill out this field.")}
                       required
                     />
                   </div>
@@ -295,8 +343,23 @@ const handleSubmit = async (e) => {
                       id="person-phone-number"
                       placeholder="Phone number"
                       value={personPhoneNumber}
-                      onChange={e => setPersonPhoneNumber(e.target.value)}
+                      onChange={e => {
+                        const onlyNums = e.target.value.replace(/\D/g, "");
+                        setPersonPhoneNumber(onlyNums);
+                        e.target.setCustomValidity("");
+                      }}
+                      onInvalid={e => {
+                        if (e.target.validity.valueMissing) {
+                          e.target.setCustomValidity("Please fill out this field.");
+                        } else if (e.target.validity.patternMismatch) {
+                          e.target.setCustomValidity("Minimum 6 digits, numbers only.");
+                        } else {
+                          e.target.setCustomValidity("");
+                        }
+                      }}
+                      onInput={e => e.target.setCustomValidity("")}
                       required
+                      pattern="[0-9]{6,}"
                     />
                   </div>
 
@@ -311,8 +374,11 @@ const handleSubmit = async (e) => {
                         const country = countries.find(c => c.id === Number(e.target.value)) || null;
                         setSelectedCountry(country);
                         setSelectedCity(null);
+                        e.target.setCustomValidity("");
                       }}
-                      required
+                      onInvalid={e => e.target.setCustomValidity("Please select a country.")}
+                      required={!otherCountry}
+                      disabled={!!otherCountry}
                     >
                       <option value="">Select country</option>
                       {countries.map(country => (
@@ -341,15 +407,18 @@ const handleSubmit = async (e) => {
                     <label htmlFor="person-city">
                       City <span className="required-stars">*</span>
                     </label>
+
                     <select
                       id="person-city"
                       value={selectedCity?.id || ''}
                       onChange={e => {
                         const city = cities.find(c => c.id === Number(e.target.value)) || null;
                         setSelectedCity(city);
+                        e.target.setCustomValidity("");
                       }}
-                      disabled={!selectedCountry}
-                      required
+                      onInvalid={e => e.target.setCustomValidity("Please select an option.")}
+                      disabled={!selectedCountry || !!otherCountry}
+                      required={!!selectedCountry && !otherCountry}
                     >
                       <option value="">Select city</option>
                       {cities.map(city => (
@@ -367,6 +436,15 @@ const handleSubmit = async (e) => {
                       placeholder="Enter city"
                       value={otherCity}
                       onChange={e => setOtherCity(e.target.value)}
+                      required={!!otherCountry}
+                      onInvalid={e => {
+                        if (e.target.validity.valueMissing) {
+                          e.target.setCustomValidity("Please fill out this field.");
+                        } else {
+                          e.target.setCustomValidity("");
+                        }
+                      }}
+                      onInput={e => e.target.setCustomValidity("")}
                     />
                   </div>
 
