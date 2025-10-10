@@ -93,6 +93,7 @@ class DreamBaseSerializer(serializers.ModelSerializer):
 
 class DreamRetrieveSerializer(DreamBaseSerializer):
     owner = serializers.SerializerMethodField()
+    owner_id = serializers.SerializerMethodField()
     categories = serializers.SerializerMethodField()
     city = serializers.SerializerMethodField()
     is_collective = serializers.SerializerMethodField()
@@ -102,6 +103,7 @@ class DreamRetrieveSerializer(DreamBaseSerializer):
         fields = (
             "id",
             "owner",
+            "owner_id",
             "title",
             "to_another",
             "dreamer",
@@ -143,6 +145,10 @@ class DreamRetrieveSerializer(DreamBaseSerializer):
         profile = getattr(user, "userprofile", None)
         name = getattr(profile, "name", None) if profile else None
         return name if name else user.email
+
+    def get_owner_id(self, obj) -> int:
+        user = obj.owner
+        return user.id
 
     def get_categories(self, obj) -> str:
         categories = obj.categories.all()
