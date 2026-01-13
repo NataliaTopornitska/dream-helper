@@ -61,9 +61,9 @@ const Header: React.FC = () => {
                         Dreams
                       </Link>
                     </li>
-                    <li className={`nav-item ${isActive('/top-donors') ? 'active' : ''}`}>
-                      <Link to="/top-donors" onClick={() => setIsMenuOpen(false)}>
-                        Top Donors
+                    <li className={`nav-item ${isActive('/about-us') ? 'active' : ''}`}>
+                      <Link to="/about-us" onClick={() => setIsMenuOpen(false)}>
+                        About us
                       </Link>
                     </li>
                   </ul>
@@ -98,8 +98,8 @@ const Header: React.FC = () => {
                 <li className={`nav-item ${isActive('/dreams') ? 'active' : ''}`}>
                   <Link to="/dreams">Dreams</Link>
                 </li>
-                <li className={`nav-item ${isActive('/top-donors') ? 'active' : ''}`}>
-                  <Link to="/top-donors">Top Donors</Link>
+                <li className={`nav-item ${isActive('/avout-us') ? 'active' : ''}`}>
+                  <Link to="/about-us">About us</Link>
                 </li>
               </ul>
             </nav>

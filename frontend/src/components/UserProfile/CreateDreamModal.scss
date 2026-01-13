@@ -83,8 +83,20 @@
 .create-photo-upload img {
   width: 320px;
   height: auto;
+  max-height: 300px;
   margin-bottom: 7px;
+  object-fit:contain;
+  display: block;
 }
+
+// .create-photo-upload img {
+//   width: 320px;
+//   height: 200px;
+//   object-fit: cover;
+//   border-radius: 16px;
+//   margin-bottom: 7px;
+//   display: block;
+// }
 
 .create-photo-upload p {
   font-family: "Reddit Sans Condensed", sans-serif;

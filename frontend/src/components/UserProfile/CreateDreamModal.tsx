@@ -65,16 +65,41 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
 
   const fileInputRef = useRef(null);
 
+  const [previewImage, setPreviewImage] = useState('/dream-helper/profile-page/add-dream.png');
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setPreviewImage(imageUrl);
+    }
+  };
+
   const handlePhotoClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
   };
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+  if (isForAnother) {
+      const citySelect = document.getElementById("person-city");
+      const cityInput = document.getElementById("person-other-city");
+
+      if (!selectedCity && !otherCity.trim()) {
+        if (citySelect) {
+          citySelect.setCustomValidity("Please select a city or fill 'Other city'.");
+          citySelect.reportValidity();
+        }
+        return;
+      } else {
+        if (citySelect) citySelect.setCustomValidity("");
+        if (cityInput) cityInput.setCustomValidity("");
+      }
+    }
 
     const token = localStorage.getItem('authToken');
 
@@ -211,8 +236,8 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
         <form onSubmit={handleSubmit}>
           <div className="create-modal-content">
             <div className="create-left-section">
-             <div className="create-photo-upload" onClick={handlePhotoClick} style={{ cursor: 'pointer' }}>
-                <img src="/dream-helper/profile-page/add-dream.png" alt="Upload" />
+              <div className="create-photo-upload" onClick={handlePhotoClick} style={{ cursor: 'pointer' }}>
+                <img src={previewImage} alt="Upload" />
                 <p>
                   *The photo you upload doesn’t have to be of yourself, but it should represent a dream you want to make come true.
                 </p>
@@ -222,6 +247,7 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
                   ref={fileInputRef}
                   accept="image/*"
                   style={{ display: 'none' }}
+                  onChange={handleFileChange}
                 />
               </div>
             </div>
@@ -243,7 +269,6 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
                   maxLength={45}
                 />
               </div>
-
 
               <div className="create-form-group">
                 <input
@@ -407,44 +432,42 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
                     <label htmlFor="person-city">
                       City <span className="required-stars">*</span>
                     </label>
-
                     <select
                       id="person-city"
                       value={selectedCity?.id || ''}
                       onChange={e => {
                         const city = cities.find(c => c.id === Number(e.target.value)) || null;
                         setSelectedCity(city);
-                        e.target.setCustomValidity("");
+                        setOtherCity('');
+                        e.target.setCustomValidity('');
                       }}
-                      onInvalid={e => e.target.setCustomValidity("Please select an option.")}
+                      onInvalid={e => e.target.setCustomValidity('Please select a city.')}
                       disabled={!selectedCountry || !!otherCountry}
-                      required={!!selectedCountry && !otherCountry}
+                      required={!otherCity.trim()}
                     >
                       <option value="">Select city</option>
                       {cities.map(city => (
-                        <option key={city.id} value={city.id}>{city.name}</option>
+                        <option key={city.id} value={city.id}>
+                          {city.name}
+                        </option>
                       ))}
                     </select>
                   </div>
 
                   <div className="create-form-group">
-                    <label htmlFor="person-other-city">
-                      Other city
-                    </label>
+                    <label htmlFor="person-other-city">Other city</label>
                     <input
                       id="person-other-city"
                       placeholder="Enter city"
                       value={otherCity}
-                      onChange={e => setOtherCity(e.target.value)}
-                      required={!!otherCountry}
-                      onInvalid={e => {
-                        if (e.target.validity.valueMissing) {
-                          e.target.setCustomValidity("Please fill out this field.");
-                        } else {
-                          e.target.setCustomValidity("");
-                        }
+                      onChange={e => {
+                        const val = e.target.value;
+                        setOtherCity(val);
+                        if (val.trim()) setSelectedCity(null);
+                        e.target.setCustomValidity('');
                       }}
-                      onInput={e => e.target.setCustomValidity("")}
+                      onInvalid={e => e.target.setCustomValidity('Please enter a city.')}
+                      required={!selectedCity}
                     />
                   </div>
 
