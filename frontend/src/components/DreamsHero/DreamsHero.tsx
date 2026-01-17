@@ -27,7 +27,6 @@ const DreamsHero: React.FC = () => {
 
     fetchProfile();
 
-    // show modal if redirected from profile check
     if (localStorage.getItem('showIncompleteModal') === 'true') {
       setIsProfileIncompleteModalOpen(true);
       localStorage.removeItem('showIncompleteModal');
@@ -40,14 +39,11 @@ const DreamsHero: React.FC = () => {
     const authToken = localStorage.getItem('authToken');
 
     if (!authToken) {
-      // not logged in
       setIsProfileIncompleteModalOpen(true);
     } else if (!profileData?.name || profileData.name.trim() === '' || profileData.name === email) {
-      // profile incomplete
       localStorage.setItem('showIncompleteModal', 'true');
       navigate('/profile');
     } else {
-      // profile complete
       setIsDreamModalOpen(true);
     }
   };
@@ -76,7 +72,7 @@ const DreamsHero: React.FC = () => {
           </button>
         </div>
         <div className="dreamshero-image">
-          <img src="/dream-helper/dreams-page/block-1.png" alt="Block 1" />
+          <img src="/dream-helper/dreams-page/block-1.png" alt="image" />
         </div>
       </div>
 

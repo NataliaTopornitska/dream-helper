@@ -89,15 +89,6 @@
   display: block;
 }
 
-// .create-photo-upload img {
-//   width: 320px;
-//   height: 200px;
-//   object-fit: cover;
-//   border-radius: 16px;
-//   margin-bottom: 7px;
-//   display: block;
-// }
-
 .create-photo-upload p {
   font-family: "Reddit Sans Condensed", sans-serif;
   font-size: 13px;
@@ -305,7 +296,7 @@ textarea {
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .create-modal {
     padding: 20px;
   }

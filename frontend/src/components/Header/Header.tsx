@@ -98,7 +98,7 @@ const Header: React.FC = () => {
                 <li className={`nav-item ${isActive('/dreams') ? 'active' : ''}`}>
                   <Link to="/dreams">Dreams</Link>
                 </li>
-                <li className={`nav-item ${isActive('/avout-us') ? 'active' : ''}`}>
+                <li className={`nav-item ${isActive('/about-us') ? 'active' : ''}`}>
                   <Link to="/about-us">About us</Link>
                 </li>
               </ul>

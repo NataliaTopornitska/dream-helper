@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage';
 import DreamsPage from './pages/DreamsPage';
 import DreamDetailsPage from './pages/DreamDetailsPage';
 import UserProfilePage from './pages/UserProfilePage';
+import AboutPage from './pages/AboutPage';
 
 import './App.scss';
 
@@ -19,6 +20,7 @@ function AppContent() {
           <Route path="/" element={<HomePage />} />
           <Route path="/dreams" element={<DreamsPage />} />
           <Route path="/dreams/:id" element={<DreamDetailsPage />} />
+          <Route path="/about-us" element={<AboutPage />} />
           <Route path="/profile" element={<UserProfilePage />} />
         </Routes>
       </main>
