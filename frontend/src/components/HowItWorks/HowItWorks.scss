@@ -1,12 +1,11 @@
 .how-it-works {
   position: relative;
-  padding: 64px 0 60px;
+  padding: 64px 20px 60px;
   overflow: hidden;
 
   &-container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
-    padding: 0 20px;
   }
 
   &-title {
@@ -88,7 +87,7 @@
 
 
 
-/* Tablet styles */
+
 @media (min-width: 768px) and (max-width: 1024px) {
   .how-it-works-title {
     font-size: 32px;
@@ -112,7 +111,8 @@
   }
 }
 
-/* Mobile styles */
+
+
 @media (max-width: 767px) {
   .how-it-works-title {
     font-size: 28px;

@@ -1,13 +1,13 @@
 .hero {
   position: relative;
-  padding: 40px 0 20px;
+  padding: 40px 20px 20px;
   overflow: hidden;
   color: #191919;
 
   &-container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
-    padding: 40px 20px 0;
+    padding: 40px 0 0 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -129,11 +129,31 @@
 }
 
 
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .btn {
+    &-outline {
+      padding: 10px 30px;
+    }
+
+    &-solid {
+      padding: 10px 30px;
+    }
+  }
+
+  .hero-container {
+    padding-top: 20px;
+  }
+}
+
+
+
 @media (max-width: 767px) {
 .hero-container {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    padding-left: 0;
   }
 
    .hero-title,
@@ -190,22 +210,3 @@ button.btn-solid {
     padding-top: 20px;
   }
 }
-
-@media (min-width: 768px) and (max-width: 1024px) {
-  .btn {
-    &-outline {
-      padding: 10px 30px;
-    }
-
-    &-solid {
-      padding: 10px 30px;
-    }
-  }
-
-  .hero-container {
-    padding-top: 20px;
-  }
-}
-
-
-

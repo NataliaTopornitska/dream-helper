@@ -1,19 +1,14 @@
 .footer {
-  padding: 60px 0;
+  padding: 60px 20px;
   position: relative;
   border-top: 1px solid #191919;
 
   &-container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
-    padding: 0 20px;
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
     gap: 30px;
-
-    @media (min-width: 768px) and (max-width: 1024px) {
-      width: 85%;
-    }
 
     .mobile & {
       grid-template-columns: 1fr;
@@ -209,9 +204,13 @@
   }
 }
 
-/* Tablet styles */
+
+
+
 @media (min-width: 768px) and (max-width: 1024px) {
   .footer {
+    padding: 60px 20px;
+
     &-container {
       grid-template-columns: 1fr 2fr;
     }

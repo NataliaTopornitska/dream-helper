@@ -1,11 +1,10 @@
 .dream-carousel {
-  padding: 60px 0;
+  padding: 60px 20px;
   position: relative;
 
   &-container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
-    padding: 0 20px;
   }
 
   &-title {
@@ -74,18 +73,7 @@
   flex-direction: column;
   border: 1px solid #191919;
 
-  @media (min-width: 768px) {
-    min-width: calc(50% - 10px);
-    max-width: calc(50% - 10px);
-  }
-
-  @media (min-width: 1024px) {
-    min-width: calc(25% - 15px);
-    max-width: calc(25% - 15px);
-  }
-
   &:hover {
-    // transform: scale(1.01);
     transform: translateY(-5px);
   }
 
@@ -148,22 +136,6 @@
     font-family: "Inter", sans-serif;
   }
 
-  @media (max-width: 1024px) {
-    .dream-image img {
-      max-width: 260px;
-      text-align: center;
-      margin-top: 15px;
-    }
-  }
-
-  @media (max-width: 767px) {
-    .dream-image img {
-      max-width: 200px;
-      text-align: center;
-      margin-top: 15px;
-    }
-  }
-
   .dream-title {
     padding: 15px 20px 10px;
     font-size: 20px;
@@ -178,10 +150,10 @@
     color: #191919;
   }
 
-    .dream-title-link {
+  .dream-title-link {
   text-decoration: none;
   color: inherit;
-}
+  }
 
   .dream-content {
     font-family: "Inter", sans-serif;
@@ -259,7 +231,32 @@
   }
 }
 
-/* Mobile styles */
+.dream-card-link {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+
+
+
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .dream-card {
+    min-width: calc(25% - 15px);
+    max-width: calc(25% - 15px);
+
+    .dream-image img {
+      max-width: 260px;
+      text-align: center;
+      margin-top: 15px;
+    }
+  }
+}
+
+
+
 @media (max-width: 767px) {
   .dream-carousel-title {
     font-size: 26px;
@@ -271,13 +268,14 @@
   }
 
   .dream-card {
+    // min-width: calc(50% - 10px);
+    // max-width: calc(50% - 10px);
     min-width: 100%;
   }
-}
 
-.dream-card-link {
-  display: block;
-  width: 100%;
-  text-decoration: none;
-  color: inherit;
+  .dream-image img {
+    max-width: 200px;
+    text-align: center;
+    margin-top: 15px;
+  }
 }

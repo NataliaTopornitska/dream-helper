@@ -1,15 +1,10 @@
 .statistics {
   position: relative;
-  padding: 60px 0;
+  padding: 60px 20px;
 
   &-container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
-    padding: 0 20px;
-
-    @media (min-width: 768px) and (max-width: 1024px) {
-      width: 85%;
-    }
   }
 
   &-title {
@@ -22,14 +17,6 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
-
-    @media (max-width: 767px) {
-      grid-template-columns: 1fr;
-    }
-
-    @media (min-width: 768px) and (max-width: 1023px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
   }
 }
 
@@ -70,9 +57,31 @@
   }
 }
 
- @media (max-width: 767px) {
-     .statistics {
-    padding: 40px 0;
-  }
+
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .statistics {
+
+    &-container {
+      width: 85%;
     }
+
+    &-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+
+ @media (max-width: 767px) {
+  .statistics {
+    padding: 40px 20px;
+
+    &-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+  }
+}
 

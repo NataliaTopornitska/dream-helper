@@ -1,10 +1,9 @@
 .vision {
-  padding: 60px 0;
+  padding: 60px 20px;
 
   &-container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
-    padding: 0 20px;
   }
 
   &-content {
@@ -78,11 +77,12 @@
   }
 }
 
-/* Tablet styles */
+
+
 @media (min-width: 768px) and (max-width: 1024px) {
   .vision {
     &-content {
-      padding: 40px;
+      padding: 40px 0;
     }
 
     &-image {
@@ -99,11 +99,11 @@
   }
 }
 
-/* Mobile styles */
+
 @media (max-width: 767px) {
   .vision {
     &-content {
-      padding: 30px;
+      padding: 30px 0;
     }
   }
 }

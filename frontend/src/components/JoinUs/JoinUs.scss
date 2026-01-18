@@ -1,11 +1,10 @@
 .join-us {
   position: relative;
-  padding: 80px 0 124px;
+  padding: 80px 20px 124px;
 
   &-container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
-    padding: 0 20px;
   }
 
   &-title {
@@ -114,7 +113,9 @@
   text-decoration: none;
 }
 
-/* Mobile styles */
+
+
+
 @media (max-width: 767px) {
   .join-us {
     &-title {
