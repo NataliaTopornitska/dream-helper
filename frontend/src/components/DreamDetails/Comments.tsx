@@ -30,6 +30,7 @@ const Comments = ({ dreamId }: CommentsProps) => {
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
+
     setIsLoggedIn(!!token);
 
     if (token) {
@@ -42,9 +43,7 @@ const Comments = ({ dreamId }: CommentsProps) => {
         .then(data => {
           setUserProfile(data);
         })
-        .catch(err => {
-          console.error('Error fetching user profile:', err);
-        });
+        .catch(() => {});
     }
   }, []);
 
@@ -52,13 +51,12 @@ const Comments = ({ dreamId }: CommentsProps) => {
     const fetchComments = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/api/v1/dreamhelper/dreams/${dreamId}/all_comments/`
+          `http://127.0.0.1:8000/api/v1/dreamhelper/dreams/${dreamId}/all_comments/`,
         );
         const data = await response.json();
 
         setComments(data);
       } catch (error) {
-        console.error('Error fetching comments:', error);
         setComments([]);
       } finally {
         setLoading(false);
@@ -71,10 +69,13 @@ const Comments = ({ dreamId }: CommentsProps) => {
   }, [dreamId]);
 
   const handleSend = async () => {
-    if (!newComment.trim()) return;
+    if (!newComment.trim()) {
+      return;
+    }
 
     if (!isLoggedIn) {
       alert('Please log in to post comments.');
+
       return;
     }
 
@@ -92,13 +93,14 @@ const Comments = ({ dreamId }: CommentsProps) => {
           body: JSON.stringify({
             content: newComment.trim(),
           }),
-        }
+        },
       );
 
       const data = await response.json();
 
       if (!response.ok) {
         alert(data.detail || 'Failed to post comment.');
+
         return;
       }
 
@@ -106,14 +108,13 @@ const Comments = ({ dreamId }: CommentsProps) => {
 
       setLoading(true);
       const fetchResponse = await fetch(
-        `http://127.0.0.1:8000/api/v1/dreamhelper/dreams/${dreamId}/all_comments/`
+        `http://127.0.0.1:8000/api/v1/dreamhelper/dreams/${dreamId}/all_comments/`,
       );
       const allComments = await fetchResponse.json();
 
       setComments(allComments);
       setLoading(false);
     } catch (error) {
-      console.error('Error posting comment:', error);
       alert('Error posting comment');
     }
   };

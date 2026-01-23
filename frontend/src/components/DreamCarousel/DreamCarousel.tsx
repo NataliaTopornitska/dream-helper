@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import './DreamCarousel.scss';
-import randomDreams from '../../api/random_dreams.json';
 import { useIsMobile } from '../../use-mobile';
 import SupportModal from '../SupportModal/SupportModal';
 import { Link } from 'react-router-dom';
@@ -55,8 +54,6 @@ const DreamCarousel: React.FC = () => {
 
         const data = await response.json();
 
-        console.log('Loaded data:', data);
-
         const shuffledDreams = shuffleArray(data);
         let selectedDreams: Dream[] = [];
 
@@ -73,9 +70,7 @@ const DreamCarousel: React.FC = () => {
         }
 
         setDreams(selectedDreams);
-      } catch (error) {
-        console.error('Ошибка загрузки с API:', error);
-      }
+      } catch {}
     }
 
     fetchDreams();
@@ -138,27 +133,27 @@ const DreamCarousel: React.FC = () => {
               return (
                 <div key={dream.id} className="dream-card">
                   <div className="dream-image">
-                      <Link to={`/dreams/${dream.id}`}>
-                    <img
-                      src={dream.thumbnail_url || 'home-page/a-dream.png'}
-                      alt={dream.title}
-                      onLoad={event => {
-                        const img = event.currentTarget;
+                    <Link to={`/dreams/${dream.id}`}>
+                      <img
+                        src={dream.thumbnail_url || 'home-page/a-dream.png'}
+                        alt={dream.title}
+                        onLoad={event => {
+                          const img = event.currentTarget;
 
-                        img.classList.add('loaded');
-                      }}
-                      onError={event => {
-                        const img = event.currentTarget;
+                          img.classList.add('loaded');
+                        }}
+                        onError={event => {
+                          const img = event.currentTarget;
 
-                        if (
-                          img.src !==
-                          window.location.origin + 'home-page/a-dream.png'
-                        ) {
-                          img.src = 'home-page/a-dream.png';
-                        }
-                      }}
-                      className="dream-img"
-                    />
+                          if (
+                            img.src !==
+                            window.location.origin + 'home-page/a-dream.png'
+                          ) {
+                            img.src = 'home-page/a-dream.png';
+                          }
+                        }}
+                        className="dream-img"
+                      />
                     </Link>
                     <div className="dream-stats">
                       <div className="stat-item">
@@ -208,10 +203,11 @@ const DreamCarousel: React.FC = () => {
                       <span>{goalAmount.toLocaleString('en-US')}$</span>
                     </div>
                   </div>
-                  <button className="dream-support-btn"
+                  <button
+                    className="dream-support-btn"
                     onClick={() => setActiveDream(dream)}
                   >
-                   Support
+                    Support
                   </button>
                 </div>
               );

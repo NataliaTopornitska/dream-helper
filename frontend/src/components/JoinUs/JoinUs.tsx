@@ -10,7 +10,8 @@ const JoinUs: React.FC = () => {
 
   const [isDreamModalOpen, setIsDreamModalOpen] = useState(false);
   const [profileData, setProfileData] = useState(null);
-  const [isProfileIncompleteModalOpen, setIsProfileIncompleteModalOpen] = useState(false);
+  const [isProfileIncompleteModalOpen, setIsProfileIncompleteModalOpen] =
+    useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,13 +22,17 @@ const JoinUs: React.FC = () => {
             Authorization: `Token ${localStorage.getItem('authToken') || ''}`,
           },
         });
-        if (!res.ok) throw new Error('Failed to load profile data');
+
+        if (!res.ok) {
+          throw new Error('Failed to load profile data');
+        }
+
         const data = await res.json();
+
         setProfileData(data);
-      } catch (err) {
-        console.error('Failed to load profile data:', err);
-      }
+      } catch (err) {}
     };
+
     fetchProfile();
   }, []);
 
@@ -38,7 +43,11 @@ const JoinUs: React.FC = () => {
 
     if (!authToken) {
       setIsProfileIncompleteModalOpen(true);
-    } else if (!profileData?.name || profileData.name.trim() === '' || profileData.name === email) {
+    } else if (
+      !profileData?.name ||
+      profileData.name.trim() === '' ||
+      profileData.name === email
+    ) {
       localStorage.setItem('showIncompleteModal', 'true');
       navigate('/profile');
     } else {
@@ -55,31 +64,45 @@ const JoinUs: React.FC = () => {
           You can be part of this good cause right now:
         </p>
 
-        <div className={`options-grid ${isMobile ? 'mobile' : ''} ${isTablet ? 'tablet' : ''}`}>
+        <div
+          className={`options-grid ${isMobile ? 'mobile' : ''} ${isTablet ? 'tablet' : ''}`}
+        >
           <div className="option-card">
             <div className="option-image">
-              <img src="/dream-helper/home-page/block6-1.png" alt="Support dream" />
+              <img
+                src="/dream-helper/home-page/block6-1.png"
+                alt="Support dream"
+              />
             </div>
             <h3 className="option-title">Support a Dream</h3>
           </div>
 
           <div className="option-card">
             <div className="option-image">
-              <img src="/dream-helper/home-page/block6-2.png" alt="Submit dream" />
+              <img
+                src="/dream-helper/home-page/block6-2.png"
+                alt="Submit dream"
+              />
             </div>
             <h3 className="option-title">Submit Your Dream</h3>
           </div>
 
           <div className="option-card">
             <div className="option-image">
-              <img src="/dream-helper/home-page/block6-3.png" alt="Share stories" />
+              <img
+                src="/dream-helper/home-page/block6-3.png"
+                alt="Share stories"
+              />
             </div>
             <h3 className="option-title">Share Stories</h3>
           </div>
 
           <div className="option-card">
             <div className="option-image">
-              <img src="/dream-helper/home-page/block6-4.png" alt="Celebrate fulfilled dreams" />
+              <img
+                src="/dream-helper/home-page/block6-4.png"
+                alt="Celebrate fulfilled dreams"
+              />
             </div>
             <h3 className="option-title">Celebrate Fulfilled Dreams</h3>
           </div>
@@ -114,7 +137,10 @@ const JoinUs: React.FC = () => {
             >
               ✖
             </button>
-            <p>You are not logged in yet. Please log in and complete the required fields to add your dream!</p>
+            <p>
+              You are not logged in yet. Please log in and complete the required
+              fields to add your dream!
+            </p>
           </div>
         </div>
       )}

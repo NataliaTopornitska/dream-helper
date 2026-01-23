@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './PendingDonations.scss';
 
 interface Donation {
@@ -17,7 +17,10 @@ const PendingDonations = () => {
   useEffect(() => {
     const fetchDonations = () => {
       const token = localStorage.getItem('authToken');
-      if (!token) return;
+
+      if (!token) {
+        return;
+      }
 
       fetch('http://127.0.0.1:8000/api/v1/profiles/mine/prepared_donations/', {
         headers: {
@@ -25,15 +28,15 @@ const PendingDonations = () => {
           Authorization: `Token ${token}`,
         },
       })
-        .then((res) => {
+        .then(res => {
           if (!res.ok) {
             throw new Error('Failed to fetch prepared donations');
           }
+
           return res.status === 204 ? [] : res.json();
         })
-        .then((data) => setDonations(data))
-        .catch((err) => {
-          console.error('Fetch error:', err);
+        .then(data => setDonations(data))
+        .catch(() => {
           setError('error');
         });
     };
@@ -58,12 +61,16 @@ const PendingDonations = () => {
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
+
     return `${day}.${month}.${year}`;
   };
 
   const cancelDonation = (id: number) => {
     const token = localStorage.getItem('authToken');
-    if (!token) return;
+
+    if (!token) {
+      return;
+    }
 
     fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/donations/${id}/`, {
       method: 'PATCH',
@@ -76,17 +83,17 @@ const PendingDonations = () => {
         url_payment: '',
       }),
     })
-      .then((res) => {
+      .then(res => {
         if (!res.ok) {
           throw new Error('Failed to cancel donation');
         }
+
         return res.json();
       })
       .then(() => {
-        setDonations((prev) => prev.filter((donation) => donation.id !== id));
+        setDonations(prev => prev.filter(donation => donation.id !== id));
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(() => {
         alert('Помилка при скасуванні пожертви');
       });
   };
@@ -99,7 +106,7 @@ const PendingDonations = () => {
     <div className="pending-wrapper">
       <h2>Prepared</h2>
       <div className="pending-table">
-        {donations.map((donation) => (
+        {donations.map(donation => (
           <div className="pending-row" key={donation.id}>
             <div className="col col-date">
               <span>Date</span>
@@ -118,7 +125,10 @@ const PendingDonations = () => {
             </div>
             <div className="divider" />
 
-            <button className="cancel-btn" onClick={() => cancelDonation(donation.id)}>
+            <button
+              className="cancel-btn"
+              onClick={() => cancelDonation(donation.id)}
+            >
               Cancel Donation
             </button>
             <a

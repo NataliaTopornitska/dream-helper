@@ -11,10 +11,7 @@ const SupportButton = ({ dream }: SupportButtonProps) => {
 
   return (
     <>
-      <button
-        className={styles.dButton}
-        onClick={() => setActiveDream(dream)}
-      >
+      <button className={styles.dButton} onClick={() => setActiveDream(dream)}>
         Support
       </button>
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './DreamDetails.module.scss';
 
 const Donors = ({ dreamId }: { dreamId: number }) => {
@@ -10,13 +10,12 @@ const Donors = ({ dreamId }: { dreamId: number }) => {
       try {
         setLoading(true);
         const response = await fetch(
-          `http://127.0.0.1:8000/api/v1/dreamhelper/dreams/${dreamId}/all_donations/`
+          `http://127.0.0.1:8000/api/v1/dreamhelper/dreams/${dreamId}/all_donations/`,
         );
         const data = await response.json();
-        console.log('Fetched donors data:', data);
+
         setDonors(data);
       } catch (error) {
-        console.error('Error fetching donors:', error);
         setDonors([]);
       } finally {
         setLoading(false);
@@ -33,21 +32,28 @@ const Donors = ({ dreamId }: { dreamId: number }) => {
   }
 
   if (!donors || donors.length === 0) {
-    return <div style={{ textAlign: 'center', padding: '20px', color: '#191919' }}>No donors yet.</div>;
+    return (
+      <div style={{ textAlign: 'center', padding: '20px', color: '#191919' }}>
+        No donors yet.
+      </div>
+    );
   }
 
   return (
     <div className={styles.donorsContainer}>
       <h3 className={styles.donorsTitle}>Donors</h3>
       <div className={styles.donorsTable}>
-        {donors.map((donor) => {
+        {donors.map(donor => {
           const avatarSrc =
-            donor.is_anonymous === true || donor.donator_profile?.name === 'Anonymous'
+            donor.is_anonymous === true ||
+            donor.donator_profile?.name === 'Anonymous'
               ? '/dream-helper/dream-details/anonymous.png'
-              : donor.donator_profile?.thumbnail_url || '/dream-helper/profile-page/profile-photo.png';
+              : donor.donator_profile?.thumbnail_url ||
+                '/dream-helper/profile-page/profile-photo.png';
 
           const donorName =
-            donor.is_anonymous === true || donor.donator_profile?.name === 'Anonymous'
+            donor.is_anonymous === true ||
+            donor.donator_profile?.name === 'Anonymous'
               ? 'Anonymous'
               : donor.donator_profile?.name || 'Anonymous';
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './Hero.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import CreateDreamModal from '../UserProfile/CreateDreamModal';
@@ -6,7 +6,8 @@ import CreateDreamModal from '../UserProfile/CreateDreamModal';
 const Hero = () => {
   const [isDreamModalOpen, setIsDreamModalOpen] = useState(false);
   const [profileData, setProfileData] = useState(null);
-  const [isProfileIncompleteModalOpen, setIsProfileIncompleteModalOpen] = useState(false);
+  const [isProfileIncompleteModalOpen, setIsProfileIncompleteModalOpen] =
+    useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,13 +18,17 @@ const Hero = () => {
             Authorization: `Token ${localStorage.getItem('authToken') || ''}`,
           },
         });
-        if (!res.ok) throw new Error('Failed to load profile data');
+
+        if (!res.ok) {
+          throw new Error('Failed to load profile data');
+        }
+
         const data = await res.json();
+
         setProfileData(data);
-      } catch (err) {
-        console.error('Failed to load profile data:', err);
-      }
+      } catch (err) {}
     };
+
     fetchProfile();
   }, []);
 
@@ -34,7 +39,11 @@ const Hero = () => {
 
     if (!authToken) {
       setIsProfileIncompleteModalOpen(true);
-    } else if (!profileData?.name || profileData.name.trim() === '' || profileData.name === email) {
+    } else if (
+      !profileData?.name ||
+      profileData.name.trim() === '' ||
+      profileData.name === email
+    ) {
       localStorage.setItem('showIncompleteModal', 'true');
       navigate('/profile');
     } else {
@@ -86,7 +95,10 @@ const Hero = () => {
             >
               ✖
             </button>
-            <p>You are not logged in yet. Please log in and complete the required fields to add your dream!</p>
+            <p>
+              You are not logged in yet. Please log in and complete the required
+              fields to add your dream!
+            </p>
           </div>
         </div>
       )}

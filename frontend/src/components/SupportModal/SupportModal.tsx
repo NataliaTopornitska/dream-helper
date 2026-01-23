@@ -11,12 +11,18 @@ type SupportModalProps = {
   dream: Dream;
 };
 
-const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, dream }) => {
+const SupportModal: React.FC<SupportModalProps> = ({
+  isOpen,
+  onClose,
+  dream,
+}) => {
   const [donationAmount, setDonationAmount] = useState<number | null>(null);
   const [isAnonymous, setIsAnonymous] = useState(false);
   const isLoggedIn = Boolean(localStorage.getItem('authToken'));
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -61,14 +67,12 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, dream }) =
       const data = await response.json();
 
       window.location.href = data.session_url;
-    } catch (error) {
-      console.error('Error making donation:', error);
-    }
+    } catch (error) {}
   };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-content" onClick={e => e.stopPropagation()}>
         <button className="close-btn" onClick={onClose}>
           ×
         </button>
@@ -81,9 +85,9 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, dream }) =
           className="modal-img"
         />
         <p>
-          Thank you! Every contribution, even the smallest one, is a step
-          closer to making a dream come true. Together, we create something
-          truly magical!
+          Thank you! Every contribution, even the smallest one, is a step closer
+          to making a dream come true. Together, we create something truly
+          magical!
         </p>
         <div className="line-below"></div>
 
@@ -105,7 +109,8 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, dream }) =
 
           {!isLoggedIn && (
             <p className="anonymous-note">
-              Your donation will automatically be recorded as anonymous because you are not logged into your account.
+              Your donation will automatically be recorded as anonymous because
+              you are not logged into your account.
             </p>
           )}
         </div>
@@ -120,7 +125,7 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose, dream }) =
 
         <p className="or-text">or</p>
 
-        <h3 className='own-h3'>Your Own Amount</h3>
+        <h3 className="own-h3">Your Own Amount</h3>
         <input
           type="number"
           placeholder="0$"

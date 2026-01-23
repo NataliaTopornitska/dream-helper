@@ -36,7 +36,8 @@ const InfoCard = ({ dream }) => {
         <span className={styles.cardValue}>
           {Math.round(Number(dream.goal))
             .toString()
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')}$
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')}
+          $
         </span>
       </p>
       <p>
@@ -62,7 +63,9 @@ const InfoCard = ({ dream }) => {
         {dream.status === 'Completed' ? (
           <div className={styles.amountItemCentered}>
             <span className={styles.amountLabel}>Collected</span>
-            <span className={styles.amountValue}>{dream.total_amount_donations}$</span>
+            <span className={styles.amountValue}>
+              {dream.total_amount_donations}$
+            </span>
           </div>
         ) : (
           <>
@@ -71,15 +74,19 @@ const InfoCard = ({ dream }) => {
               <span className={styles.amountValue}>
                 {Math.round(Number(dream.total_amount_donations))
                   .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')}$
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')}
+                $
               </span>
             </div>
             <div className={styles.amountItem}>
               <span className={styles.amountLabel}>Need</span>
               <span className={styles.amountValue}>
-                {Math.round(Number(dream.goal) - Number(dream.total_amount_donations))
+                {Math.round(
+                  Number(dream.goal) - Number(dream.total_amount_donations),
+                )
                   .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')}$
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')}
+                $
               </span>
             </div>
           </>

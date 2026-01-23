@@ -5,7 +5,8 @@ import CreateDreamModal from '../UserProfile/CreateDreamModal';
 
 const DreamsHero: React.FC = () => {
   const [isDreamModalOpen, setIsDreamModalOpen] = useState(false);
-  const [isProfileIncompleteModalOpen, setIsProfileIncompleteModalOpen] = useState(false);
+  const [isProfileIncompleteModalOpen, setIsProfileIncompleteModalOpen] =
+    useState(false);
   const [profileData, setProfileData] = useState<any>(null);
   const navigate = useNavigate();
 
@@ -17,12 +18,15 @@ const DreamsHero: React.FC = () => {
             Authorization: `Token ${localStorage.getItem('authToken') || ''}`,
           },
         });
-        if (!res.ok) throw new Error('Failed to fetch profile');
+
+        if (!res.ok) {
+          throw new Error('Failed to fetch profile');
+        }
+
         const data = await res.json();
+
         setProfileData(data);
-      } catch (err) {
-        console.error('Error fetching profile:', err);
-      }
+      } catch (err) {}
     };
 
     fetchProfile();
@@ -40,7 +44,11 @@ const DreamsHero: React.FC = () => {
 
     if (!authToken) {
       setIsProfileIncompleteModalOpen(true);
-    } else if (!profileData?.name || profileData.name.trim() === '' || profileData.name === email) {
+    } else if (
+      !profileData?.name ||
+      profileData.name.trim() === '' ||
+      profileData.name === email
+    ) {
       localStorage.setItem('showIncompleteModal', 'true');
       navigate('/profile');
     } else {
@@ -77,7 +85,10 @@ const DreamsHero: React.FC = () => {
       </div>
 
       {isDreamModalOpen && (
-        <CreateDreamModal isOpen={isDreamModalOpen} onClose={() => setIsDreamModalOpen(false)} />
+        <CreateDreamModal
+          isOpen={isDreamModalOpen}
+          onClose={() => setIsDreamModalOpen(false)}
+        />
       )}
 
       {isProfileIncompleteModalOpen && (
@@ -90,7 +101,10 @@ const DreamsHero: React.FC = () => {
             >
               ✖
             </button>
-            <p>You are not logged in yet. Please log in and complete the required fields to add your dream!</p>
+            <p>
+              You are not logged in yet. Please log in and complete the required
+              fields to add your dream!
+            </p>
           </div>
         </div>
       )}

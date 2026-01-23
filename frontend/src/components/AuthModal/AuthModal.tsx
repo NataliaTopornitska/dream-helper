@@ -30,15 +30,17 @@ const AuthModal: React.FC<AuthModalProps> = ({
   }, [authMode]);
 
   useEffect(() => {
-    if (activationMessage) {
-      const timer = setTimeout(() => {
-        setActivationMessage('');
-        setAuthMode('login');
-        onClose();
-      }, 3000);
-
-      return () => clearTimeout(timer);
+    if (!activationMessage) {
+      return;
     }
+
+    const timer = setTimeout(() => {
+      setActivationMessage('');
+      setAuthMode('login');
+      onClose();
+    }, 3000);
+
+    return () => clearTimeout(timer);
   }, [activationMessage, setAuthMode, onClose]);
 
   useEffect(() => {
@@ -55,8 +57,12 @@ const AuthModal: React.FC<AuthModalProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (authMode === 'register' && (!credential || !/\S+@\S+\.\S+/.test(credential))) {
+    if (
+      authMode === 'register' &&
+      (!credential || !/\S+@\S+\.\S+/.test(credential))
+    ) {
       setEmailError('Please enter a valid email');
+
       return;
     }
 
@@ -74,13 +80,13 @@ const AuthModal: React.FC<AuthModalProps> = ({
       }
 
       const data = await response.json();
-      console.log(data);
 
       const token = data.access || data.token || data.key;
 
       if (authMode === 'register') {
         setActivationMessage(
-          'An activation code has been sent to your email. Please activate your account within 1 hour to log in.'
+          'An activation code has been sent to your email. ' +
+            'Please activate your account within 1 hour to log in.',
         );
       } else if (token) {
         localStorage.setItem('authToken', token);
@@ -94,19 +100,20 @@ const AuthModal: React.FC<AuthModalProps> = ({
 
       setCredential('');
       setPassword('');
-    } catch (error) {
-      console.error('Error:', error);
+    } catch {
       setActivationMessage(
         authMode === 'login'
           ? 'Login failed. Please try again.'
-          : 'Registration failed. Please try again.'
+          : 'Registration failed. Please try again.',
       );
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
@@ -116,7 +123,9 @@ const AuthModal: React.FC<AuthModalProps> = ({
         {activationMessage ? (
           <div
             className={`activation-message ${
-              activationMessage.toLowerCase().includes('failed') ? 'error' : 'success'
+              activationMessage.toLowerCase().includes('failed')
+                ? 'error'
+                : 'success'
             }`}
           >
             <p>{activationMessage}</p>
@@ -144,7 +153,11 @@ const AuthModal: React.FC<AuthModalProps> = ({
                   required
                 />
                 <img
-                  src={showPassword ? '/dream-helper/home-page/eye-form.svg' : '/dream-helper/home-page/eye-off.svg'}
+                  src={
+                    showPassword
+                      ? '/dream-helper/home-page/eye-form.svg'
+                      : '/dream-helper/home-page/eye-off.svg'
+                  }
                   alt="Toggle visibility"
                   className="eye-icon"
                   onClick={() => setShowPassword(prev => !prev)}
@@ -154,7 +167,11 @@ const AuthModal: React.FC<AuthModalProps> = ({
               {authMode === 'login' && (
                 <div className="forgot-password-text">Forgot password?</div>
               )}
-              <button className="signup-btn" type="submit" disabled={isSubmitting}>
+              <button
+                className="signup-btn"
+                type="submit"
+                disabled={isSubmitting}
+              >
                 {authMode === 'register' ? 'Sign Up' : 'Log In'}
               </button>
             </form>
@@ -163,13 +180,25 @@ const AuthModal: React.FC<AuthModalProps> = ({
               {authMode === 'register' ? (
                 <span>
                   Have an account?{' '}
-                  <a href="#" onClick={e => { e.preventDefault(); setAuthMode('login'); }}>
+                  <a
+                    href="#"
+                    onClick={e => {
+                      e.preventDefault();
+                      setAuthMode('login');
+                    }}
+                  >
                     Log In
                   </a>
                 </span>
               ) : (
                 <span>
-                  <a href="#" onClick={e => { e.preventDefault(); setAuthMode('register'); }}>
+                  <a
+                    href="#"
+                    onClick={e => {
+                      e.preventDefault();
+                      setAuthMode('register');
+                    }}
+                  >
                     Create an account
                   </a>
                 </span>

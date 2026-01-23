@@ -33,6 +33,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
       setIsLocationFixed(false);
       setErrors({});
       document.body.style.overflow = '';
+
       return;
     }
 
@@ -41,12 +42,12 @@ const SettingsModal = ({ isOpen, onClose }) => {
     fetch('http://127.0.0.1:8000/api/v1/profiles/countries/')
       .then(res => res.json())
       .then(setCountries)
-      .catch(err => console.error('Error loading countries:', err));
+      .catch(() => {});
 
     fetch('http://127.0.0.1:8000/api/v1/profiles/other_countries/')
       .then(res => res.json())
       .then(setOtherCountries)
-      .catch(err => console.error('Error loading other countries:', err));
+      .catch(() => {});
 
     fetch('http://127.0.0.1:8000/api/v1/profiles/mine/', {
       headers: {
@@ -56,11 +57,16 @@ const SettingsModal = ({ isOpen, onClose }) => {
       .then(res => res.json())
       .then(profile => {
         if (profile.name) {
-          const rawName = profile.is_collective && profile.name.startsWith('"') && profile.name.endsWith('"')
-            ? profile.name.slice(1, -1)
-            : profile.name;
+          const rawName =
+            profile.is_collective &&
+            profile.name.startsWith('"') &&
+            profile.name.endsWith('"')
+              ? profile.name.slice(1, -1)
+              : profile.name;
+
           setName(rawName);
         }
+
         setPhone(profile.phone_number || '');
         setDirection(profile.direction || '');
         setIsCollective(profile.is_collective || false);
@@ -75,17 +81,20 @@ const SettingsModal = ({ isOpen, onClose }) => {
           setSelectedCountry(profile.country);
         }
       })
-      .catch(err => console.error('Error loading profile:', err));
+      .catch(() => {});
   }, [isOpen]);
 
   useEffect(() => {
-    if (!selectedCountry || isLocationFixed) return;
+    if (!selectedCountry || isLocationFixed) {
+      return;
+    }
 
-    fetch(`http://127.0.0.1:8000/api/v1/profiles/cities/?country=${selectedCountry.id}`)
+    fetch(
+      `http://127.0.0.1:8000/api/v1/profiles/cities/?country=${selectedCountry.id}`,
+    )
       .then(res => res.json())
       .then(setCities)
-      .catch(err => {
-        console.error('Error loading cities:', err);
+      .catch(() => {
         setCities([]);
       });
   }, [selectedCountry, isLocationFixed]);
@@ -100,29 +109,43 @@ const SettingsModal = ({ isOpen, onClose }) => {
 
   const validate = () => {
     const newErrors = {};
-    if (!name.trim()) newErrors.name = 'Name is required';
-    if (!selectedCity && !otherCity.trim()) newErrors.city = 'City is required';
-    if (isCollective === null) newErrors.is_collective = 'Collective flag is required';
+
+    if (!name.trim()) {
+      newErrors.name = 'Name is required';
+    }
+
+    if (!selectedCity && !otherCity.trim()) {
+      newErrors.city = 'City is required';
+    }
+
+    if (isCollective === null) {
+      newErrors.is_collective = 'Collective flag is required';
+    }
+
     return newErrors;
   };
 
-  const handleCollectiveChange = (checked) => {
+  const handleCollectiveChange = checked => {
     if (!checked) {
       setName(prevName => {
         if (prevName.startsWith('"') && prevName.endsWith('"')) {
           return prevName.slice(1, -1);
         }
+
         return prevName;
       });
     }
+
     setIsCollective(checked);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     const validationErrors = validate();
+
     if (Object.keys(validationErrors).length) {
       setErrors(validationErrors);
+
       return;
     }
 
@@ -155,19 +178,20 @@ const SettingsModal = ({ isOpen, onClose }) => {
         onClose();
       } else {
         const errorData = await res.json();
-        console.error('Server error:', errorData);
       }
-    } catch (err) {
-      console.error('Submit error:', err);
-    }
+    } catch (err) {}
   };
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <div className="settings-modal-overlay" onClick={onClose}>
-      <div className="settings-modal" onClick={(e) => e.stopPropagation()}>
-        <button className="close-button" onClick={onClose}>&times;</button>
+      <div className="settings-modal" onClick={e => e.stopPropagation()}>
+        <button className="close-button" onClick={onClose}>
+          &times;
+        </button>
         <h2 className="modal-title-s">Settings</h2>
         <img
           src="/dream-helper/profile-page/change-setting.png"
@@ -185,7 +209,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                 id="name"
                 placeholder="Your Full Name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={e => setName(e.target.value)}
                 className={errors.name ? 'input-error' : ''}
               />
               {errors.name && <p className="error-text">{errors.name}</p>}
@@ -193,13 +217,19 @@ const SettingsModal = ({ isOpen, onClose }) => {
 
             <div className="form-group">
               <label htmlFor="phone">
-                Phone Number <span className="required-star" style={{ visibility: 'hidden' }}>*</span>
+                Phone Number{' '}
+                <span
+                  className="required-star"
+                  style={{ visibility: 'hidden' }}
+                >
+                  *
+                </span>
               </label>
               <input
                 id="phone"
                 placeholder="Your Phone Number"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={e => setPhone(e.target.value)}
               />
             </div>
           </div>
@@ -211,8 +241,11 @@ const SettingsModal = ({ isOpen, onClose }) => {
               </label>
               <select
                 value={selectedCountry?.id || ''}
-                onChange={(e) => {
-                  const country = countries.find(c => c.id === Number(e.target.value));
+                onChange={e => {
+                  const country = countries.find(
+                    c => c.id === Number(e.target.value),
+                  );
+
                   setSelectedCountry(country || null);
                   setSelectedCity(null);
                 }}
@@ -220,7 +253,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                 className={errors.country ? 'input-error' : ''}
               >
                 <option value="">Select Country</option>
-                {countries.map((country) => (
+                {countries.map(country => (
                   <option key={country.id} value={country.id}>
                     {country.name}
                   </option>
@@ -231,15 +264,21 @@ const SettingsModal = ({ isOpen, onClose }) => {
 
             <div className="form-group">
               <label htmlFor="otherCountry">
-                Other country <span className="required-star" style={{ visibility: 'hidden' }}>*</span>
+                Other country{' '}
+                <span
+                  className="required-star"
+                  style={{ visibility: 'hidden' }}
+                >
+                  *
+                </span>
               </label>
               <select
                 id="otherCountry"
                 value={otherCountry}
-                onChange={(e) => setOtherCountry(e.target.value)}
+                onChange={e => setOtherCountry(e.target.value)}
               >
                 <option value="">Select Other Country</option>
-                {otherCountries.map((country) => (
+                {otherCountries.map(country => (
                   <option key={country.id} value={country.name}>
                     {country.name}
                   </option>
@@ -255,15 +294,18 @@ const SettingsModal = ({ isOpen, onClose }) => {
               </label>
               <select
                 value={selectedCity?.id || ''}
-                onChange={(e) => {
-                  const city = cities.find((c) => c.id === Number(e.target.value));
+                onChange={e => {
+                  const city = cities.find(
+                    c => c.id === Number(e.target.value),
+                  );
+
                   setSelectedCity(city || null);
                 }}
                 disabled={isLocationFixed || !selectedCountry}
                 className={errors.city ? 'input-error' : ''}
               >
                 <option value="">Select City</option>
-                {cities.map((city) => (
+                {cities.map(city => (
                   <option key={city.id} value={city.id}>
                     {city.name}
                   </option>
@@ -274,13 +316,19 @@ const SettingsModal = ({ isOpen, onClose }) => {
 
             <div className="form-group">
               <label htmlFor="otherCity">
-                Other city <span className="required-star" style={{ visibility: 'hidden' }}>*</span>
+                Other city{' '}
+                <span
+                  className="required-star"
+                  style={{ visibility: 'hidden' }}
+                >
+                  *
+                </span>
               </label>
               <input
                 id="otherCity"
                 placeholder="Name of Your City"
                 value={otherCity}
-                onChange={(e) => setOtherCity(e.target.value)}
+                onChange={e => setOtherCity(e.target.value)}
               />
             </div>
           </div>
@@ -288,13 +336,19 @@ const SettingsModal = ({ isOpen, onClose }) => {
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="direction">
-                Direction <span className="required-star" style={{ visibility: 'hidden' }}>*</span>
+                Direction{' '}
+                <span
+                  className="required-star"
+                  style={{ visibility: 'hidden' }}
+                >
+                  *
+                </span>
               </label>
               <input
                 id="direction"
                 placeholder="Name of Your Direction"
                 value={direction}
-                onChange={(e) => setDirection(e.target.value)}
+                onChange={e => setDirection(e.target.value)}
               />
             </div>
 
@@ -303,7 +357,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                 <input
                   type="checkbox"
                   checked={isCollective}
-                  onChange={(e) => handleCollectiveChange(e.target.checked)}
+                  onChange={e => handleCollectiveChange(e.target.checked)}
                 />
                 <span className="is-collective">Is collective</span>
               </label>
@@ -315,7 +369,11 @@ const SettingsModal = ({ isOpen, onClose }) => {
           </button>
 
           <div className="signout-link">
-            <button type="button" className="signout-button" onClick={handleSignOut}>
+            <button
+              type="button"
+              className="signout-button"
+              onClick={handleSignOut}
+            >
               Sign Out
             </button>
           </div>

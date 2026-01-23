@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './CreateDreamModal.scss';
 
 const CreateDreamModal = ({ isOpen, onClose }) => {
@@ -27,21 +27,21 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
     fetch('http://127.0.0.1:8000/api/v1/dreamhelper/categories/')
       .then(res => res.json())
       .then(setCategories)
-      .catch(err => console.error('Failed to fetch categories:', err));
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
     fetch('http://127.0.0.1:8000/api/v1/profiles/countries/')
       .then(res => res.json())
       .then(setCountries)
-      .catch(err => console.error('Failed to fetch countries:', err));
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
     fetch('http://127.0.0.1:8000/api/v1/profiles/other_countries/')
       .then(res => res.json())
       .then(setOtherCountries)
-      .catch(err => console.error('Failed to fetch other countries:', err));
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -52,26 +52,32 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
       return;
     }
 
-    fetch(`http://127.0.0.1:8000/api/v1/profiles/cities/?country=${selectedCountry.id}`)
+    fetch(
+      `http://127.0.0.1:8000/api/v1/profiles/cities/?country=${selectedCountry.id}`,
+    )
       .then(res => res.json())
       .then(setCities)
-      .catch(err => {
-        console.error('Failed to fetch cities:', err);
+      .catch(() => {
         setCities([]);
       });
   }, [selectedCountry]);
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   const fileInputRef = useRef(null);
 
-  const [previewImage, setPreviewImage] = useState('/dream-helper/profile-page/add-dream.png');
+  const [previewImage, setPreviewImage] = useState(
+    '/dream-helper/profile-page/add-dream.png',
+  );
 
-  const handleFileChange = (e) => {
+  const handleFileChange = e => {
     const file = e.target.files[0];
 
     if (file) {
       const imageUrl = URL.createObjectURL(file);
+
       setPreviewImage(imageUrl);
     }
   };
@@ -82,22 +88,30 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
-  if (isForAnother) {
-      const citySelect = document.getElementById("person-city");
-      const cityInput = document.getElementById("person-other-city");
+    if (isForAnother) {
+      const citySelect = document.getElementById('person-city');
+      const cityInput = document.getElementById('person-other-city');
 
       if (!selectedCity && !otherCity.trim()) {
         if (citySelect) {
-          citySelect.setCustomValidity("Please select a city or fill 'Other city'.");
+          citySelect.setCustomValidity(
+            "Please select a city or fill 'Other city'.",
+          );
           citySelect.reportValidity();
         }
+
         return;
       } else {
-        if (citySelect) citySelect.setCustomValidity("");
-        if (cityInput) cityInput.setCustomValidity("");
+        if (citySelect) {
+          citySelect.setCustomValidity('');
+        }
+
+        if (cityInput) {
+          cityInput.setCustomValidity('');
+        }
       }
     }
 
@@ -109,7 +123,12 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
       setCategoryError(false);
     }
 
-    if (!dreamTitle || !dreamDescription || !goalAmount || (!selectedCategory && !otherCategory)) {
+    if (
+      !dreamTitle ||
+      !dreamDescription ||
+      !goalAmount ||
+      (!selectedCategory && !otherCategory)
+    ) {
       return;
     }
 
@@ -143,19 +162,21 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
     };
 
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/v1/dreamhelper/dreams/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Token ${token}`
+      const res = await fetch(
+        'http://127.0.0.1:8000/api/v1/dreamhelper/dreams/',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Token ${token}`,
+          },
+          body: JSON.stringify(payload),
         },
-        body: JSON.stringify(payload)
-      });
+      );
 
       if (!res.ok) {
         const errData = await res.json();
 
-        console.error('Failed to create dream:', errData);
         alert('Could not submit dream: ' + (errData?.error || res.statusText));
 
         return;
@@ -174,27 +195,27 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
 
         formData.append('photo', file);
 
-        const uploadRes = await fetch(`http://127.0.0.1:8000/api/v1/dreamhelper/dreams/${dreamId}/upload_dream_photo/`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Token ${token}`
+        const uploadRes = await fetch(
+          `http://127.0.0.1:8000/api/v1/dreamhelper/dreams/${dreamId}/upload_dream_photo/`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Token ${token}`,
+            },
+            body: formData,
           },
-          body: formData
-        });
+        );
 
         if (!uploadRes.ok) {
           const uploadError = await uploadRes.json();
 
-          console.error('Photo upload failed:', uploadError);
           alert('Dream created, but photo upload failed.');
         } else {
-          console.log('Photo uploaded successfully.');
         }
       }
 
       onClose();
     } catch (err) {
-      console.error('Unexpected error:', err);
       alert('Something went wrong while submitting your dream.');
     }
   };
@@ -203,16 +224,22 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
     <div className="create-section">
       <h3 className="tell-us_dream">Tell us about your dream</h3>
       <p className="describe-us">
-        Describe your dream in more detail. What do you want to achieve or experience? Why is it important to you? Open up about your dream in a heartfelt way. Describe your emotions, your hopes, and what this dream means to you. Help others feel connected to your journey so they understand why it matters.
+        Describe your dream in more detail. What do you want to achieve or
+        experience? Why is it important to you? Open up about your dream in a
+        heartfelt way. Describe your emotions, your hopes, and what this dream
+        means to you. Help others feel connected to your journey so they
+        understand why it matters.
       </p>
       <textarea
         placeholder="Your text here"
         value={dreamDescription}
         onChange={e => {
           setDreamDescription(e.target.value);
-          e.target.setCustomValidity("");
+          e.target.setCustomValidity('');
         }}
-        onInvalid={e => e.target.setCustomValidity("Please fill out this field.")}
+        onInvalid={e =>
+          e.target.setCustomValidity('Please fill out this field.')
+        }
         required
       />
     </div>
@@ -229,17 +256,24 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
   return (
     <div className="create-modal-overlay" onClick={onClose}>
       <div className="create-modal" onClick={e => e.stopPropagation()}>
-        <button className="create-close-btn" onClick={onClose}>×</button>
+        <button className="create-close-btn" onClick={onClose}>
+          ×
+        </button>
 
         <h2 className="create-modal-title">Create a Dream</h2>
 
         <form onSubmit={handleSubmit}>
           <div className="create-modal-content">
             <div className="create-left-section">
-              <div className="create-photo-upload" onClick={handlePhotoClick} style={{ cursor: 'pointer' }}>
+              <div
+                className="create-photo-upload"
+                onClick={handlePhotoClick}
+                style={{ cursor: 'pointer' }}
+              >
                 <img src={previewImage} alt="Upload" />
                 <p>
-                  *The photo you upload doesn’t have to be of yourself, but it should represent a dream you want to make come true.
+                  *The photo you upload doesn’t have to be of yourself, but it
+                  should represent a dream you want to make come true.
                 </p>
                 <input
                   type="file"
@@ -255,16 +289,20 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
             <div className="create-right-section">
               <div className="create-form-group">
                 <h4 className="create-field-heading">Dream Title</h4>
-                <label htmlFor="dream-title">Write a short title that reflects the essence of your dream</label>
+                <label htmlFor="dream-title">
+                  Write a short title that reflects the essence of your dream
+                </label>
                 <input
                   type="text"
                   placeholder="Your Dream"
                   value={dreamTitle}
-                  onChange={(e) => {
+                  onChange={e => {
                     setDreamTitle(e.target.value);
-                    e.target.setCustomValidity("");
+                    e.target.setCustomValidity('');
                   }}
-                  onInvalid={(e) => e.target.setCustomValidity("Please fill out this field.")}
+                  onInvalid={e =>
+                    e.target.setCustomValidity('Please fill out this field.')
+                  }
                   required
                   maxLength={45}
                 />
@@ -278,9 +316,11 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
                   value={goalAmount}
                   onChange={e => {
                     setGoalAmount(e.target.value);
-                    e.target.setCustomValidity("");
+                    e.target.setCustomValidity('');
                   }}
-                  onInvalid={e => e.target.setCustomValidity("Please fill out this field.")}
+                  onInvalid={e =>
+                    e.target.setCustomValidity('Please fill out this field.')
+                  }
                   required
                   min={1}
                 />
@@ -292,15 +332,19 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
                   value={selectedCategory}
                   onChange={e => {
                     setSelectedCategory(e.target.value);
-                    e.target.setCustomValidity("");
+                    e.target.setCustomValidity('');
                   }}
-                  onInvalid={e => e.target.setCustomValidity("Please select an option.")}
+                  onInvalid={e =>
+                    e.target.setCustomValidity('Please select an option.')
+                  }
                   required={!otherCategory}
                   className="create-form-input"
                 >
                   <option value="">Select Category</option>
                   {categories.map(cat => (
-                    <option key={cat.id} value={cat.name}>{cat.name}</option>
+                    <option key={cat.id} value={cat.name}>
+                      {cat.name}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -313,8 +357,11 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
                   value={otherCategory}
                   onChange={e => {
                     setOtherCategory(e.target.value);
-                    const select = document.getElementById("category-select");
-                    if (select) select.setCustomValidity("");
+                    const select = document.getElementById('category-select');
+
+                    if (select) {
+                      select.setCustomValidity('');
+                    }
                   }}
                 />
               </div>
@@ -339,9 +386,7 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
             <>
               <div className="create-section dream-for-another-section">
                 <h3>Dream For Another *</h3>
-                <p>
-                  *Fill this if you're creating a dream for someone else
-                </p>
+                <p>*Fill this if you're creating a dream for someone else</p>
                 <div className="create-grid-2">
                   <div className="create-form-group">
                     <label htmlFor="person-full-name">
@@ -353,9 +398,13 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
                       value={personFullName}
                       onChange={e => {
                         setPersonFullName(e.target.value);
-                        e.target.setCustomValidity("");
+                        e.target.setCustomValidity('');
                       }}
-                      onInvalid={e => e.target.setCustomValidity("Please fill out this field.")}
+                      onInvalid={e =>
+                        e.target.setCustomValidity(
+                          'Please fill out this field.',
+                        )
+                      }
                       required
                     />
                   </div>
@@ -369,20 +418,25 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
                       placeholder="Phone number"
                       value={personPhoneNumber}
                       onChange={e => {
-                        const onlyNums = e.target.value.replace(/\D/g, "");
+                        const onlyNums = e.target.value.replace(/\D/g, '');
+
                         setPersonPhoneNumber(onlyNums);
-                        e.target.setCustomValidity("");
+                        e.target.setCustomValidity('');
                       }}
                       onInvalid={e => {
                         if (e.target.validity.valueMissing) {
-                          e.target.setCustomValidity("Please fill out this field.");
+                          e.target.setCustomValidity(
+                            'Please fill out this field.',
+                          );
                         } else if (e.target.validity.patternMismatch) {
-                          e.target.setCustomValidity("Minimum 6 digits, numbers only.");
+                          e.target.setCustomValidity(
+                            'Minimum 6 digits, numbers only.',
+                          );
                         } else {
-                          e.target.setCustomValidity("");
+                          e.target.setCustomValidity('');
                         }
                       }}
-                      onInput={e => e.target.setCustomValidity("")}
+                      onInput={e => e.target.setCustomValidity('')}
                       required
                       pattern="[0-9]{6,}"
                     />
@@ -396,26 +450,32 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
                       id="person-country"
                       value={selectedCountry?.id || ''}
                       onChange={e => {
-                        const country = countries.find(c => c.id === Number(e.target.value)) || null;
+                        const country =
+                          countries.find(
+                            c => c.id === Number(e.target.value),
+                          ) || null;
+
                         setSelectedCountry(country);
                         setSelectedCity(null);
-                        e.target.setCustomValidity("");
+                        e.target.setCustomValidity('');
                       }}
-                      onInvalid={e => e.target.setCustomValidity("Please select a country.")}
+                      onInvalid={e =>
+                        e.target.setCustomValidity('Please select a country.')
+                      }
                       required={!otherCountry}
                       disabled={!!otherCountry}
                     >
                       <option value="">Select country</option>
                       {countries.map(country => (
-                        <option key={country.id} value={country.id}>{country.name}</option>
+                        <option key={country.id} value={country.id}>
+                          {country.name}
+                        </option>
                       ))}
                     </select>
                   </div>
 
                   <div className="create-form-group">
-                    <label htmlFor="person-other-country">
-                      Other country
-                    </label>
+                    <label htmlFor="person-other-country">Other country</label>
                     <select
                       id="person-other-country"
                       value={otherCountry}
@@ -423,7 +483,9 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
                     >
                       <option value="">Select other country</option>
                       {otherCountries.map(country => (
-                        <option key={country.id} value={country.name}>{country.name}</option>
+                        <option key={country.id} value={country.name}>
+                          {country.name}
+                        </option>
                       ))}
                     </select>
                   </div>
@@ -436,12 +498,17 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
                       id="person-city"
                       value={selectedCity?.id || ''}
                       onChange={e => {
-                        const city = cities.find(c => c.id === Number(e.target.value)) || null;
+                        const city =
+                          cities.find(c => c.id === Number(e.target.value)) ||
+                          null;
+
                         setSelectedCity(city);
                         setOtherCity('');
                         e.target.setCustomValidity('');
                       }}
-                      onInvalid={e => e.target.setCustomValidity('Please select a city.')}
+                      onInvalid={e =>
+                        e.target.setCustomValidity('Please select a city.')
+                      }
                       disabled={!selectedCountry || !!otherCountry}
                       required={!otherCity.trim()}
                     >
@@ -462,11 +529,17 @@ const CreateDreamModal = ({ isOpen, onClose }) => {
                       value={otherCity}
                       onChange={e => {
                         const val = e.target.value;
+
                         setOtherCity(val);
-                        if (val.trim()) setSelectedCity(null);
+                        if (val.trim()) {
+                          setSelectedCity(null);
+                        }
+
                         e.target.setCustomValidity('');
                       }}
-                      onInvalid={e => e.target.setCustomValidity('Please enter a city.')}
+                      onInvalid={e =>
+                        e.target.setCustomValidity('Please enter a city.')
+                      }
                       required={!selectedCity}
                     />
                   </div>

@@ -38,7 +38,6 @@ const ProfileDreams: React.FC = () => {
         const token = localStorage.getItem('authToken');
 
         if (!token) {
-          console.error('No auth token found, please log in');
           return;
         }
 
@@ -47,10 +46,10 @@ const ProfileDreams: React.FC = () => {
           {
             method: 'GET',
             headers: {
-              'Authorization': `Token ${token}`,
+              Authorization: `Token ${token}`,
               'Content-Type': 'application/json',
             },
-          }
+          },
         );
 
         if (!response.ok) {
@@ -58,9 +57,9 @@ const ProfileDreams: React.FC = () => {
         }
 
         const data = await response.json();
+
         setDreams(data);
       } catch (error) {
-        console.error('Помилка завантаження з API:', error);
         setDreams([]);
       } finally {
         setIsLoading(false);
@@ -75,16 +74,21 @@ const ProfileDreams: React.FC = () => {
   };
 
   const handlePrev = () => {
-    setCurrentIndex(prevIndex => (prevIndex - 1 + dreams.length) % dreams.length);
+    setCurrentIndex(
+      prevIndex => (prevIndex - 1 + dreams.length) % dreams.length,
+    );
   };
 
   const visibleDreams = () => {
-    if (dreams.length <= displayCount) return dreams;
+    if (dreams.length <= displayCount) {
+      return dreams;
+    }
 
     const result = [];
 
     for (let i = 0; i < displayCount; i++) {
       const index = (currentIndex + i) % dreams.length;
+
       result.push(dreams[index]);
     }
 
@@ -112,7 +116,10 @@ const ProfileDreams: React.FC = () => {
               {visibleDreams().map(dream => {
                 const goalAmount = parseInt(dream.goal) || 1;
                 const collected = dream.total_amount_donations;
-                const progressPercent = Math.min((collected / goalAmount) * 100, 100);
+                const progressPercent = Math.min(
+                  (collected / goalAmount) * 100,
+                  100,
+                );
 
                 return (
                   <div key={dream.id} className="dream-card">
@@ -156,7 +163,10 @@ const ProfileDreams: React.FC = () => {
                     </div>
 
                     <h3 className="dream-title">
-                      <Link to={`/dreams/${dream.id}`} className="dream-title-link">
+                      <Link
+                        to={`/dreams/${dream.id}`}
+                        className="dream-title-link"
+                      >
                         {dream.title}
                       </Link>
                     </h3>
@@ -185,7 +195,9 @@ const ProfileDreams: React.FC = () => {
                     </div>
 
                     <div className="dream-dreamer-label">
-                      {dream.dreamer ? `Initiated for: ${dream.dreamer}` : '\u00A0'}
+                      {dream.dreamer
+                        ? `Initiated for: ${dream.dreamer}`
+                        : '\u00A0'}
                     </div>
                   </div>
                 );

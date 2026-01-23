@@ -12,10 +12,14 @@ const Statistics: React.FC = () => {
   useEffect(() => {
     async function fetchStatistics() {
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/v1/dreamhelper/statistics/");
+        const response = await fetch(
+          'http://127.0.0.1:8000/api/v1/dreamhelper/statistics/',
+        );
+
         if (!response.ok) {
-          throw new Error("Error getting data.");
+          throw new Error('Error getting data.');
         }
+
         const data = await response.json();
 
         setStatistics({
@@ -24,9 +28,7 @@ const Statistics: React.FC = () => {
           anonymousDonations: data.anonymous_donations,
           totalDonations: data.total_donations,
         });
-      } catch (error) {
-        console.error("Error getting statistics data:", error);
-      }
+      } catch (error) {}
     }
 
     fetchStatistics();

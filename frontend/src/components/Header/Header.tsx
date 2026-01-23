@@ -18,6 +18,7 @@ const Header: React.FC = () => {
   useEffect(() => {
     const checkAuth = () => {
       const token = localStorage.getItem('authToken');
+
       setIsLoggedIn(!!token);
     };
 
@@ -56,12 +57,20 @@ const Header: React.FC = () => {
               <div className="mobile-nav">
                 <nav className="nav">
                   <ul className="nav-list">
-                    <li className={`nav-item ${isActive('/dreams') ? 'active' : ''}`}>
+                    <li
+                      className={`nav-item ${
+                        isActive('/dreams') ? 'active' : ''
+                      }`}
+                    >
                       <Link to="/dreams" onClick={() => setIsMenuOpen(false)}>
                         Dreams
                       </Link>
                     </li>
-                    <li className={`nav-item ${isActive('/about-us') ? 'active' : ''}`}>
+                    <li
+                      className={`nav-item ${
+                        isActive('/about-us') ? 'active' : ''
+                      }`}
+                    >
                       <Link to="/about-us" onClick={() => setIsMenuOpen(false)}>
                         About us
                       </Link>
@@ -95,10 +104,14 @@ const Header: React.FC = () => {
           <div className="nav-block">
             <nav className="nav">
               <ul className="nav-list">
-                <li className={`nav-item ${isActive('/dreams') ? 'active' : ''}`}>
+                <li
+                  className={`nav-item ${isActive('/dreams') ? 'active' : ''}`}
+                >
                   <Link to="/dreams">Dreams</Link>
                 </li>
-                <li className={`nav-item ${isActive('/about-us') ? 'active' : ''}`}>
+                <li
+                  className={`nav-item ${isActive('/about-us') ? 'active' : ''}`}
+                >
                   <Link to="/about-us">About us</Link>
                 </li>
               </ul>

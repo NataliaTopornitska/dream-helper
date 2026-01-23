@@ -90,7 +90,6 @@ const Footer: React.FC = () => {
               rel="noopener noreferrer"
             >
               <img
-
                 src="/dream-helper/home-page/instagram.png"
                 alt="Instagram"
               />{' '}
@@ -102,7 +101,7 @@ const Footer: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src="/dream-helper/home-page/facebook.png" alt="Facebook" />{' '}
+              <img src="/dream-helper/home-page/facebook.png" alt="Facebook" />
               Facebook
             </a>
           </div>

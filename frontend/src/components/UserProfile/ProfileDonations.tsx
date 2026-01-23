@@ -31,8 +31,8 @@ const ProfileDonations: React.FC = () => {
     async function fetchDreams() {
       try {
         const token = localStorage.getItem('authToken');
+
         if (!token) {
-          console.error('No auth token found, please log in');
           return;
         }
 
@@ -44,7 +44,7 @@ const ProfileDonations: React.FC = () => {
               Authorization: `Token ${token}`,
               'Content-Type': 'application/json',
             },
-          }
+          },
         );
 
         if (!response.ok) {
@@ -52,9 +52,9 @@ const ProfileDonations: React.FC = () => {
         }
 
         const data = await response.json();
+
         setDreams(data);
       } catch (error) {
-        console.error('Помилка завантаження з API:', error);
         setDreams([]);
       } finally {
         setIsLoading(false);
@@ -65,11 +65,13 @@ const ProfileDonations: React.FC = () => {
   }, []);
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % dreams.length);
+    setCurrentIndex(prevIndex => (prevIndex + 1) % dreams.length);
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + dreams.length) % dreams.length);
+    setCurrentIndex(
+      prevIndex => (prevIndex - 1 + dreams.length) % dreams.length,
+    );
   };
 
   const visibleDreams = () => {
@@ -78,6 +80,7 @@ const ProfileDonations: React.FC = () => {
 
     for (let i = 0; i < displayCount; i++) {
       const index = (currentIndex + i) % dreams.length;
+
       result.push(dreams[index]);
     }
 
@@ -102,10 +105,13 @@ const ProfileDonations: React.FC = () => {
             )}
 
             <div className="carousel-container">
-              {visibleDreams().map((dream) => {
+              {visibleDreams().map(dream => {
                 const goalAmount = parseFloat(dream.goal) || 1;
                 const collected = dream.total_amount_donations;
-                const progressPercent = Math.min((collected / goalAmount) * 100, 100);
+                const progressPercent = Math.min(
+                  (collected / goalAmount) * 100,
+                  100,
+                );
 
                 return (
                   <div key={dream.id} className="dream-card">
@@ -114,10 +120,16 @@ const ProfileDonations: React.FC = () => {
                         <img
                           src={dream.thumbnail_url || 'home-page/a-dream.png'}
                           alt={dream.title}
-                          onLoad={(event) => event.currentTarget.classList.add('loaded')}
-                          onError={(event) => {
+                          onLoad={event =>
+                            event.currentTarget.classList.add('loaded')
+                          }
+                          onError={event => {
                             const img = event.currentTarget;
-                            if (img.src !== window.location.origin + '/home-page/a-dream.png') {
+
+                            if (
+                              img.src !==
+                              window.location.origin + '/home-page/a-dream.png'
+                            ) {
                               img.src = 'home-page/a-dream.png';
                             }
                           }}
@@ -126,7 +138,12 @@ const ProfileDonations: React.FC = () => {
                       </Link>
                       <div className="user-donation">
                         <div className="donation-label">Your Donation</div>
-                        <div className="donation-amount">{dream.user_amount.toLocaleString('fr-FR').replace(/\u00A0/g, ' ')}$</div>
+                        <div className="donation-amount">
+                          {dream.user_amount
+                            .toLocaleString('fr-FR')
+                            .replace(/\u00A0/g, ' ')}
+                          $
+                        </div>
                       </div>
 
                       <div className="dream-stats">
@@ -141,7 +158,10 @@ const ProfileDonations: React.FC = () => {
                       </div>
                     </div>
                     <h3 className="dream-title">
-                      <Link to={`/dreams/${dream.id}`} className="dream-title-link">
+                      <Link
+                        to={`/dreams/${dream.id}`}
+                        className="dream-title-link"
+                      >
                         {dream.title}
                       </Link>
                     </h3>
