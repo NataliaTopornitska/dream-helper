@@ -44,8 +44,6 @@
   font-weight: 600;
   margin-bottom: 24px;
   color: #333;
-
-
   width: 100%;
   border-bottom: 1px solid #8d8989;
   padding-bottom: 17px;
@@ -222,10 +220,10 @@ div.create-form-group.create-checkbox-group label {
   gap: 16px;
 }
 
- .create-grid-2 select {
-    border: 1px solid #191919;
-    border-radius: 9999px;
-    padding: 10px 14px;
+.create-grid-2 select {
+  border: 1px solid #191919;
+  border-radius: 9999px;
+  padding: 10px 14px;
 }
 
 textarea {
@@ -270,21 +268,21 @@ textarea {
 
 .create-section h3.tell-us {
   font-family: "Raleway", sans-serif;
-    font-size: 21px;
-    font-weight: 600;
-    margin-bottom: 12px;
-    color: #333;
-    text-align: left;
+  font-size: 21px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #333;
+  text-align: left;
 }
 
 .create-section h3.tell-us_dream {
   font-family: "Raleway", sans-serif;
-    font-size: 21px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #333;
-    text-align: left;
-    margin-top: -10px;
+  font-size: 21px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+  text-align: left;
+  margin-top: -10px;
 }
 
 .describe-us {
@@ -296,6 +294,7 @@ textarea {
 }
 
 
+
 @media (max-width: 767px) {
   .create-modal {
     padding: 20px;
@@ -304,6 +303,10 @@ textarea {
   .create-modal-content {
     flex-direction: column;
     gap: 24px;
+  }
+
+  .create-modal .create-modal-title {
+    font-size: 24px;
   }
 
   .create-left-section, .create-right-section {
@@ -318,12 +321,6 @@ textarea {
   .create-submit-wrapper {
     justify-content: center;
   }
-}
-
-@media (max-width: 480px) {
-  .create-modal .create-modal-title {
-    font-size: 24px;
-  }
 
   .photo-upload p {
     font-size: 12px;
@@ -333,5 +330,6 @@ textarea {
     font-size: 16px;
   }
 }
+
 
 

@@ -105,6 +105,10 @@
     font-weight: 600;
     padding: 12px 47px;
     border-radius: 40px;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
   }
 
   &-solid {
@@ -149,12 +153,12 @@
 
 
 @media (max-width: 767px) {
-.hero-container {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding-left: 0;
-  }
+  .hero-container {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding-left: 0;
+    }
 
    .hero-title,
   .hero-text {
@@ -178,11 +182,11 @@
     font-family: "Reddit Sans Condensed", sans-serif;
   }
 
-button.outline-btn,
-button.btn-solid {
-  width: 100%;
-  max-width: 100%;
-}
+  button.outline-btn,
+  button.btn-solid {
+    width: 100%;
+    max-width: 100%;
+  }
 
   button.btn {
     &-outline {
@@ -198,7 +202,7 @@ button.btn-solid {
     }
   }
 
-    button.outline-btn {
+  button.outline-btn {
     font-size: 15px;
     font-weight: 600;
     padding: 12px 16px;

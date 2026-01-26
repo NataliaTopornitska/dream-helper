@@ -2,7 +2,7 @@
   padding: 118px 20px;
 
   &-container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
   }
 
@@ -93,17 +93,19 @@
 }
 
 
-@media (max-width: 767px) {
-  .team-members {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-}
-
 
 @media (min-width: 768px) and (max-width: 1024px) {
   .team-members {
     grid-template-columns: repeat(2, 1fr);
     gap: 25px;
+  }
+}
+
+
+
+@media (max-width: 767px) {
+  .team-members {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 }

@@ -4,9 +4,9 @@
   align-items: flex-start;
   position: relative;
   overflow: hidden;
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
-  padding-top: 48px;
+  padding: 48px 20px 0 20px;
 }
 
 .profile-left {
@@ -94,6 +94,10 @@
   cursor: pointer;
   font-weight: 600;
   font-size: 17px;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+  }
 }
 
 .solid-btn {

@@ -29,17 +29,21 @@
 
   .filter-controls {
     display: flex;
-    gap: 10px;
+    gap: clamp(5px, 3vw, 10px);
     margin-bottom: 60px;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+
+
+    overflow-x: auto;
+    overflow: visible;
 
     .dropdown-wrapper {
       position: relative;
     }
 
     .filter-button {
-      padding: 10px 16px;
+      padding: 10px;
       border: 1px solid #191919;
       border-radius: 26px;
       background-color: transparent;
@@ -48,10 +52,10 @@
       font-weight: 500;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: clamp(4px, 3vw, 5px);
       white-space: nowrap;
       overflow: hidden;
-      max-width: 150px;
+      max-width: 149px;
 
       .arrow {
         font-size: 12px;
@@ -125,13 +129,11 @@
       overflow: hidden;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
       flex: 1;
-      // min-width: 0;
       transition: transform 0.3s ease;
       display: flex;
       flex-direction: column;
       border: 1px solid #191919;
       width: 100%;
-      // min-width: 250px;
 
       .dream-image {
         position: relative;
@@ -352,7 +354,6 @@
 
 
 
-
 // Additional
 .dream-card {
   background-color: #fff;
@@ -520,7 +521,6 @@
 
 
 
-
 .tabs {
   display: flex;
   gap: 1rem;
@@ -546,13 +546,26 @@
 
 
 
-
 @media ( min-width: 768px) and (max-width: 1024px) {
   .dreams-catalog {
+    .filter-controls {
+      gap: 15px 7px;
+      flex-wrap: wrap;
+
+      .dropdown-menu {
+        max-width: 200px;
+      }
+    }
+
+    .filter-button {
+      gap: 4px;
+      max-width: 250px;
+    }
+
     .dreams-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr) !important;
-      gap: 3px;
+      gap: 12px;
       justify-items: center;
       width: 100%;
 
@@ -597,19 +610,52 @@
 
 
 
+@media ( min-width: 1025px) and (max-width: 1150px) {
+  .dreams-catalog {
+    .filter-controls {
+      gap: 15px 7px;
+      flex-wrap: wrap;
+    }
+
+    .filter-button {
+      gap: 4px;
+      max-width: 250px;
+    }
+  }
+}
+
+
 
 
 @media (max-width: 767px) {
   .dreams-catalog {
+    .filter-controls {
+      gap: 10px 7px;
+      flex-wrap: wrap;
+
+      .dropdown-menu {
+        max-width: 200px;
+      }
+    }
+
+    .filter-button {
+      gap: 4px;
+      max-width: 250px;
+    }
+
     .filter-tabs {
+      margin-bottom: 35px;
+
       .tab {
         margin: 0;
+        padding: 12px 15px;
       }
     }
 
     .dreams-grid {
       display: grid;
       grid-template-columns: 1fr;
+      margin-bottom: 45px;
     }
   }
 
@@ -624,11 +670,6 @@
 
   .no-dreams {
     padding: 50px 20px;
-  }
-
-  .filter-button {
-    white-space: normal;
-    overflow: visible;
   }
 
   .pagination {
@@ -652,5 +693,22 @@
     max-width: 200px;
     text-align: center;
     margin-top: 15px;
+  }
+
+  .pagination-and-add-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+  }
+
+  .pagination-controls {
+    position: static;
+    transform: none;
+  }
+
+  .add-dream-button {
+    position: static;
   }
 }

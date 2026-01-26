@@ -101,7 +101,6 @@
   box-sizing: border-box;
 }
 
-
 .form-row.single {
   flex-direction: column;
 }
@@ -155,25 +154,6 @@
   display: block;
 }
 
-@media (max-width: 480px) {
-  .settings-modal {
-    padding: 20px;
-  }
-
-  .modal-image {
-    max-width: 150px;
-  }
-
-  input {
-    font-size: 12px;
-    padding: 10px 14px;
-  }
-
-  .save-button {
-    font-size: 14px;
-    padding: 12px;
-  }
-}
 
 .signout-button {
   display: block;
@@ -205,5 +185,27 @@
   font-weight: bold;
   font-size: 20px;
   position: relative;
+}
+
+
+
+@media (max-width: 767px) {
+  .settings-modal {
+    padding: 20px;
+  }
+
+  .modal-image {
+    max-width: 150px;
+  }
+
+  input {
+    font-size: 12px;
+    padding: 10px 14px;
+  }
+
+  .save-button {
+    font-size: 14px;
+    padding: 12px;
+  }
 }
 

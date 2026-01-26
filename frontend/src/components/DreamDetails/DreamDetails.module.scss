@@ -1,7 +1,7 @@
 .dreamDetails {
   padding: 10px 20px 20px;
   color: #191919;
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
 }
 
@@ -21,7 +21,6 @@
   width: 100%;
   max-width: 700px;
   height: 450px;
-  // width: 700px;
   height: 450px;
   flex-shrink: 0;
   margin-right: auto;
@@ -34,16 +33,11 @@
   object-fit: contain;
   border-radius: 24px;
   display: block;
-  // max-width: 700px;
-  // max-height: 450px;
-  // border-radius: 24px;
-  // flex-shrink: 0;
 }
 
 
 
 // InfoCard
-
 .infoCard {
   padding: 19px;
   flex-grow: 1;
@@ -75,7 +69,6 @@
   width: 24px;
   height: 24px;
 }
-
 
 .topRow {
   display: flex;
@@ -172,7 +165,6 @@
   font-size: 17px;
   font-weight: 500;
 }
-
 
 .progressBar {
   height: 6px;
@@ -273,8 +265,7 @@
 
 .sidebar {
   margin-top: 40px;
-   max-width: 490px;
-
+  max-width: 490px;
 }
 
 .donorInfo {
@@ -484,7 +475,7 @@ img._dreamImageStyled_25nn7_30 {
 
 
 
-@media (min-width: 768px) and (max-width: 1090px) {
+@media (min-width: 768px) and (max-width: 1024px) {
 .dreamDetails {
   padding: 48px 15px 20px;
   max-width: 900px;
@@ -502,7 +493,6 @@ img._dreamImageStyled_25nn7_30 {
 
 
 // InfoCard
-
 .infoCard {
   padding: 15px;
 }
@@ -787,7 +777,7 @@ img._dreamImageStyled_25nn7_30 {
 
 @media (max-width: 767px) {
 .dreamDetails {
-  padding: 32px 12px 20px;
+  padding: 32px 20px 20px;
   max-width: 750px;
 }
 
@@ -809,7 +799,6 @@ img._dreamImageStyled_25nn7_30 {
 
 
 // InfoCard
-
 .infoCard {
   padding: 9px;
   flex-grow: 1;
@@ -920,7 +909,6 @@ img._dreamImageStyled_25nn7_30 {
 
 
 // Description
-
 .detailsWrapper {
   display: flex;
   flex-direction: column;
@@ -999,15 +987,15 @@ img._dreamImageStyled_25nn7_30 {
 
 // Comments
 .wrapper {
-    width: 100vw;
-    max-width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 15px;
-    padding-right: 15px;
-    box-sizing: border-box;
-    margin-bottom: 40px;
-  }
+  width: 100vw;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  box-sizing: border-box;
+  margin-bottom: 40px;
+}
 
 .commentTitle {
   font-size: 23px;
