@@ -19,7 +19,7 @@ import { useSearchParams } from 'react-router-dom';
 
 const DreamsCatalog = () => {
   const [activeTab, setActiveTab] = useState<
-  'Active' | 'Completed' | 'Application'
+    'Active' | 'Completed' | 'Application'
   >('Active');
   const [dreams, setDreams] = useState<Dream[]>([]);
   const [filteredDreams, setFilteredDreams] = useState<Dream[]>([]);
@@ -152,14 +152,17 @@ const DreamsCatalog = () => {
         (dream: any) => dream.status === 'Application',
       );
 
-      setFilteredDreams(applicationDreams);
+      const indexStart = (currentPage - 1) * dreamsPerPage;
+      const indexEnd = indexStart + dreamsPerPage;
+
+      setFilteredDreams(applicationDreams.slice(indexStart, indexEnd));
       setPagination({
         ...pagination,
         count: applicationDreams.length,
         num_pages: Math.ceil(applicationDreams.length / dreamsPerPage),
       });
     }
-  }, [activeTab, dreams, currentUser]);
+  }, [activeTab, dreams, currentUser, currentPage, dreamsPerPage]);
 
   const fetchDreams = async () => {
     const token = localStorage.getItem('authToken');
@@ -172,12 +175,14 @@ const DreamsCatalog = () => {
     }
 
     const categoryParam = category !== 'all' ? `&category=${category}` : '';
+    const statusParam =
+      activeTab === 'Application'
+        ? '&status=Application'
+        : `&status=${activeTab}`;
+
     const response = await fetch(
-      `http://127.0.0.1:8000/api/v1/dreamhelper/dreams/?status=${activeTab}${categoryParam}`,
-      {
-        method: 'GET',
-        headers: headers,
-      },
+      `http://127.0.0.1:8000/api/v1/dreamhelper/dreams/?page=${currentPage}&page_size=${dreamsPerPage}${categoryParam}${statusParam}`,
+      { method: 'GET', headers },
     );
 
     const data = await response.json();
@@ -377,8 +382,10 @@ const DreamsCatalog = () => {
       queryParams.append('popularity', sortParam);
     }
 
+    setCurrentPage(1);
+
     queryParams.append('status', activeTab);
-    queryParams.append('page', currentPage.toString());
+    queryParams.append('page', '1');
     queryParams.append('page_size', dreamsPerPage.toString());
 
     setSearchParams(queryParams);
@@ -418,28 +425,35 @@ const DreamsCatalog = () => {
   };
 
   const handlePageChange = (pageUrl: string) => {
-    if (pageUrl) {
-      fetch(pageUrl)
-        .then(response => response.json())
-        .then(data => {
-          setFilteredDreams(data.results);
-          setPagination({
-            next: data.next,
-            previous: data.previous,
-            count: data.count,
-            num_pages: data.num_pages,
-          });
-          const pageNumber = new URL(pageUrl).searchParams.get('page');
+    if (activeTab === 'Application') {
+      if (pageUrl === pagination.next) {
+        setCurrentPage(currentPage + 1);
+      }
 
-          if (pageNumber) {
-            setCurrentPage(Number(pageNumber));
-          } else if (pagination.previous && pageUrl === pagination.previous) {
-            setCurrentPage(currentPage - 1);
-          } else if (pagination.next && pageUrl === pagination.next) {
-            setCurrentPage(currentPage + 1);
-          }
-        })
-        .catch(() => {});
+      if (pageUrl === pagination.previous) {
+        setCurrentPage(currentPage - 1);
+      }
+    } else {
+      // решта fetch як раніше
+      if (pageUrl) {
+        fetch(pageUrl)
+          .then(response => response.json())
+          .then(data => {
+            setFilteredDreams(data.results);
+            setPagination({
+              next: data.next,
+              previous: data.previous,
+              count: data.count,
+              num_pages: data.num_pages,
+            });
+            const pageNumber = new URL(pageUrl).searchParams.get('page');
+
+            if (pageNumber) {
+              setCurrentPage(Number(pageNumber));
+            }
+          })
+          .catch(() => {});
+      }
     }
   };
 
@@ -509,13 +523,13 @@ const DreamsCatalog = () => {
           currentUser.email === 'az@a.com' &&
           currentUser.is_staff &&
           currentUser.is_active && (
-          <button
-            className={`tab ${activeTab === 'Application' ? 'Active' : ''}`}
-            onClick={() => setActiveTab('Application')}
-          >
+            <button
+              className={`tab ${activeTab === 'Application' ? 'Active' : ''}`}
+              onClick={() => setActiveTab('Application')}
+            >
               New Dreams
-          </button>
-        )}
+            </button>
+          )}
       </div>
 
       <div ref={wrapperRef} className="filter-controls">
