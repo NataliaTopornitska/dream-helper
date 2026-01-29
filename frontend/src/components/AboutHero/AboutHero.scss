@@ -48,10 +48,41 @@
   }
 }
 
+
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .hero-container {
+    padding-top: 20px;
+  }
+
+  .dreams-title1 {
+    font-size: 36px;
+    margin-bottom: 15px;
+  }
+
+  .dreams-text1 {
+    font-size: 21px;
+  }
+
+  .dreamshero-image {
+    max-width: 500px;
+  }
+}
+
+
+
 @media (max-width: 767px) {
+  .hero2 {
+    padding-top: 30px;
+  }
+
   .hero-text {
     max-width: 250px;
     font-family: "Reddit Sans Condensed", sans-serif;
+  }
+
+  .dreams-title1 {
+    margin-bottom: 10px;
   }
 
   div.hero-content {
@@ -60,8 +91,8 @@
   }
 
   .dreamshero-image img {
-    max-width: 250px;
-    max-height: 250px;
+    max-width: 300px;
+    max-height: 300px;
   }
 
   .hero-container {
@@ -70,9 +101,3 @@
   }
 }
 
-
-@media (min-width: 768px) and (max-width: 1024px) {
-  .hero-container {
-    padding-top: 20px;
-  }
-}

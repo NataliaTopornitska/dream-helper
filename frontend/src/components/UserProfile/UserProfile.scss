@@ -6,7 +6,7 @@
   overflow: hidden;
   max-width: 1300px;
   margin: 0 auto;
-  padding: 48px 20px 0 20px;
+  padding: 48px 20px 40px 20px;
 }
 
 .profile-left {
@@ -109,6 +109,10 @@
   cursor: pointer;
   font-weight: 600;
   font-size: 17px;
+
+  &:hover {
+    background-color: #333;
+  }
 }
 
 
@@ -244,5 +248,36 @@
       color: #191919;
       text-align: center;
     }
+  }
+}
+
+
+
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .profile-container {
+    padding: 48px 20px 0 20px;
+  }
+
+  .profile-buttons {
+    display: flex;
+    gap: 18px;
+  }
+
+  .outline-btn {
+    padding: 12px 27px;
+    font-size: 17px;
+  }
+
+  .solid-btn {
+    padding: 12px 27px;
+    font-size: 17px;
+  }
+}
+
+
+@media (max-width: 767px) {
+  .profile-container {
+    padding: 48px 20px 30px 20px;
   }
 }

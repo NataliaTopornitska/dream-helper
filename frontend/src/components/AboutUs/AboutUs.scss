@@ -104,6 +104,10 @@
 
 
 @media (max-width: 767px) {
+  .team {
+    padding: 70px 20px 100px;
+  }
+
   .team-members {
     grid-template-columns: 1fr;
     gap: 20px;

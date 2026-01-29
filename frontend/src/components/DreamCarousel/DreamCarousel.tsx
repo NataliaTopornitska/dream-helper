@@ -92,7 +92,7 @@ const DreamCarousel: React.FC = () => {
     }
 
     const result = [];
-    const displayCount = isMobile ? 1 : window.innerWidth < 1024 ? 2 : 4;
+    const displayCount = isMobile ? 1 : window.innerWidth < 1024 ? 3 : 4;
 
     for (let i = 0; i < displayCount; i++) {
       if (dreams.length === 0) {

@@ -151,8 +151,8 @@
   }
 
   .dream-title-link {
-  text-decoration: none;
-  color: inherit;
+    text-decoration: none;
+    color: inherit;
   }
 
   .dream-content {
@@ -196,7 +196,6 @@
     .progress-values {
       margin-top: 5px;
     }
-
 
     .progress-bar {
       height: 7px;
@@ -244,8 +243,8 @@
 
 @media (min-width: 768px) and (max-width: 1024px) {
   .dream-card {
-    min-width: calc(25% - 15px);
-    max-width: calc(25% - 15px);
+    min-width: calc(33.33% - 13.3px);
+    max-width: calc(33.33% - 13.3px);
 
     .dream-image img {
       max-width: 260px;
@@ -253,14 +252,33 @@
       margin-top: 15px;
     }
   }
+
+  .dream-carousel {
+    padding: 80px 20px 0;
+  }
+
+  .carousel-container {
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .dream-carousel-title {
+    font-size: 26px;
+    margin-bottom: 35px;
+  }
 }
 
 
 
 @media (max-width: 767px) {
+  .dream-carousel {
+    padding: 30px 20px;
+  }
+
   .dream-carousel-title {
     font-size: 26px;
     text-align: center;
+    margin-bottom: 35px;
   }
 
   .carousel-container {

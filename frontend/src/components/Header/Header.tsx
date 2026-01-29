@@ -80,7 +80,7 @@ const Header: React.FC = () => {
                 {isLoggedIn ? (
                   <Link
                     to="/profile"
-                    className="profile-link"
+                    className={`profile-link ${isActive('/profile') ? 'active' : ''}`}
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Profile

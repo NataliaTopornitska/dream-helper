@@ -30,7 +30,7 @@ const ProfileDreams: React.FC = () => {
   const [activeDream, setActiveDream] = useState<Dream | null>(null);
   const isMobile = useIsMobile();
 
-  const displayCount = isMobile ? 1 : window.innerWidth < 1024 ? 2 : 4;
+  const displayCount = isMobile ? 1 : window.innerWidth < 1024 ? 3 : 4;
 
   useEffect(() => {
     async function fetchDreams() {
