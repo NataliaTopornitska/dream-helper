@@ -190,8 +190,14 @@
 
 
 @media (max-width: 767px) {
+  .settings-modal-overlay {
+    align-items: flex-start;
+    padding: 20px 10px;
+    overflow-y: auto;
+  }
+
   .settings-modal {
-    padding: 20px;
+    padding: 30px 20px;
   }
 
   .modal-image {

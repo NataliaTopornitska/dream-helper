@@ -18,13 +18,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1 1 50%;
   width: 100%;
   max-width: 700px;
   height: 450px;
-  height: 450px;
-  flex-shrink: 0;
-  margin-right: auto;
-  margin-left: auto;
+  flex-shrink: 1;
+  margin: 0;
   padding-top: 23px;
 }
 
@@ -33,7 +32,6 @@
   max-height: 100%;
   object-fit: contain;
   border-radius: 24px;
-  display: block;
 }
 
 
@@ -41,7 +39,8 @@
 // InfoCard
 .infoCard {
   padding: 19px;
-  flex-grow: 1;
+  flex: 1 1 40%;
+  min-width: 320px;
 }
 
 .infoCard p {
@@ -190,7 +189,6 @@
 
 
 // Description
-
 .detailsWrapper {
   display: flex;
   justify-content: space-between;
@@ -226,7 +224,7 @@
 .donorsContainer {
   background-color: white;
   border-radius: 24px;
-  max-width: 490px;
+  max-width: 550px;
 }
 
 .donorsTitle {
@@ -266,7 +264,7 @@
 
 .sidebar {
   margin-top: 40px;
-  max-width: 490px;
+  max-width: 550px;
 }
 
 .donorInfo {
@@ -275,6 +273,7 @@
   gap: 8.5px;
   flex: 0 0 120px;
   margin-left: 16px;
+  margin-right: 5px;
 }
 
 .donorAvatar {
@@ -447,6 +446,11 @@ img._dreamImageStyled_25nn7_30 {
   font-family: "Inter", sans-serif;
   font-size: 16px;
   color: #464646;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+  line-height: 140%;
 }
 
 .commentsList {
@@ -478,12 +482,16 @@ img._dreamImageStyled_25nn7_30 {
 
 @media (min-width: 768px) and (max-width: 1024px) {
 .dreamDetails {
-  padding: 48px 15px 20px;
-  max-width: 900px;
+  padding: 48px 20px 20px;
+  margin: 0;
 }
 
 .header {
   padding: 18px 18px 0;
+}
+
+.imageWrapper {
+  padding-top: 0;
 }
 
 .dreamImageStyled {
@@ -553,7 +561,6 @@ img._dreamImageStyled_25nn7_30 {
 
 
 // Description
-
 .detailsWrapper {
   display: flex;
   flex-direction: column;
@@ -653,7 +660,6 @@ img._dreamImageStyled_25nn7_30 {
   border-radius: 24px;
   max-width: 490px;
   width: 100%;
-
   margin: 0 auto;
 }
 
@@ -670,7 +676,7 @@ img._dreamImageStyled_25nn7_30 {
   border-bottom: none;
   }
 
-  .donorsTable {
+.donorsTable {
   display: flex;
   flex-direction: column;
   border: 1px solid #191919;
@@ -695,6 +701,7 @@ img._dreamImageStyled_25nn7_30 {
   gap: 8.5px;
   flex: 0 0 120px;
   margin-left: 16px;
+  margin-right: 1px;
 }
 
 .donorAvatar {
@@ -804,12 +811,14 @@ img._dreamImageStyled_25nn7_30 {
   padding: 9px;
   flex-grow: 1;
   order: 2;
+  min-width: 0;
 }
 
 .infoCard p {
   display: flex;
-  justify-content:space-around;
-  align-items: center;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
   margin-bottom: 10px;
 }
 
@@ -829,6 +838,7 @@ img._dreamImageStyled_25nn7_30 {
   flex-direction: column;
   align-items: center;
   gap: 2px;
+  margin-left: 10px;
 }
 
 .statIcon {
@@ -851,17 +861,18 @@ img._dreamImageStyled_25nn7_30 {
 
 .cardLabel {
   font-size: 16px;
-  margin-right: 5px;
-  margin-bottom: 9px;
+  margin-right: 10px;
   text-align: left;
-  width: 200px;
+  width: auto;
+  min-width: 80px;
+  flex-shrink: 0;
 }
 
 .cardValue {
   font-size: 17px;
-  margin-bottom: 9px;
-  text-align: left;
-   flex-grow: 1;
+  text-align: right;
+  flex-grow: 1;
+  word-break: break-word;
 }
 
 .amountRow {
@@ -954,7 +965,7 @@ img._dreamImageStyled_25nn7_30 {
 }
 
 .donorName {
-  font-size: clamp(13px, 1vw, 16px);
+  font-size: clamp(10px, 3vw, 16px);
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
@@ -964,18 +975,34 @@ img._dreamImageStyled_25nn7_30 {
 }
 
 .dValue {
- font-size: clamp(14px, 1vw, 17px);
+ font-size: clamp(12px, 3vw, 17px);
+ margin-right: 3px;
+}
+
+.donorRow {
+  padding: 10px 7px 10px 0;
 }
 
 .donorAmount {
   gap: 1px;
-  padding: 0 1px 0 7px;
+  padding: 0 1px 0 3px;
 }
 
 .dLabel {
-  margin: 0 2px 0 5px;
+  margin: 0 2px;
+  font-size: clamp(12px, 2vw, 14px);
 }
 
+.donorInfo {
+  margin-left: 7px;
+  margin-right: 3px;
+  flex: 0 0 108px;
+  gap: 5px;
+}
+
+.donorDate {
+  font-size: clamp(12px, 2vw, 14px);
+}
 
 // Support button
 .dButton {
@@ -983,19 +1010,20 @@ img._dreamImageStyled_25nn7_30 {
   font-size: 17px;
   max-width: 400px;
   margin: 26px 20px 60px 20px;
+  width: calc(100% - 40px);
+  min-width: 0;
 }
 
 
 // Comments
 .wrapper {
-  width: 100vw;
+  width: 100%;
   max-width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 15px;
-  padding-right: 15px;
-  box-sizing: border-box;
+  margin-left: 0;
+  margin-right: 0;
   margin-bottom: 40px;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .commentTitle {
@@ -1004,19 +1032,22 @@ img._dreamImageStyled_25nn7_30 {
 }
 
 .inputRow {
-  gap: 16px;
+  gap: 10px;
+  padding: 0 10px;
 }
 
 .avatarMain {
    width: 46px;
   height: 46px;
-  margin: 28px 18px 28px 4px;
+  margin: 28px 0 28px 10px;
+  flex-shrink: 0;
 }
 
 .sendButton {
   font-size: 15px;
   padding: 9px 20px;
-  margin-right: clamp(5px, 1vw, 28px);
+  margin-right: 10px;
+  flex-shrink: 0;
 }
 
 .avatar {
@@ -1026,9 +1057,13 @@ img._dreamImageStyled_25nn7_30 {
 }
 
 .inputField {
-  padding: 18px 0;
+  padding: 18px 3px;
   font-size: 15px;
   height: 40px;
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .commentI {
@@ -1042,6 +1077,10 @@ img._dreamImageStyled_25nn7_30 {
 
 .commentText {
   font-size: 15px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .sidebar {

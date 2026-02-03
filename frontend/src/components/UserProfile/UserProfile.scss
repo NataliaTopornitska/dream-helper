@@ -27,7 +27,6 @@
   text-align: center;
   width: 100%;
   word-wrap: break-word;
-
   height: 70px;
   line-height: 1.2;
   display: flex;
@@ -67,8 +66,8 @@
   position: absolute;
   top: 20px;
   right: 20px;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   cursor: pointer;
 }
 
@@ -276,8 +275,69 @@
 }
 
 
+
+
 @media (max-width: 767px) {
   .profile-container {
-    padding: 48px 20px 30px 20px;
+    padding: 48px 20px 50px 20px;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  .profile-left {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .profile-right {
+    position: static;
+    width: 100%;
+    align-items: center;
+    height: auto;
+    margin-top: 50px;
+  }
+
+  .settings-icon {
+    position: absolute;
+    right: 30px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  .profile-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+
+    .outline-btn,
+    .solid-btn-link {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .outline-btn,
+    .solid-btn {
+      width: 100%;
+      padding: 12px 0;
+      text-align: center;
+      font-size: 16px !important;
+      white-space: nowrap;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .solid-btn-link {
+      text-decoration: none;
+    }
   }
 }
